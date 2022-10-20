@@ -35,13 +35,57 @@
 		</header>
 		<main class="st-ma">
 			<div class="row-4">
-				<div class="cate">
-				 카테고리영역
+				<div class="total-class-box">
+					<div class="total-class-font">
+						 전체분류보기
+				 	</div>
+				 </div>
+				 <div class="menu-item-frame">
+				 	<div class="menu-item">
+				 		<span>전체보기</span>
+				 	</div>
+				 	<div class="menu-item name">
+				 		<span>AAA</span>
+				 	</div>
+				 	<div class="menu-item name">
+				 		<span>BBB</span>
+				 	</div>
+				 	<div class="menu-item name">
+				 		<span>CCC</span>
+				 	</div>
+				 	<div class="menu-item name">
+				 		<span>DDD</span>
+				 	</div>
+				 	<div class="menu-item name">
+				 		<span>FFF</span>
+				 	</div>
+				 	<div class="menu-item name">
+				 		<span>GGG</span>
+				 	</div>
+				 	<div class="menu-item name">
+				 		<span>HHH</span>
+				 	</div>
+				 	<div class="menu-item name">
+				 		<span>III</span>
+				 	</div>
+				 	<div class="menu-item name">
+				 		<span>JJJ</span>
+				 	</div>
+				 	<div class="menu-item name">
+				 		<span>KKK</span>
+				 	</div>
+				 	<div class="menu-item name">
+				 		<span>LLL</span>
+				 	</div>
+				 	<div class="menu-item name">
+				 		<span>MMM</span>
+				 	</div>
 				 </div>
 			</div>
 			<div class="row-8">
-				<div class="book">	
-				 책리스트 영역
+				<div class="book-box">	
+				 	<input class="book-chkbox" id="chkbox-input" type="checkbox">
+				    <label for="chkbox-input">전체</label>
 				 </div>
 			</div>	
 		</main>

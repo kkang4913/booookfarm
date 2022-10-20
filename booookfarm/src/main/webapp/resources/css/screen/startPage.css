@@ -1,0 +1,44 @@
+@charset "UTF-8";
+
+
+/*
+ 전체분류 박스,폰트 css
+*/
+.total-class-box{
+	width: 22.7rem;
+	height: 12.5rem;
+	background-color: rgb(100,157,237);
+}
+.total-class-font{
+	font-size: 2.4rem;
+	font-weight: normal;
+	color: var(--white);
+	padding-top: 5rem;
+	padding-left: 2rem;
+}
+
+/*
+  카테고리 박스 폰트 css
+*/
+
+.menu-item{
+	font-size: 1.4rem;
+	font-weight: normal;
+	padding: 0 1.6rem;
+	height:3.9rem;
+	line-height: 4rem;
+	border-bottom: 1px solid var(--grey);
+	color: var(--deepgrey);
+}
+
+
+.book-box{
+	border-top: 1px solid var(--grey);
+}
+/*
+ 전체 체크 박스
+*/
+.book-chkbox{
+	width: 2rem;
+	height: 2rem;
+}
