@@ -1,0 +1,24 @@
+.btn--rec {
+    width: 28.5rem;
+    height: 5.5rem;
+    border: none;
+    font-weight: 700;
+}
+
+.btn--rec:hover {
+    cursor: pointer;
+}
+
+.btn--blue {
+    background-color: var(--blue);
+    color: white;
+}
+
+.btn--green {
+    background-color: var(--green);
+    color: white;
+}
+
+.btn--yellow {
+    background-color: #fae100;
+}

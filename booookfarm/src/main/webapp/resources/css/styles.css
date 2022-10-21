@@ -5,8 +5,10 @@
 @import "variables.css";
 @import "standard.css";
 /* Components */
+@import "components/icons.css";
 
 /* Screens */
+@import "screens/login.css";
 
 /* font */
 @font-face {
