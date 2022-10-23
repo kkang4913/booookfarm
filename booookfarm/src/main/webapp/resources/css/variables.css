@@ -1,9 +1,8 @@
 @charset "UTF-8";
 
 :root {
-  --blue: #237AF6;
+  --red: #f44336;
+  --blue: #237af6;
   --yellow: #fae100;
-  --grey: #e9ecef;
-  --border-line__grey: #dddddd;
   --green: #00BF18;
 }

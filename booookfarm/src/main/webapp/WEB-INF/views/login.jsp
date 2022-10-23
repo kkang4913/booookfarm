@@ -17,7 +17,7 @@
 <nav class="navigation-container">
   <ul class="navigation-element">
     <li class="element"><a href="login">로그인</a></li>
-    <li class="element">회원가입</li>
+    <li class="element"><a href="join">회원가입</a></li>
     <li class="element">1:1문의</li>
     <li class="element">마이페이지</li>
     <li class="element">장바구니</li>
@@ -63,13 +63,13 @@
       </div>
       <button class="login-form__btn btn--rec btn--blue" type="button">로그인</button>
     </form>
-      <button class="login-form__btn btn--rec btn--green" type="button"><img src="${path}/resources/img/logos/naver-logo.png" /><span>네이버 아이디로 로그인</span></button>
-      <button class="login-form__btn btn--rec btn--yellow" type="button"><img src="${path}/resources/img/logos/kakao-logo.png" /><span>카카오 아이디로 로그인</span></button>
-      <div class="login-row">
-        <span>회원가입</span>
-        <span>아이디찾기</span>
-        <span>비밀번호찾기</span>
-      </div>
+    <button class="login-form__btn btn--rec btn--green" type="button"><img src="${path}/resources/img/logos/naver-logo.png" /><span>네이버 아이디로 로그인</span></button>
+    <button class="login-form__btn btn--rec btn--yellow" type="button"><img src="${path}/resources/img/logos/kakao-logo.png" /><span>카카오 아이디로 로그인</span></button>
+    <div class="login-row">
+      <span><a href="join">회원가입</a></span>
+      <span>아이디찾기</span>
+      <span>비밀번호찾기</span>
+    </div>
   </div>
 </main>
 <footer class="st-ft">

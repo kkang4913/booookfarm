@@ -10,4 +10,9 @@ public class LoginController {
     public String login() {
         return "login";
     }
+
+    @GetMapping(value = "/join")
+    public String join() {
+        return "join";
+    }
 }
