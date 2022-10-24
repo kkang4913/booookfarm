@@ -2,19 +2,14 @@
 
 
 .st-hd{
-	margin: 4.8rem auto 0 auto;
-	width: 114rem;
+	width: 100vw;
 	height: 16rem;
 	border-bottom: 1px solid;
 	border-color: rgb(238,238,238);
 }
 
 .st-ma {
-	display: flex;
-	justify-content: space-between;
-	margin: 0.5rem auto 10rem auto;
-	width: 114rem;
-	padding: 10rem 0 10rem 0;
+	width: 100vw;
 	border-top: 1px solid;
 	border-color: rgb(238,238,238);
 }
@@ -50,8 +45,20 @@
 }
 
 .head-container{
-	position: relative;
-	top: 5.1rem;
+    width: 114rem;
+    margin: 3.8rem auto 0 auto;
+    position: relative;
+    top: 2.9rem;
+    display: flex;
+    align-items: center;
+}
+
+.main-container {
+	display: flex;
+	justify-content: space-between;
+	margin: 0.5rem auto 0rem auto;
+	width: 114rem;
+	padding: 10rem 0 0 0;
 }
 
 .mainlogo-img{
@@ -141,4 +148,10 @@
 	left:105rem;
 	bottom:2.8rem;
 	font-size:1.3rem;
+}
+
+@media screen and (max-width: 1140px) {
+	.st-ft, .navigation-container {
+		width: 114rem;
+	}
 }
