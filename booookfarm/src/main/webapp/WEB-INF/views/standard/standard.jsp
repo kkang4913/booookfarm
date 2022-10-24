@@ -34,15 +34,17 @@
 				</div>
 		</header>
 		<main class="st-ma">
-			<div class="row-4">
-				<div class="cate">
-				 카테고리영역
-				 </div>
-			</div>
-			<div class="row-8">
-				<div class="book">	
-				 책리스트 영역
-				 </div>
+			<div class="main-container">
+				<div class="row-4">
+					<div class="cate">
+					 카테고리영역
+					 </div>
+				</div>
+				<div class="row-8">
+					<div class="book">	
+					 책리스트 영역
+					 </div>
+				</div>
 			</div>	
 		</main>
 		<footer class="st-ft">

@@ -1,0 +1,20 @@
+@charset "UTF-8";
+
+.basket-button{
+	background-color: white;
+	font-weight: bold;
+	font-size: 1.3rem;
+	color: #202020;
+	border: 1px solid;
+	width: 7.4rem;
+	height: 3.7rem;
+	margin: 1rem 0 0 0;
+}
+
+.locker-list-sort{
+	padding: 0 0 0 11.5rem;
+}
+
+.total-delete-locker-btn{
+	padding: 0 0 0 11.5rem;
+}

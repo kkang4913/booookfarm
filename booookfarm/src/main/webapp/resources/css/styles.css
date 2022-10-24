@@ -4,6 +4,10 @@
 @import "reset.css";
 @import "variables.css";
 @import "standard.css";
+@import "detail-page/detail.css";
+@import "detail-page/basket.css";
+@import "detail-page/payment.css";
+@import "detail-page/locker.css";
 /* Components */
 
 /* Screens */
