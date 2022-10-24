@@ -1,0 +1,190 @@
+@charset "UTF-8";
+
+
+/*
+	메인 로고 input 박스
+*/
+.input-container{
+	border: 2px solid #237AF6;
+	box-sizing: border-box;
+	height: 6rem;
+	display: flex;
+	align-items: center;
+}
+.input-layout{
+	padding: 0 1.5rem;
+}
+
+.input-box{
+	border-style:none;
+	outline: none;
+	caret-color: #3f51b5;
+	font-size: 1.6rem;
+	font-weight: normal;
+	height: 4rem;
+}
+
+
+/*
+ 전체카테고리 박스,폰트 css
+*/
+.sidemenu-container{
+	width: 22.7rem;
+	height: 12.5rem;
+	background-color: rgb(100,157,237);
+}
+.sidemenu-title{
+	font-size: 2.4rem;
+	font-weight: normal;
+	color: var(--white);
+	padding-top: 5rem;
+	padding-left: 2rem;
+}
+
+/*
+  카테고리 박스 폰트 css
+*/
+.menu-item{
+	font-size: 1.4rem;
+	font-weight: normal;
+	padding: 0 1.6rem;
+	height:3.9rem;
+	line-height: 4rem;
+	border-bottom: 1px solid var(--grey);
+	color: var(--deepgrey);
+}
+
+
+/*
+ 전체 체크 박스
+*/
+.chkbox-container{
+	border-top: 1px solid var(--grey);
+}
+.chbox-container-layout{
+	display: flex;
+	align-items: center;
+	margin-top: 1rem;
+	margin-bottom: 1rem;
+}
+
+.book-chkbox{
+	width: 2rem;
+	height: 2rem;
+	margin-right: 0.8rem;
+}
+
+/*
+	book 카드 css
+*/
+
+.bookcard-container{
+	margin-top: 2rem;
+    border-bottom: 1px solid var(--grey);
+	
+}
+
+.bookcard-flex{
+	display: flex;
+}
+.book-card-img{
+	width: 10rem;
+	height: 14.4rem;
+	background-size: 100% 100% !important;
+	position: relative;
+	top:-1.3rem;
+	left: 3rem;
+}
+.bookcard-chkbox-card{
+	width: 1.6rem;
+	height: 1.6rem;
+}
+
+.bookcard-chkbox-input{
+	display: none;
+}
+
+.book-img{
+	max-height: calc((142px - 2px) * 1.618 - 10px);	
+}
+
+.book-title{
+	padding-left: 16rem;
+	padding-right: 16rem;
+	height: 15rem;
+	min-height: 15rem;
+}
+
+.book-view{
+	display: flex;
+	justify-content: space-between;
+}
+
+.book-view-cnt{
+	font-size: 1.2rem;
+	color: rgb(35,122,246);
+}
+
+.book-info-author{
+	margin-top: 0.5rem;
+	color: var(--deepgrey);
+	font-size: 1.4rem;
+}
+
+.book-buy-layout{
+	padding-bottom: 1.5rem;
+}
+
+.book-basket-buy{
+	width: 14.2rem;
+	padding: 0 3rem;
+	text-align: center;
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+}
+	
+.book-basket-btn{
+	width: 14rem;
+	height: 4rem;	
+	background-color: var(--white);
+	border: 1.5px solid #9D9D9D;
+	font-weight: bolder;
+	color: #202020;
+}
+.book-buy-btn{
+	width: 14rem;
+	height: 4rem;
+	background-color: rgb(35,122,246);
+	border-style: none;
+	color: var(--white);
+	font-weight: bolder;
+}
+
+.card-info-box{
+	margin: 1rem -0.5rem 0 2rem;
+	width: 53rem;
+}	
+
+.select-list-box{
+	width: 14rem;
+	height: 3.2rem;
+	border: 1px solid;
+	margin-left: 1.5rem;
+}
+.head-logo-box{
+    position: absolute;
+    display: block;
+    width: 16rem;
+    height: 10rem;
+    top: -3rem;
+}
+
+.mainlogo-img{
+	display: inline-block;
+}
+.mainlogo{
+	margin: 0 8.7rem 0 0; 
+	h
+
+}

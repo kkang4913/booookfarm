@@ -16,6 +16,9 @@
 @import "screens/login.css";
 @import "screens/join.css";
 @import "screens/find.css";
+@import "screen/startPage.css";
+@import "screen/quickmenu.css";
+
 
 /* font */
 @font-face {
@@ -39,6 +42,22 @@ body {
 header {
     position: relative;
     top: -4.8rem;
+}
+
+/* css 수정 */
+.logo {
+    color: white;
+    position: relative;
+    font-size: 3.2rem;
+    top: 10rem;
+    z-index: 10;
+    /*width: 139.6rem;*/
+    display: inline-block;
+    left: 7.5em;
+    margin: 0 auto 0 auto;
+}
+.logo:hover {
+    cursor: pointer;
 }
 
 .hidden {

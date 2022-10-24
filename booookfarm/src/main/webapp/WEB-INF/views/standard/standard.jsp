@@ -7,7 +7,8 @@
 <head>
 <meta charset="UTF-8">
 <title>Insert title here</title>
- <link rel="stylesheet" href="${path}/resources/css/styles.css">
+<link rel="stylesheet" href="${path}/resources/css/styles.css">
+ <script type="text/javascript" src="${path}/resources/js/jquery-3.6.0.min.js"></script>
 </head>
 <body>
 	<nav class="navigation-container">
@@ -19,33 +20,162 @@
 			<li class="element">장바구니</li>
 		</ul>
 	</nav>
+	<!-- 왼쪽 사이드 퀵메뉴(최근 본 목록) css: quick -->
+	<div class="quickmenu">
+	  <div class="quickmenu-title">
+	  	<div>최근 본 상품</div>
+	  		<div class="quickmenu-contianer">
+	  			<div></div>
+	  		</div>
+	  </div>
+	</div>
 		<header class="st-hd">
 				<div class="head-container">
 					<div class="mainlogo-img">
-						<div class="mainlogo">
-							<p class="page-name">booookfarm</p>
+						<a class="mainlogo">
+							<img src="${path}/resources/img/mainlogo.png" style="width: 20rem;">
+						</a>
+					</div>
+					<div class="full-sear input-container">
+						<div class="sear-place input-layout">
+							<input class="sear input-box" type="text">
 						</div>
 					</div>
-					<div class="full-sear">
-						<div class="sear-place">
-							<input class="sear" type="text">
-						</div>
-					</div>	
 				</div>
+
 		</header>
 		<main class="st-ma">
-			<div class="main-container">
-				<div class="row-4">
-					<div class="cate">
-					 카테고리영역
-					 </div>
-				</div>
-				<div class="row-8">
-					<div class="book">
-					 책리스트 영역
-					 </div>
-				</div>
+		<div class="main-container">
+			<!-- 오른쪽 사이드 메뉴 -->
+			<div class="row-4">
+				<div class="sidemenu-container">
+					<div class="sidemenu-title">
+						 전체분류보기
+				 	</div>
+				 </div>
+				 <div class="sidemenu-item-container">
+				 	<div class="menu-item">
+				 		<span>전체보기</span>
+				 	</div>
+				 	<div class="menu-item name">
+				 		<span>AAA</span>
+				 	</div>
+				 	<div class="menu-item name">
+				 		<span>BBB</span>
+				 	</div>
+				 	<div class="menu-item name">
+				 		<span>CCC</span>
+				 	</div>
+				 	<div class="menu-item name">
+				 		<span>DDD</span>
+				 	</div>
+				 	<div class="menu-item name">
+				 		<span>FFF</span>
+				 	</div>
+				 	<div class="menu-item name">
+				 		<span>GGG</span>
+				 	</div>
+				 	<div class="menu-item name">
+				 		<span>HHH</span>
+				 	</div>
+				 	<div class="menu-item name">
+				 		<span>III</span>
+				 	</div>
+				 	<div class="menu-item name">
+				 		<span>JJJ</span>
+				 	</div>
+				 	<div class="menu-item name">
+				 		<span>KKK</span>
+				 	</div>
+				 	<div class="menu-item name">
+				 		<span>LLL</span>
+				 	</div>
+				 	<div class="menu-item name">
+				 		<span>MMM</span>
+				 	</div>
+				 </div>
 			</div>
+			<div class="row-8">
+				<div class="chkbox-container">
+					<div class="chbox-container-layout">
+				 		<input class="book-chkbox" id="chkbox-input" type="checkbox">
+				   		 <label for="chkbox-input">전체</label>
+				<div>
+            		<select class="select-list-box" title="목록 보기 유형 선택" id="selListPer">
+                		<option value="10">10개씩 보기</option>
+                		<option value="20">20개씩 보기</option>
+                		<option value="50">50개씩 보기</option>
+            		</select>
+            	</div>
+            		<select class="select-list-box"  title="목록 보기 유형 선택" id="selListPer">
+                		<option value="">최신 등록순</option>
+                		<option value="">정확도 높은순</option>
+                		<option value="">낮은 가격순</option>
+                		<option value="">높은 가격순</option>
+                		<option value="">출간일순</option>
+            		</select>
+            		</div>
+				 </div>
+				 <div class="bookcard-container">
+					<ol>
+						<li class="bookcard-flex">
+							<!-- 상품 선택 체크박스 -->
+							<div>
+				 				<input class="bookcard-chkbox-card" id="chkbox-input" type="checkbox">
+								<label class="bookcard-chkbox-input" for="chkbox-input">
+									<span>상품선택</span>
+								</label>
+							</div>
+							<!-- 상품 이미지 -->
+							<div>
+								<div class="">
+									<a>
+										<span>
+											<img class="book-img" src="${path}/resources/img/card-img.png">
+										</span>
+									</a>
+								</div>
+							</div>
+							<!-- 상품 정보 -->
+							<div class="card-info-box">
+									<div class="book-view" >
+										<a  href=>
+											<span>싸움을 잘하는 법</span>
+										</a>
+											<span class="book-view-cnt">조회수 : 0</span>
+									</div>
+								<div class="book-info-author">
+									<span>
+										<a>저자 싸움의 신 | 출판사 갓 오브 하이 스쿨 | 출간일 2022.10.22</a>
+									</span>
+								</div>
+								<div>
+									<div></div>
+									<div></div>
+									<div></div>
+								</div>
+							</div>
+							<!-- 장바구니, 구매하기 버튼 -->
+							<div class="book-basket-buy">
+								<div class="book-buy-layout">
+									<button class="book-buy-btn"  type="button">
+										<span>바로구매</span>
+									</button>
+								</div>
+								<div class="book-basket-layout">
+									<button class="book-basket-btn" type="button">
+										<span>장바구니</span>
+									</button>
+								</div>
+							</div>
+						</li>
+
+					</ol>
+				</div>
+				</div>
+				<ul id="pagingul">
+				</ul>
+				</div>
 		</main>
 		<footer class="st-ft">
 			<div class="footer-container">
@@ -78,4 +208,16 @@
 			</div>
 		</footer>
 </body>
+
+<!-- 왼쪽 퀵 메뉴(최근 본 상품) 조절 스크립트 -->
+<script type="text/javascript">
+$(document).ready(function(){
+	  var currentPosition = parseInt($(".quickmenu").css("top"));
+	  $(window).scroll(function() {
+	    var position = $(window).scrollTop();
+	    $(".quickmenu").stop().animate({"top":position+currentPosition+"px"},500);
+	  });
+	});
+</script>
+
 </html>
