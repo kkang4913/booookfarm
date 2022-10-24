@@ -38,234 +38,236 @@
   </div>
 </header>
 <main class="st-ma">
-  <div class="join-container">
-    <div class="join-title">
-      회원가입
+  <div class="main-container">
+    <div class="join-container">
+      <div class="join-title">
+        회원가입
+      </div>
+      <div class="est-guide">
+        <span class="dot--red"></span>
+        <span>필수 입력사항</span>
+      </div>
+      <form class="join-form">
+        <div class="join-form-line">
+          <div class="join-label-box">
+            <label>이름</label>
+            <span class="dot--red"></span>
+          </div>
+          <div class="join-input-box">
+            <div class="join-form__input">
+              <input type="text" placeholder="이름을 입력해주세요.">
+            </div>
+          </div>
+        </div>
+        <div class="join-err-line hidden">
+          <span class="join-err-msg null-err hidden">이름을 입력해주세요.</span>
+          <span class="join-err-msg hidden">이름이 너무 깁니다. 관리자에게 문의해주세요.</span>
+        </div>
+        <div class="join-form-line">
+          <div class="join-label-box">
+            <label>아이디</label>
+            <span class="dot--red"></span>
+          </div>
+          <div class="join-input-box">
+            <div class="join-form__input">
+              <input type="text" placeholder="아이디를 입력해주세요.">
+            </div>
+            <button class="btn--rec btn--gray btn--w120h50 join-form__btn">중복확인</button>
+          </div>
+        </div>
+        <div class="join-err-line hidden">
+          <span class="join-err-msg null-err hidden">아이디를 입력해주세요.</span>
+          <span class="join-err-msg hidden">아이디는 5~15자의 영문 소문자와 숫자만 사용가능합니다.</span>
+        </div>
+        <div class="join-form-line">
+          <div class="join-label-box">
+            <label>비밀번호</label>
+            <span class="dot--red"></span>
+          </div>
+          <div class="join-input-box">
+            <div class="join-form__input">
+              <input type="password" placeholder="비밀번호를 입력해주세요.">
+              <i id="showPw" class="fa-solid fa-eye"></i>
+              <i id="hidePw" class="fa-solid fa-eye-slash hidden"></i>
+            </div>
+          </div>
+        </div>
+        <div class="join-err-line hidden">
+          <span class="join-err-msg null-err hidden">비밀번호를 입력해주세요.</span>
+          <span class="join-err-msg hidden">비밀번호는 8~15자의 영문 대/소문자, 숫자, 특수문자를 모두 사용해야합니다.</span>
+        </div>
+        <div class="join-form-line">
+          <div class="join-label-box">
+            <label>비밀번호 확인</label>
+            <span class="dot--red"></span>
+          </div>
+          <div class="join-input-box">
+            <div class="join-form__input">
+              <input type="password" placeholder="동일한 비밀번호를 입력해주세요.">
+              <i id="showChkPw" class="fa-solid fa-eye"></i>
+              <i id="hideChkPw" class="fa-solid fa-eye-slash hidden"></i>
+            </div>
+          </div>
+        </div>
+        <div class="join-err-line hidden">
+          <span class="join-err-msg not-match-err">비밀번호가 일치하지 않습니다.</span>
+        </div>
+        <div class="join-form-line">
+          <div class="join-label-box">
+            <label>핸드폰</label>
+            <span class="dot--red"></span>
+          </div>
+          <div class="join-input-box">
+            <div class="join-form__input">
+              <input type="text" placeholder="-없이 숫자만 입력해주세요.">
+            </div>
+            <button class="btn--rec btn--gray btn--w120h50 join-form__btn">인증번호 요청</button>
+          </div>
+        </div>
+        <div class="join-err-line hidden">
+          <span class="join-err-msg null-err hidden">핸드폰 번호를 입력해주세요.</span>
+        </div>
+        <div class="join-form-line">
+          <div class="join-label-box">
+          </div>
+          <div class="join-input-box">
+            <div class="join-form__input">
+              <input type="text" placeholder="인증번호 5자리">
+              <span>5:00</span>
+            </div>
+            <button class="btn--rec btn--gray btn--w120h50 join-form__btn">인증번호 확인</button>
+          </div>
+        </div>
+        <div class="join-form-line">
+          <div class="join-label-box">
+            <label>이메일</label>
+            <span class="dot--red"></span>
+          </div>
+          <div class="join-input-box">
+            <div class="join-form__input">
+              <input type="text" placeholder="이메일을 입력해주세요.">
+            </div>
+          </div>
+        </div>
+        <div class="join-err-line hidden">
+          <span class="join-err-msg null-err hidden">이메일을 입력해주세요.</span>
+          <span class="join-err-msg hidden">이메일 형식으로 입력해주세요.</span>
+        </div>
+        <div class="join-form-line">
+          <div class="join-label-box">
+            <label>성별</label>
+          </div>
+          <div class="join-input-box">
+            <input class="join-form_gender" type="radio" value="M"><span>남</span>
+            <input class="join-form_gender" type="radio" value="W"><span>여</span>
+          </div>
+        </div>
+        <div class="join-form-line">
+          <div class="join-label-box">
+            <label>주소</label>
+            <span class="dot--red"></span>
+          </div>
+          <div class="join-input-box">
+            <div class="join-form__input">
+              <input type="text" placeholder="우편번호" readonly>
+            </div>
+            <button class="btn--rec btn--gray btn--w120h50 join-form__btn">우편번호 검색</button>
+          </div>
+        </div>
+        <div class="join-form-line">
+          <div class="join-label-box">
+          </div>
+          <div class="join-input-box">
+            <div class="join-form__input">
+              <input type="text" placeholder="기본 주소" readonly>
+            </div>
+          </div>
+        </div>
+        <div class="join-form-line">
+          <div class="join-label-box">
+            <label>상세 주소</label>
+            <span class="dot--red"></span>
+          </div>
+          <div class="join-input-box">
+            <div class="join-form__input">
+              <input type="text" placeholder="상세 주소">
+            </div>
+          </div>
+        </div>
+        <div class="join-err-line hidden">
+          <span class="join-err-msg null-err hidden">상세 주소를 입력해주세요.</span>
+        </div>
+        <div class="join-form-line">
+          <div class="join-label-box">
+            <label>환불계좌</label>
+            <span class="dot--red"></span>
+          </div>
+          <div class="join-input-box">
+            <select class="join-form_bank">
+              <option value="" disabled selected>은행선택</option>
+              <option>카카오뱅크</option>
+            </select>
+            <div class="join-form__input">
+              <input type="text" placeholder="예금주">
+            </div>
+          </div>
+        </div>
+        <div class="join-form-line">
+          <div class="join-label-box">
+          </div>
+          <div class="join-input-box">
+            <div class="join-form__input">
+              <input type="text" placeholder="환불계좌">
+            </div>
+          </div>
+        </div>
+        <div class="join-err-line hidden">
+          <span class="join-err-msg null-err hidden">환불계좌를 입력해주세요.</span>
+        </div>
+        <div class="join-terms-box">
+          <div class="join-form-terms">
+            <div>
+              <input type="checkbox">
+              <span>전체약관에 동의합니다.</span>
+            </div>
+          </div>
+          <div class="join-form-terms">
+            <div>
+              <input type="checkbox">
+              <span class="terms-est">[필수]</span>
+              <span>개인정보 수집/이용 안내</span>
+            </div>
+            <div>
+              <span id="showUseInfoTerms" class="show-terms">전문보기</span>
+            </div>
+          </div>
+          <div class="join-form-terms">
+            <div>
+              <input type="checkbox">
+              <span class="terms-est">[필수]</span>
+              <span>개인정보 제3자 제공</span>
+            </div>
+            <div>
+              <span id="showOfferInfoTerms" class="show-terms">전문보기</span>
+            </div>
+          </div>
+          <div class="join-form-terms">
+            <div>
+              <input type="checkbox">
+              <span class="terms-est">[필수]</span>
+              <span>회원이용 약관</span>
+            </div>
+            <div>
+              <span id="showServiceTerms" class="show-terms">전문보기</span>
+            </div>
+          </div>
+        </div>
+        <div class="join-btn-box">
+          <button class="btn--rec btn--white" type="button">취소</button>
+          <button class="btn--rec btn--blue" type="button">회원가입</button>
+        </div>
+      </form>
     </div>
-    <div class="est-guide">
-      <span class="dot--red"></span>
-      <span>필수 입력사항</span>
-    </div>
-    <form class="join-form">
-      <div class="join-form-line">
-        <div class="join-label-box">
-          <label>이름</label>
-          <span class="dot--red"></span>
-        </div>
-        <div class="join-input-box">
-          <div class="join-form__input">
-            <input type="text" placeholder="이름을 입력해주세요.">
-          </div>
-        </div>
-      </div>
-      <div class="join-err-line hidden">
-        <span class="join-err-msg null-err hidden">이름을 입력해주세요.</span>
-        <span class="join-err-msg hidden">이름이 너무 깁니다. 관리자에게 문의해주세요.</span>
-      </div>
-      <div class="join-form-line">
-        <div class="join-label-box">
-          <label>아이디</label>
-          <span class="dot--red"></span>
-        </div>
-        <div class="join-input-box">
-          <div class="join-form__input">
-            <input type="text" placeholder="아이디를 입력해주세요.">
-          </div>
-          <button class="btn--rec btn--gray btn--w120h50 join-form__btn">중복확인</button>
-        </div>
-      </div>
-      <div class="join-err-line hidden">
-        <span class="join-err-msg null-err hidden">아이디를 입력해주세요.</span>
-        <span class="join-err-msg hidden">아이디는 5~15자의 영문 소문자와 숫자만 사용가능합니다.</span>
-      </div>
-      <div class="join-form-line">
-        <div class="join-label-box">
-          <label>비밀번호</label>
-          <span class="dot--red"></span>
-        </div>
-        <div class="join-input-box">
-          <div class="join-form__input">
-            <input type="password" placeholder="비밀번호를 입력해주세요.">
-            <i id="showPw" class="fa-solid fa-eye"></i>
-            <i id="hidePw" class="fa-solid fa-eye-slash hidden"></i>
-          </div>
-        </div>
-      </div>
-      <div class="join-err-line hidden">
-        <span class="join-err-msg null-err hidden">비밀번호를 입력해주세요.</span>
-        <span class="join-err-msg hidden">비밀번호는 8~15자의 영문 대/소문자, 숫자, 특수문자를 모두 사용해야합니다.</span>
-      </div>
-      <div class="join-form-line">
-        <div class="join-label-box">
-          <label>비밀번호 확인</label>
-          <span class="dot--red"></span>
-        </div>
-        <div class="join-input-box">
-          <div class="join-form__input">
-            <input type="password" placeholder="동일한 비밀번호를 입력해주세요.">
-            <i id="showChkPw" class="fa-solid fa-eye"></i>
-            <i id="hideChkPw" class="fa-solid fa-eye-slash hidden"></i>
-          </div>
-        </div>
-      </div>
-      <div class="join-err-line hidden">
-        <span class="join-err-msg not-match-err">비밀번호가 일치하지 않습니다.</span>
-      </div>
-      <div class="join-form-line">
-        <div class="join-label-box">
-          <label>핸드폰</label>
-          <span class="dot--red"></span>
-        </div>
-        <div class="join-input-box">
-          <div class="join-form__input">
-            <input type="text" placeholder="-없이 숫자만 입력해주세요.">
-          </div>
-          <button class="btn--rec btn--gray btn--w120h50 join-form__btn">인증번호 요청</button>
-        </div>
-      </div>
-      <div class="join-err-line hidden">
-        <span class="join-err-msg null-err hidden">핸드폰 번호를 입력해주세요.</span>
-      </div>
-      <div class="join-form-line">
-        <div class="join-label-box">
-        </div>
-        <div class="join-input-box">
-          <div class="join-form__input">
-            <input type="text" placeholder="인증번호 5자리">
-            <span>5:00</span>
-          </div>
-          <button class="btn--rec btn--gray btn--w120h50 join-form__btn">인증번호 확인</button>
-        </div>
-      </div>
-      <div class="join-form-line">
-        <div class="join-label-box">
-          <label>이메일</label>
-          <span class="dot--red"></span>
-        </div>
-        <div class="join-input-box">
-          <div class="join-form__input">
-            <input type="text" placeholder="이메일을 입력해주세요.">
-          </div>
-        </div>
-      </div>
-      <div class="join-err-line hidden">
-        <span class="join-err-msg null-err hidden">이메일을 입력해주세요.</span>
-        <span class="join-err-msg hidden">이메일 형식으로 입력해주세요.</span>
-      </div>
-      <div class="join-form-line">
-        <div class="join-label-box">
-          <label>성별</label>
-        </div>
-        <div class="join-input-box">
-          <input class="join-form_gender" type="radio" value="M"><span>남</span>
-          <input class="join-form_gender" type="radio" value="W"><span>여</span>
-        </div>
-      </div>
-      <div class="join-form-line">
-        <div class="join-label-box">
-          <label>주소</label>
-          <span class="dot--red"></span>
-        </div>
-        <div class="join-input-box">
-          <div class="join-form__input">
-            <input type="text" placeholder="우편번호" readonly>
-          </div>
-          <button class="btn--rec btn--gray btn--w120h50 join-form__btn">우편번호 검색</button>
-        </div>
-      </div>
-      <div class="join-form-line">
-        <div class="join-label-box">
-        </div>
-        <div class="join-input-box">
-          <div class="join-form__input">
-            <input type="text" placeholder="기본 주소" readonly>
-          </div>
-        </div>
-      </div>
-      <div class="join-form-line">
-        <div class="join-label-box">
-          <label>상세 주소</label>
-          <span class="dot--red"></span>
-        </div>
-        <div class="join-input-box">
-          <div class="join-form__input">
-            <input type="text" placeholder="상세 주소">
-          </div>
-        </div>
-      </div>
-      <div class="join-err-line hidden">
-        <span class="join-err-msg null-err hidden">상세 주소를 입력해주세요.</span>
-      </div>
-      <div class="join-form-line">
-        <div class="join-label-box">
-          <label>환불계좌</label>
-          <span class="dot--red"></span>
-        </div>
-        <div class="join-input-box">
-          <select class="join-form_bank">
-            <option value="" disabled selected>은행선택</option>
-            <option>카카오뱅크</option>
-          </select>
-          <div class="join-form__input">
-            <input type="text" placeholder="예금주">
-          </div>
-        </div>
-      </div>
-      <div class="join-form-line">
-        <div class="join-label-box">
-        </div>
-        <div class="join-input-box">
-          <div class="join-form__input">
-            <input type="text" placeholder="환불계좌">
-          </div>
-        </div>
-      </div>
-      <div class="join-err-line hidden">
-        <span class="join-err-msg null-err hidden">환불계좌를 입력해주세요.</span>
-      </div>
-      <div class="join-terms-box">
-        <div class="join-form-terms">
-          <div>
-            <input type="checkbox">
-            <span>전체약관에 동의합니다.</span>
-          </div>
-        </div>
-        <div class="join-form-terms">
-          <div>
-            <input type="checkbox">
-            <span class="terms-est">[필수]</span>
-            <span>개인정보 수집/이용 안내</span>
-          </div>
-          <div>
-            <span id="showUseInfoTerms" class="show-terms">전문보기</span>
-          </div>
-        </div>
-        <div class="join-form-terms">
-          <div>
-            <input type="checkbox">
-            <span class="terms-est">[필수]</span>
-            <span>개인정보 제3자 제공</span>
-          </div>
-          <div>
-            <span id="showOfferInfoTerms" class="show-terms">전문보기</span>
-          </div>
-        </div>
-        <div class="join-form-terms">
-          <div>
-            <input type="checkbox">
-            <span class="terms-est">[필수]</span>
-            <span>회원이용 약관</span>
-          </div>
-          <div>
-            <span id="showServiceTerms" class="show-terms">전문보기</span>
-          </div>
-        </div>
-      </div>
-      <div class="join-btn-box">
-        <button class="btn--rec btn--white" type="button">취소</button>
-        <button class="btn--rec btn--blue" type="button">회원가입</button>
-      </div>
-    </form>
   </div>
 
   <div id="useInfoTerms" class="modal hidden">
@@ -530,8 +532,7 @@
     </div>
   </div>
 </footer>
-<script>
-</script>
+
 <script src="${path}/resources/js/join.js"></script>
 
 </body>

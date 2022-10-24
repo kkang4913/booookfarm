@@ -11,6 +11,7 @@
 /* Screens */
 @import "screens/login.css";
 @import "screens/join.css";
+@import "screens/find.css";
 
 /* font */
 @font-face {

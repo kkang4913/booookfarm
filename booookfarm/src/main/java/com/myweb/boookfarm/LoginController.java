@@ -15,4 +15,8 @@ public class LoginController {
     public String join() {
         return "join";
     }
+
+    @GetMapping(value = "/find")
+    public String find() { return "find"; }
+
 }

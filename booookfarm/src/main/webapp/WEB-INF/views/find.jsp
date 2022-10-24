@@ -17,7 +17,7 @@
 <nav class="navigation-container">
   <ul class="navigation-element">
     <li class="element"><a href="login">로그인</a></li>
-    <li class="element"><a href="join">회원가입</a></li>
+    <li class="element"><a href="find">회원가입</a></li>
     <li class="element">1:1문의</li>
     <li class="element">마이페이지</li>
     <li class="element">장바구니</li>
@@ -39,38 +39,75 @@
 </header>
 <main class="st-ma">
   <div class="main-container">
-    <div class="login-container">
-      <div class="login-title">
-        로그인
+    <div class="find-container">
+      <div class="find-nav">
+        <button class="btn--rec btn--white">아이디 찾기</button>
+        <button class="btn--rec btn--white">비밀번호 찾기</button>
       </div>
-      <form class="login-form">
-        <div class="login-input-box">
-          <input class="login-form__input" type="text" name="id" placeholder="아이디를 입력해주세요.">
+
+      <form id="findIdFormEmail" class="find-form">
+        <div class="find-input-box">
+          <div class="find-form__input">
+            <input type="text" placeholder="이름">
+          </div>
         </div>
-        <div class="login-err-box">
-          <span class="login-err-msg hidden">아이디를 입력해주세요.</span>
+        <div class="find-input-box">
+          <div class="find-form__input">
+            <input type="text" placeholder="가입 메일주소">
+          </div>
         </div>
-        <div class="login-input-box">
-          <input class="login-form__input" type="password" name="password" placeholder="비밀번호를 입력해주세요.">
-          <i id="showPw" class="fa-solid fa-eye"></i>
-          <i id="hidePw" class="fa-solid fa-eye-slash hidden"></i>
+        <div class="find-btn-box">
+          <button class="btn--rec btn--blue">확인</button>
         </div>
-        <div class="login-err-box">
-          <span class="login-err-msg hidden">비밀번호를 입력해주세요.</span>
-        </div>
-        <div class="login-check-box">
-          <input id="saveId" class="login-form__checkbox" type="checkbox">
-          <label for="saveId">아이디 기억하기</label>
-        </div>
-        <button class="login-form__btn btn--rec btn--blue" type="button">로그인</button>
       </form>
-      <button class="login-form__btn btn--rec btn--green" type="button"><img src="${path}/resources/img/logos/naver-logo.png" /><span>네이버 아이디로 로그인</span></button>
-      <button class="login-form__btn btn--rec btn--yellow" type="button"><img src="${path}/resources/img/logos/kakao-logo.png" /><span>카카오 아이디로 로그인</span></button>
-      <div class="login-row">
-        <span><a href="join">회원가입</a></span>
-        <span><a href="find">아이디찾기</a></span>
-        <span><a href="find">비밀번호찾기</a></span>
-      </div>
+
+      <form id="findIdFormPhone" class="find-form hidden">
+        <div class="find-input-box">
+          <div class="find-form__input">
+            <input type="text" placeholder="이름">
+          </div>
+        </div>
+        <div class="find-input-box">
+          <div class="find-form__input">
+            <input type="text" placeholder="핸드폰번호">
+          </div>
+          <button class="btn--rec btn--gray btn--w120h50 find-form__btn">인증번호 요청</button>
+        </div>
+        <div class="find-input-box">
+          <div class="find-form__input">
+            <input type="text" placeholder="인증번호 5자리">
+            <span>5:00</span>
+          </div>
+          <button class="btn--rec btn--gray btn--w120h50 find-form__btn">인증번호 확인</button>
+        </div>
+        <div class="find-btn-box">
+          <button class="btn--rec btn--blue">확인</button>
+        </div>
+      </form>
+
+      <form id="findPwForm" class="find-form hidden">
+        <div class="find-input-box">
+          <div class="find-form__input">
+            <input type="text" placeholder="아이디">
+          </div>
+        </div>
+        <div class="find-input-box">
+          <div class="find-form__input">
+            <input type="text" placeholder="핸드폰번호">
+          </div>
+          <button class="btn--rec btn--gray btn--w120h50 find-form__btn">인증번호 요청</button>
+        </div>
+        <div class="find-input-box">
+          <div class="find-form__input">
+            <input type="text" placeholder="인증번호 5자리">
+            <span>5:00</span>
+          </div>
+          <button class="btn--rec btn--gray btn--w120h50 find-form__btn">인증번호 확인</button>
+        </div>
+        <div class="find-btn-box">
+          <button class="btn--rec btn--blue">확인</button>
+        </div>
+      </form>
     </div>
   </div>
 </main>
@@ -104,8 +141,6 @@
     </div>
   </div>
 </footer>
-
-<script src="${path}/resources/js/login.js"></script>
 
 </body>
 </html>

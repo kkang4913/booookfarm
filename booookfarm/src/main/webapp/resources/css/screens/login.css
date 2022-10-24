@@ -105,7 +105,7 @@
     justify-content: space-evenly;
     font-size: 1.4rem;
     color: #727272;
-    margin-top: 2.5rem;
+    margin: 2.5rem 0 10rem 0;
 }
 
 .login-row>span:hover {
