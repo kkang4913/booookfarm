@@ -1,10 +1,8 @@
 @charset "UTF-8";
 
 :root {
-  --purple: rgb(89, 76, 256);
+  --red: #f44336;
+  --blue: #237af6;
   --yellow: #fae100;
-  --grey: #e9ecef;
-  --border-line__grey: #dddddd;
-  --green: rgb(0, 191, 24);
-  --white: rgb(245, 245, 245);
+  --green: #00BF18;
 }

@@ -41,11 +41,11 @@
 					 </div>
 				</div>
 				<div class="row-8">
-					<div class="book">	
+					<div class="book">
 					 책리스트 영역
 					 </div>
 				</div>
-			</div>	
+			</div>
 		</main>
 		<footer class="st-ft">
 			<div class="footer-container">

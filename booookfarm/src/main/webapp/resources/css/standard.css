@@ -45,9 +45,8 @@
 }
 
 .head-container{
-	display: flex;
-	align-content: center;
 	width: 114rem;
+	display: flex;
 	margin: 4.8rem auto 0 auto;
 	position: relative;
 	top: 5.1rem;
