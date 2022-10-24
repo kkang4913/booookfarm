@@ -19,7 +19,7 @@
 			<li class="element">마이페이지</li>
 			<li class="element">장바구니</li>
 		</ul>
-	</nav>
+	</nav> 
 	<!-- 왼쪽 사이드 퀵메뉴(최근 본 목록) css: quick -->
 	<div class="quickmenu">
 	  <div class="quickmenu-title">
