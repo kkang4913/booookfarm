@@ -267,19 +267,19 @@
 					<div class="order-info-layout">
 						<div class="title-area">주문자 정보</div>
 						<div class="detail-area">
-							<div class="input-container">	
+							<div class="payment-input-container">
 								<div class="order-info-title">주문하신 분</div>
 								<div class="input-area">
 									<input class="input-order-info" type="text">
 								</div>
 							</div>
-							<div class="input-container">	
+							<div class="payment-input-container">
 								<div class="order-info-title">연락처</div>
 								<div class="input-area">
 									<input class="input-order-info" type="text">
 								</div>
 							</div>
-							<div class="input-container">	
+							<div class="payment-input-container">
 								<div class="order-info-title">이메일</div>
 								<div class="input-area">
 									<input class="input-order-info" type="text">
@@ -290,32 +290,32 @@
 					<div class="order-info-layout">
 						<div class="title-area">배송지 정보</div>
 						<div class="detail-area">
-							<div class="input-container">	
+							<div class="payment-input-container">
 								<div class="order-info-title">배송지</div>
 								<div class="input-area">
 									<button class="address-toggle1" type="button">기본주소</button>
 									<button class="address-toggle2" type="button">새로운주소</button>
 								</div>
 							</div>
-							<div class="input-container">	
+							<div class="payment-input-container">
 								<div class="order-info-title">받으시는 분</div>
 								<div class="input-area">
 									<input class="input-order-info" type="text">
 								</div>
 							</div>
-							<div class="input-container">	
+							<div class="payment-input-container">
 								<div class="order-info-title">연락처</div>
 								<div class="input-area">
 									<input class="input-order-info" type="text">
 								</div>
 							</div>
-							<div class="input-container">	
+							<div class="payment-input-container">
 								<div class="order-info-title">이메일</div>
 								<div class="input-area">
 									<input class="input-order-info" type="text">
 								</div>
 							</div>
-							<div class="input-container">	
+							<div class="payment-input-container">
 								<div class="order-info-title">주소</div>
 								<div class="input-area">
 									<input class="input-order-info-address" type="text">
@@ -324,13 +324,13 @@
 									<button class="address-btn" type="button">우편번호 검색</button>
 								</div>
 							</div>
-							<div class="input-container">	
+							<div class="payment-input-container">
 								<div class="order-info-title"></div>
 								<div class="input-area">
 									<input class="input-order-info" type="text">
 								</div>
 							</div>	
-							<div class="input-container">	
+							<div class="payment-input-container">
 								<div class="order-info-title"></div>
 								<div class="input-area">
 									<input class="input-order-info" type="text">
@@ -341,7 +341,7 @@
 					<div class="order-info-layout">
 						<div class="title-area">결제정보</div>
 						<div class="detail-area">
-							<div class="input-container">	
+							<div class="payment-input-container">
 								<div class="order-info-title">E-Money 사용</div>
 								<div class="input-area">
 									<input class="input-order-info-emoney" type="text"  value="0">
@@ -353,7 +353,7 @@
 									<button class="use-mileage"type="button">전액사용</button>
 								</div>
 							</div>
-							<div class="input-container">	
+							<div class="payment-input-container">
 								<div class="order-info-title">B-Money 사용</div>
 								<div class="input-area">
 									<input class="input-order-info-emoney" type="text" value="0">
@@ -365,21 +365,21 @@
 									<button class="use-mileage" type="button">전액사용</button>
 								</div>
 							</div>
-							<div class="input-container">	
+							<div class="payment-input-container">
 								<div class="order-info-title">결제수단</div>
 								<div class="input-area">
 									<button class="payment-toggle1" type="button">무통장입금</button>
 									<button class="payment-toggle2" type="button">신용카드</button>
 								</div>
 							</div>
-							<div class="input-container ">	
+							<div class="payment-input-container ">
 								<div class="order-info-title"></div>
 								<div class="input-area">
 									<div class="depositor">입금자명</div>
 									<input class="depositor-name" type="text" placeholder="입금자명을 입력해주세요.">
 								</div>
 							</div>
-							<div class="input-container">	
+							<div class="payment-input-container">
 								<div class="order-info-title"></div>
 								<div class="input-area">
 									<div class="deposit-bank">입금은행</div>

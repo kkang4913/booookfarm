@@ -4,10 +4,7 @@
 @import "reset.css";
 @import "variables.css";
 @import "standard.css";
-@import "detail-page/detail.css";
-@import "detail-page/basket.css";
-@import "detail-page/payment.css";
-@import "detail-page/locker.css";
+
 /* Components */
 @import "components/icons.css";
 @import "components/modal.css";
@@ -16,9 +13,12 @@
 @import "screens/login.css";
 @import "screens/join.css";
 @import "screens/find.css";
-@import "screen/startPage.css";
-@import "screen/quickmenu.css";
-
+@import "screens/startPage.css";
+@import "screens/quickmenu.css";
+@import "screens/detail-page/detail.css";
+@import "screens/detail-page/basket.css";
+@import "screens/detail-page/payment.css";
+@import "screens/detail-page/locker.css";
 
 /* font */
 @font-face {
