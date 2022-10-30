@@ -1,6 +1,22 @@
 @charset "UTF-8";
 
-.menu-item, .name {
+.menu-item{
+	cursor: default;
+	}
+
+.menu-item >span {
+	cursor: pointer;
+}
+.menu-item-checked >span {
+	cursor: pointer;
+}
+.menu-item:hover >span {
+    background: linear-gradient(to top, #FFFF92 40%, #FAFAFA 60%);
+    color: #202020;
+    pointer-events: none;
+}
+
+.boookcard-view-box, .bookcard-view-info>button{
 	cursor: pointer;
 }
 
@@ -23,5 +39,5 @@
 }
 
 .quickmenu-contianer{
-	height: 46.5rem;
+	height: 50rem;
 	background-color: var(--white);
