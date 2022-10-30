@@ -8,42 +8,44 @@
 <meta charset="UTF-8">
 <title>Insert title here</title>
 <link rel="stylesheet" href="${path}/resources/css/styles.css">
- <script type="text/javascript" src="${path}/resources/js/jquery-3.6.0.min.js"></script>
+<script type="text/javascript" src="${path}/resources/js/jquery-3.6.0.min.js"></script>
 </head>
 <body>
-	<nav class="navigation-container">
-		<ul class="navigation-element">
-			<li class="element">로그인</li>
-			<li class="element">회원가입</li>
-			<li class="element">1:1문의</li>
-			<li class="element">마이페이지</li>
-			<li class="element">장바구니</li>
-		</ul>
-	</nav>
 	<!-- 왼쪽 사이드 퀵메뉴(최근 본 목록) css: quick -->
 	<div class="quickmenu">
 	  <div class="quickmenu-title">
 	  	<div>최근 본 상품</div>
 	  		<div class="quickmenu-contianer">
-	  			<div></div>
-	  		</div>
-	  </div>
+	  				<div class="boookcard-view-box">
+	  					<a class="bookcard-view-a">
+	  						<img class="bookcard-view-img" src="${path}/resources/img/card-img.png">
+	  						<div class="bookcard-cancel"></div>
+		  					<div class="bookcard-view-info">
+		  						<button class="bookcard-view-btn">
+		  							<img src="${path}/resources/img/icon/x_icon_white.png" style="width: 1rem; height: 1.2rem;">
+		  						</button>
+		  						<div class="boook-view-title">이미지를 넣는 법에대해 알아보는 책입니다요</div>
+		  						<div class="boook-view-price">30,000원</div>
+		  					</div>
+ 					   </a>
+ 					</div>
+	  				<div class="boookcard-view-box">
+	  					<a class="bookcard-view-a">
+	  						<img class="bookcard-view-img" src="${path}/resources/img/card-img.png">
+	  						<div class="bookcard-cancel"></div>
+		  					<div class="bookcard-view-info">
+		  						<button class="bookcard-view-btn">
+		  							<img src="${path}/resources/img/icon/x_icon_white.png" style="width: 1rem; height: 1.2rem;">
+		  						</button>
+		  						<div class="boook-view-title">이미지를 넣는 법에대해 알아보는 책입니다요</div>
+		  						<div class="boook-view-price">30,000원</div>
+		  					</div>
+ 					   </a>
+ 					</div>
+  			</div>
+	 	</div>
 	</div>
-		<header class="st-hd">
-				<div class="head-container">
-					<div class="mainlogo-img">
-						<a class="mainlogo">
-							<img src="${path}/resources/img/mainlogo.png" style="width: 20rem;">
-						</a>
-					</div>
-					<div class="full-sear input-container">
-						<div class="sear-place input-layout">
-							<input class="sear input-box" type="text">
-						</div>
-					</div>
-				</div>
-
-		</header>
+<%@ include file="/WEB-INF/views/module/header.jsp" %>
 		<main class="st-ma">
 		<div class="main-container">
 			<!-- 오른쪽 사이드 메뉴 -->
@@ -58,47 +60,45 @@
 				 		<span>전체보기</span>
 				 	</div>
 				 	<div class="menu-item name">
-				 		<span>AAA</span>
+				 		<span>건강,취미 스포츠/잡지,만화</span>
 				 	</div>
 				 	<div class="menu-item name">
-				 		<span>BBB</span>
+				 		<span>여행/요리,가정생활/예술</span>
 				 	</div>
 				 	<div class="menu-item name">
-				 		<span>CCC</span>
+				 		<span>어린이교구,아동</span>
 				 	</div>
 				 	<div class="menu-item name">
-				 		<span>DDD</span>
+				 		<span>초/중/고학습</span>
 				 	</div>
 				 	<div class="menu-item name">
-				 		<span>FFF</span>
+				 		<span>日本書籍</span>
 				 	</div>
 				 	<div class="menu-item name">
-				 		<span>GGG</span>
+				 		<span>Foreign Books/어린이 영어</span>
 				 	</div>
 				 	<div class="menu-item name">
-				 		<span>HHH</span>
+				 		<span>외국어/한국소개도서</span>
 				 	</div>
 				 	<div class="menu-item name">
-				 		<span>III</span>
+				 		<span>경제,경영,자기계발/정치,사회</span>
 				 	</div>
 				 	<div class="menu-item name">
-				 		<span>JJJ</span>
+				 		<span>과학,기술,컴퓨터</span>
 				 	</div>
 				 	<div class="menu-item name">
-				 		<span>KKK</span>
+				 		<span>소설,시,에세이</span>
 				 	</div>
 				 	<div class="menu-item name">
-				 		<span>LLL</span>
-				 	</div>
-				 	<div class="menu-item name">
-				 		<span>MMM</span>
+				 		<span>인문,역사,문화,종교</span>
 				 	</div>
 				 </div>
 			</div>
 			<div class="row-8">
+			 <div class="book-list-container">
 				<div class="chkbox-container">
 					<div class="chbox-container-layout">
-				 		<input class="book-chkbox" id="chkbox-input" type="checkbox">
+				 		<input class="book-chkbox" id="chkbox-input" type="checkbox" onclick="selectAll(this);">
 				   		 <label for="chkbox-input">전체</label>
 				<div>
             		<select class="select-list-box" title="목록 보기 유형 선택" id="selListPer">
@@ -116,6 +116,7 @@
             		</select>
             		</div>
 				 </div>
+			 <div class="main-book-list" id="book-list">
 				 <div class="bookcard-container">
 					<ol>
 						<li class="bookcard-flex">
@@ -131,7 +132,7 @@
 								<div class="">
 									<a>
 										<span>
-											<img class="book-img" src="${path}/resources/img/card-img.png">
+											<img class="bookcard-img" src="${path}/resources/img/card-img.png">
 										</span>
 									</a>
 								</div>
@@ -149,10 +150,12 @@
 										<a>저자 싸움의 신 | 출판사 갓 오브 하이 스쿨 | 출간일 2022.10.22</a>
 									</span>
 								</div>
-								<div>
-									<div></div>
-									<div></div>
-									<div></div>
+								<div class="card-info-price">
+									<div class="card-price">정가: 30,000원</div>
+									<div class="card-sale-price">판매가: 15,000원</div>
+									<div class="sale">50%
+										<div class="down-arrow">➔</div>
+									</div>
 								</div>
 							</div>
 							<!-- 장바구니, 구매하기 버튼 -->
@@ -169,45 +172,190 @@
 								</div>
 							</div>
 						</li>
-
 					</ol>
 				</div>
+				 <div class="bookcard-container">
+					<ol>
+						<li class="bookcard-flex">
+							<!-- 상품 선택 체크박스 -->
+							<div>
+				 				<input class="bookcard-chkbox-card" id="chkbox-input" type="checkbox">
+								<label class="bookcard-chkbox-input" for="chkbox-input">
+									<span>상품선택</span>
+								</label>
+							</div>
+							<!-- 상품 이미지 -->
+							<div>
+								<div class="">
+									<a>
+										<span>
+											<img class="bookcard-img" src="${path}/resources/img/card-img.png">
+										</span>
+									</a>
+								</div>
+							</div>
+							<!-- 상품 정보 -->
+							<div class="card-info-box">
+									<div class="book-view" >
+										<a  href=>
+											<span>싸움을 잘하는 법</span>
+										</a>
+											<span class="book-view-cnt">조회수 : 0</span>
+									</div>
+								<div class="book-info-author">
+									<span>
+										<a>저자 싸움의 신 | 출판사 갓 오브 하이 스쿨 | 출간일 2022.10.22</a>
+									</span>
+								</div>
+								<div class="card-info-price">
+									<div class="card-price">정가: 30,000원</div>
+									<div class="card-sale-price">판매가: 15,000원</div>
+									<div class="sale">50%
+										<div class="down-arrow">➔</div>
+									</div>
+								</div>
+							</div>
+							<!-- 장바구니, 구매하기 버튼 -->
+							<div class="book-basket-buy">
+								<div class="book-buy-layout">
+									<button class="book-buy-btn"  type="button">
+										<span>바로구매</span>
+									</button>
+								</div>
+								<div class="book-basket-layout">
+									<button class="book-basket-btn" type="button">
+										<span>장바구니</span>
+									</button>
+								</div>
+							</div>
+						</li>
+					</ol>
 				</div>
+				 <div class="bookcard-container">
+					<ol>
+						<li class="bookcard-flex">
+							<!-- 상품 선택 체크박스 -->
+							<div>
+				 				<input class="bookcard-chkbox-card" id="chkbox-input" type="checkbox">
+								<label class="bookcard-chkbox-input" for="chkbox-input">
+									<span>상품선택</span>
+								</label>
+							</div>
+							<!-- 상품 이미지 -->
+							<div>
+								<div class="">
+									<a>
+										<span>
+											<img class="bookcard-img" src="${path}/resources/img/card-img.png">
+										</span>
+									</a>
+								</div>
+							</div>
+							<!-- 상품 정보 -->
+							<div class="card-info-box">
+									<div class="book-view" >
+										<a  href=>
+											<span>싸움을 잘하는 법</span>
+										</a>
+											<span class="book-view-cnt">조회수 : 0</span>
+									</div>
+								<div class="book-info-author">
+									<span>
+										<a>저자 싸움의 신 | 출판사 갓 오브 하이 스쿨 | 출간일 2022.10.22</a>
+									</span>
+								</div>
+								<div class="card-info-price">
+									<div class="card-price">정가: 30,000원</div>
+									<div class="card-sale-price">판매가: 15,000원</div>
+									<div class="sale">50%
+										<div class="down-arrow">➔</div>
+									</div>
+								</div>
+							</div>
+							<!-- 장바구니, 구매하기 버튼 -->
+							<div class="book-basket-buy">
+								<div class="book-buy-layout">
+									<button class="book-buy-btn"  type="button">
+										<span>바로구매</span>
+									</button>
+								</div>
+								<div class="book-basket-layout">
+									<button class="book-basket-btn" type="button">
+										<span>장바구니</span>
+									</button>
+								</div>
+							</div>
+						</li>
+					</ol>
+				</div>
+				 <div class="bookcard-container">
+					<ol>
+						<li class="bookcard-flex">
+							<!-- 상품 선택 체크박스 -->
+							<div>
+				 				<input class="bookcard-chkbox-card" id="chkbox-input" type="checkbox">
+								<label class="bookcard-chkbox-input" for="chkbox-input">
+									<span>상품선택</span>
+								</label>
+							</div>
+							<!-- 상품 이미지 -->
+							<div>
+								<div class="">
+									<a>
+										<span>
+											<img class="bookcard-img" src="${path}/resources/img/card-img.png">
+										</span>
+									</a>
+								</div>
+							</div>
+							<!-- 상품 정보 -->
+							<div class="card-info-box">
+									<div class="book-view" >
+										<a  href=>
+											<span>싸움을 잘하는 법</span>
+										</a>
+											<span class="book-view-cnt">조회수 : 0</span>
+									</div>
+								<div class="book-info-author">
+									<span>
+										<a>저자 싸움의 신 | 출판사 갓 오브 하이 스쿨 | 출간일 2022.10.22</a>
+									</span>
+								</div>
+								<div class="card-info-price">
+									<div class="card-price">정가: 30,000원</div>
+									<div class="card-sale-price">판매가: 15,000원</div>
+									<div class="sale">50%
+										<div class="down-arrow">➔</div>
+									</div>
+								</div>
+							</div>
+							<!-- 장바구니, 구매하기 버튼 -->
+							<div class="book-basket-buy">
+								<div class="book-buy-layout">
+									<button class="book-buy-btn"  type="button">
+										<span>바로구매</span>
+									</button>
+								</div>
+								<div class="book-basket-layout">
+									<button class="book-basket-btn" type="button">
+										<span>장바구니</span>
+									</button>
+								</div>
+							</div>
+						</li>
+					</ol>
+				</div>
+			</div>
+		 </div>
+	 </div>
 				<ul id="pagingul">
 				</ul>
 				</div>
 		</main>
-		<footer class="st-ft">
-			<div class="footer-container">
-				<div class="footer-layout">
-					<div class="footer-frame">
-						<div class="footer-menu">
-							<p class="ft-link">회사소개</p>
-							|
-							<p class="ft-link">개인정보취급방침</p>
-							|
-							<p class="ft-link">이용약관</p>
-							|
-							<p class="ft-link">고객센터</p>
-						</div>
-						<div class="footer-info">
-							Copyright(c) 2022 ㈜ 시퀀스엔. All Rights Reserved [사업자정보] 대표전화 : 1544 -2949 | 대표(CEO) : 양종선 | 개인정보 보호책임자 : 양종선 사업자등록번<br>
-							호 : 285-81-00634 | 통신판매업 신고번호 : 제 2017-서울서초-0272호. 서울시 서초구 서초대로 397 부띠크모나코 A동 301호 | Email : help@bookoa.com 
-						</div>
-						<div class="cs-frame">
-							<div class="cs-inner">
-								<div class="cus">고객만족센터</div>
-								<div class="cus-num">1544-2949</div>
-							</div>
-						</div>
-						<div class="cs-info web">
-							<a href="#">상담시간 안내</a>
-						</div>
-					</div>
-				</div>		
-			</div>
-		</footer>
+<%@ include file="/WEB-INF/views/module/footer.jsp" %>
+		
 </body>
+
 
 <!-- 왼쪽 퀵 메뉴(최근 본 상품) 조절 스크립트 -->
 <script type="text/javascript">
@@ -218,6 +366,39 @@ $(document).ready(function(){
 	    $(".quickmenu").stop().animate({"top":position+currentPosition+"px"},500);
 	  });
 	});
-</script>
+$(document).on('mouseover', '.boookcard-view-box', function(e){
+    e.preventDefault();  
+  $('.bookcard-view-info').css('display', 'block');
+})
 
+
+$(document).on('mouseout', '.boookcard-view-box', function(e){
+    e.preventDefault();  
+  $('.bookcard-view-info').css('display', 'none');
+})
+
+<!-- 사이드바 카테고리 선택  -->
+const menuWrap = document.querySelector('.sidemenu-item-container');
+ 
+        function select(divEl,target){
+            Array.from(divEl.children).forEach(
+                v => v.classList.remove('selected')
+            )
+            if(target) target.classList.add('selected');
+        }
+       	 menuWrap.addEventListener('click', e => {
+          	  const selected = e.target;
+            	select(menuWrap, selected);
+        })
+
+<!-- 전체 체크박스 스크립트 -->
+function selectAll(selectAll)  {
+	  const checkboxes 
+	     = document.querySelectorAll('input[type="checkbox"]');
+	  
+	  checkboxes.forEach((checkbox) => {
+	    checkbox.checked = selectAll.checked
+	  })
+	}
+</script>
 </html>
