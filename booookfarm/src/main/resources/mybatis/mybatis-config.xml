@@ -5,5 +5,7 @@
 	<settings>
 		<setting name="jdbcTypeForNull" value="NULL"/>
 	</settings>
-
+	<typeAliases>
+	   <typeAlias type="com.myweb.boookfarm.detail.model.BookDetailDTO" alias="bookDetailDTO"/>
+	</typeAliases>
 </configuration>

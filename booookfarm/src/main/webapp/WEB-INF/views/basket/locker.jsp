@@ -10,6 +10,7 @@
 <meta charset="UTF-8">
 <title>장바구니</title>
 <link rel="stylesheet" href="${path}/resources/css/styles.css">
+<script type="text/javascript" src="${path}/resources/js/jquery-3.6.0.min.js"></script>
 </head>
 <body>
 	<nav class="navigation-container">
@@ -21,6 +22,15 @@
 			<li class="element">장바구니</li>
 		</ul>
 	</nav>
+	<!-- 왼쪽 사이드 퀵메뉴(최근 본 목록) css: quick -->
+	<div class="quickmenu">
+	  <div class="quickmenu-title">
+	  	<div>최근 본 상품</div>
+	  		<div class="quickmenu-contianer">
+	  			<div></div>
+	  		</div>
+	  </div>
+	</div>
 		<header class="st-hd">
 				<div class="head-container">
 					<div class="mainlogo-img">
@@ -43,17 +53,17 @@
 						<div class="basket-name">보관함</div>
 					</div>
 					<div class="basket-icon">
-						<div class="bas-icon">
+						<div class="bas-icon to-bas-icon">
 							<img src="${path}/resources/img/icon/basketicon-grey.svg">
 						</div>
-						<div class="bas-name">장바구니</div>
+						<div class="bas-name to-bas-icon">장바구니</div>
 						<div class="bas-doticon">
 							<img src="${path}/resources/img/icon/18-px-grey-5-dot.png">
 						</div>
-						<div class="bas-icon">
+						<div class="bas-icon to-locker-icon">
 							<img src="${path}/resources/img/icon/basketicon.svg">
 						</div>
-						<div class="bas-name">보관함</div>
+						<div class="bas-name to-locker-icon">보관함</div>
 					</div>
 				</div>
 				<div class="basket-list-container">
@@ -67,7 +77,7 @@
 									<table class="sort-test">
 										<thead>
 											<tr class="element-name-table">
-												<th class="total-checkbox"><input class="total-checkbox" type="checkbox"></th>
+												<th class="total-checkbox"><input name="bookCheck" class="total-checkbox" type="checkbox"  onclick="selectAll(this)"></th>
 												<th class="list-element-select">전체</th>
 												<th class="list-element-info">상품정보</th>
 												<th class="list-element-price">판매가</th>
@@ -79,7 +89,7 @@
 										</thead>
 										<tbody class="table-body">
 											<tr class="element-table">
-												<td class="checkbox"><input class="checkbox" type="checkbox"></td>
+												<td class="checkbox"><input name="bookCheck" class="checkbox" type="checkbox"></td>
 												<td class="accurate-select"></td>
 												<td class="accurate-info">
 													<div class="accurate-info-layout">
@@ -158,7 +168,7 @@
 												</td>
 											</tr>
 											<tr class="element-table">
-												<td class="checkbox"><input class="checkbox" type="checkbox"></td>
+												<td class="checkbox"><input name="bookCheck" class="checkbox" type="checkbox"></td>
 												<td class="accurate-select"></td>
 												<td class="accurate-info">
 													<div class="accurate-info-layout">
@@ -284,4 +294,24 @@
 			</div>
 		</footer>
 </body>
+<script type="text/javascript">
+$(document).ready(function(){
+  var currentPosition = parseInt($(".quickmenu").css("top"));
+  $(window).scroll(function() {
+    var position = $(window).scrollTop();
+    $(".quickmenu").stop().animate({"top":position+currentPosition+"px"},500);
+  });
+}); 
+
+$('.to-bas-icon').on('click', function(){
+	location.href="/boookfarm/basket";
+})
+
+function selectAll(selectAll) {
+	const checkboxes = document.getElementsByName('bookCheck');
+	checkboxes.forEach((checkbox) => {
+		checkbox.checked = selectAll.checked;
+	})
+}
+</script>
 </html>	

@@ -10,6 +10,7 @@
 <meta charset="UTF-8">
 <title>주문서작성/결제</title>
 <link rel="stylesheet" href="${path}/resources/css/styles.css">
+<script type="text/javascript" src="${path}/resources/js/jquery-3.6.0.min.js"></script>
 </head>
 <body>
 	<nav class="navigation-container">
@@ -21,6 +22,15 @@
 			<li class="element">장바구니</li>
 		</ul>
 	</nav>
+	<!-- 왼쪽 사이드 퀵메뉴(최근 본 목록) css: quick -->
+	<div class="quickmenu">
+	  <div class="quickmenu-title">
+	  	<div>최근 본 상품</div>
+	  		<div class="quickmenu-contianer">
+	  			<div></div>
+	  		</div>
+	  </div>
+	</div>
 		<header class="st-hd">
 				<div class="head-container">
 					<div class="mainlogo-img">
@@ -43,24 +53,24 @@
 						<div class="basket-name">주문서작성 / 결제</div>
 					</div>
 					<div class="basket-icon">
-						<div class="bas-icon">
+						<div class="bas-icon non-pointer">
 							<img src="${path}/resources/img/icon/basketicon-grey.svg">
 						</div>
-						<div class="bas-name">장바구니</div>
+						<div class="bas-name non-pointer">장바구니</div>
 						<div class="bas-doticon">
 							<img src="${path}/resources/img/icon/18-px-grey-5-dot.png">
 						</div>
-						<div class="bas-icon">
+						<div class="bas-icon non-pointer">
 							<img src="${path}/resources/img/icon/48-px-payment-active.svg">
 						</div>
-						<div class="bas-name">주문서작성/결제</div>
+						<div class="bas-name non-pointer">주문서작성/결제</div>
 						<div class="bas-doticon">
 							<img src="${path}/resources/img/icon/18-px-grey-5-dot.png">
 						</div>
-						<div class="bas-icon">
+						<div class="bas-icon non-pointer">
 							<img src="${path}/resources/img/icon/48-px-complete-normal.svg">
 						</div>
-						<div class="bas-name">주문완료</div>
+						<div class="bas-name non-pointer">주문완료</div>
 					</div>
 				</div>
 				<div class="basket-list-container">
@@ -207,8 +217,8 @@
 									</table>	
 								</div>
 							</div>
-							<div class="basket-order-container">
-								<div class="basket-order-layout">
+							<div id="test1" class="basket-order-container">
+								<div id="test2" class="basket-order-layout">
 									<div class="box-title">
 										주문 금액
 									</div>
@@ -270,19 +280,19 @@
 							<div class="payment-input-container">
 								<div class="order-info-title">주문하신 분</div>
 								<div class="input-area">
-									<input class="input-order-info" type="text">
+									<input class="input-order-info static-info" type="text" value="이도엽" disabled="disabled">
 								</div>
 							</div>
 							<div class="payment-input-container">
 								<div class="order-info-title">연락처</div>
 								<div class="input-area">
-									<input class="input-order-info" type="text">
+									<input class="input-order-info static-info" type="text" value="010-1234-1234" disabled="disabled">
 								</div>
 							</div>
 							<div class="payment-input-container">
 								<div class="order-info-title">이메일</div>
 								<div class="input-area">
-									<input class="input-order-info" type="text">
+									<input class="input-order-info static-info" type="text" value="dohyoup@naver.com" disabled="disabled">
 								</div>
 							</div>		
 						</div>
@@ -293,47 +303,53 @@
 							<div class="payment-input-container">
 								<div class="order-info-title">배송지</div>
 								<div class="input-area">
-									<button class="address-toggle1" type="button">기본주소</button>
-									<button class="address-toggle2" type="button">새로운주소</button>
+									<button class="address-toggle1 on" type="button" >기본주소</button>
+									<button class="address-toggle2 off" type="button" >새로운주소</button>
 								</div>
 							</div>
 							<div class="payment-input-container">
 								<div class="order-info-title">받으시는 분</div>
 								<div class="input-area">
-									<input class="input-order-info" type="text">
+									<input class="input-order-info info-border origin-info" type="text" value="이도엽" disabled="disabled">
+									<input class="input-order-info info-border hidden-info" type="hidden" value="홍길동">
 								</div>
 							</div>
 							<div class="payment-input-container">
 								<div class="order-info-title">연락처</div>
 								<div class="input-area">
-									<input class="input-order-info" type="text">
+									<input class="input-order-info info-border origin-info" type="text" value="010-1234-1234" disabled="disabled">
+									<input class="input-order-info info-border hidden-info" type="hidden" value="010-0000-0000">
 								</div>
 							</div>
 							<div class="payment-input-container">
 								<div class="order-info-title">이메일</div>
 								<div class="input-area">
-									<input class="input-order-info" type="text">
+									<input class="input-order-info info-border origin-info" type="text" value="dohyoup@naver.com" disabled="disabled">
+									<input class="input-order-info info-border hidden-info" type="hidden" value="honggildong@naver.com">
 								</div>
 							</div>
 							<div class="payment-input-container">
 								<div class="order-info-title">주소</div>
 								<div class="input-area">
-									<input class="input-order-info-address" type="text">
+									<input class="input-order-info-address info-border origin-info" type="text" value="15010" disabled="disabled">
+									<input class="input-order-info-address info-border hidden-info" type="hidden" value="우편번호">
 								</div>
-								<div>
+								<div class="address-button-frame">
 									<button class="address-btn" type="button">우편번호 검색</button>
 								</div>
 							</div>
 							<div class="payment-input-container">
 								<div class="order-info-title"></div>
 								<div class="input-area">
-									<input class="input-order-info" type="text">
+									<input class="input-order-info info-border origin-info" type="text" value="서울 강북구 오현로 9길" disabled="disabled">
+									<input class="input-order-info info-border hidden-info" type="hidden" value="기본 주소">
 								</div>
 							</div>	
 							<div class="payment-input-container">
 								<div class="order-info-title"></div>
 								<div class="input-area">
-									<input class="input-order-info" type="text">
+									<input class="input-order-info info-border origin-info" type="text" value="동성38동 202호" disabled="disabled">
+									<input class="input-order-info info-border new-address hidden-info" type="hidden" value="상세 주소">
 								</div>
 							</div>
 						</div>
@@ -344,7 +360,7 @@
 							<div class="payment-input-container">
 								<div class="order-info-title">E-Money 사용</div>
 								<div class="input-area">
-									<input class="input-order-info-emoney" type="text"  value="0">
+									<input class="input-order-info-emoney info-border" type="text"  value="0">
 								</div>
 								<div class="order-info-title-half">
 									<div class="possess-emoney">보유 E-Money 원</div>
@@ -356,7 +372,7 @@
 							<div class="payment-input-container">
 								<div class="order-info-title">B-Money 사용</div>
 								<div class="input-area">
-									<input class="input-order-info-emoney" type="text" value="0">
+									<input class="input-order-info-emoney info-border" type="text" value="0">
 								</div>
 								<div class="order-info-title-half">
 									<div class="possess-bmoney">보유 B-Money 0P</div>
@@ -368,25 +384,29 @@
 							<div class="payment-input-container">
 								<div class="order-info-title">결제수단</div>
 								<div class="input-area">
-									<button class="payment-toggle1" type="button">무통장입금</button>
-									<button class="payment-toggle2" type="button">신용카드</button>
+									<button class="payment-toggle1 p_on" type="button">무통장입금</button>
+									<button class="payment-toggle2 p_off" type="button">신용카드</button>
 								</div>
 							</div>
-							<div class="payment-input-container ">
+							<div class="payment-input-container pay_on">
 								<div class="order-info-title"></div>
 								<div class="input-area">
 									<div class="depositor">입금자명</div>
-									<input class="depositor-name" type="text" placeholder="입금자명을 입력해주세요.">
+									<input class="depositor-name info-border" type="text" placeholder="입금자명을 입력해주세요.">
 								</div>
 							</div>
-							<div class="payment-input-container">
+							<div class="payment-input-container pay_on">
 								<div class="order-info-title"></div>
 								<div class="input-area">
 									<div class="deposit-bank">입금은행</div>
 									<select class="deposit-bank-name">
 										<option class="deposit-bank-element"></option>
+										<option class="deposit-bank-element">기업은행</option>
 										<option class="deposit-bank-element">국민은행</option>
 										<option class="deposit-bank-element">하나은행</option>
+										<option class="deposit-bank-element">농협은행</option>
+										<option class="deposit-bank-element">우리은행</option>
+										<option class="deposit-bank-element">신한은행</option>
 									</select>
 								</div>
 							</div>
@@ -427,4 +447,114 @@
 			</div>
 		</footer>
 </body>
+<script type="text/javascript">
+<!--최근 본 상품 -->
+$(document).ready(function(){
+	  var currentPosition = parseInt($(".quickmenu").css("top"));
+	  $(window).scroll(function() {
+	    var position = $(window).scrollTop();
+	    $(".quickmenu").stop().animate({"top":position+currentPosition+"px"},500);
+	  });
+}); 
+<!--결제 박스 -->
+$(document).ready(function(){
+      let orderBox = parseInt($("#test2").css("top"));
+      $(window).scroll(function() {
+	    let orderPosition = $(window).scrollTop();
+	    $("#test2").stop().animate({"top":orderPosition+orderBox-150+"px"},1000);
+      });
+});
+<!--주소 버튼-->	
+$(document).ready(function(){	
+	$('.address-toggle2').click(function(){
+		let o_hidden = document.querySelectorAll(".origin-info");
+		for(let i = 0; i < o_hidden.length; i++) {
+			let item = o_hidden.item(i);
+			item.setAttribute("type", "hidden");
+		}
+	});
+});
+
+$(document).ready(function(){
+	$('.address-toggle2').click(function(){
+		let of_hidden = document.querySelectorAll(".hidden-info");
+		for(let j = 0; j < of_hidden.length; j++) {
+			let items = of_hidden.item(j);
+			items.setAttribute("type", "text");
+		}
+	});
+});
+
+$(document).ready(function(){	
+	$('.address-toggle1').click(function(){
+		let o_hidden = document.querySelectorAll(".origin-info");
+		for(let i = 0; i < o_hidden.length; i++) {
+			let item = o_hidden.item(i);
+			item.setAttribute("type", "text");
+		}
+	});
+});
+
+$(document).ready(function(){
+	$('.address-toggle1').click(function(){
+		let of_hidden = document.querySelectorAll(".hidden-info");
+		for(let j = 0; j < of_hidden.length; j++) {
+			let items = of_hidden.item(j);
+			items.setAttribute("type", "hidden");
+		}
+	});
+});
+<!--결제방식 버튼-->
+$(document).ready(function(){
+	$('.payment-toggle1').click(function(){
+		let of_hidden = document.querySelector(".payment-input-container");
+		of_hidden.setAttribute("type", "");
+	});
+});
+
+$(document).ready(function(){
+	$('.payment-toggle2').click(function(){
+		let o_hidden = document.querySelector(".payment-input-container");
+		o_hidden.setAttribute("type", "hidden");
+	});
+});
+
+<!--버튼 on off -->
+$('.address-toggle2').on('click', function(){
+	$('.address-toggle2').removeClass('off');
+	$('.address-toggle2').addClass('on');
+	$('.address-toggle1').removeClass('on');
+	$('.address-toggle1').addClass('off');
+});
+
+$('.address-toggle1').on('click', function(){
+	$('.address-toggle1').addClass('on');
+	$('.address-toggle2').removeClass('on');
+	$('.address-toggle1').removeClass('off');
+	$('.address-toggle2').addClass('off');
+});
+
+$('.payment-toggle2').on('click', function(){
+	$('.payment-toggle2').removeClass('p_off');
+	$('.payment-toggle2').addClass('p_on');
+	$('.payment-toggle1').removeClass('p_on');
+	$('.payment-toggle1').addClass('p_off');
+});
+
+$('.payment-toggle1').on('click', function(){
+	$('.payment-toggle1').addClass('p_on');
+	$('.payment-toggle2').removeClass('p_on');
+	$('.payment-toggle1').removeClass('p_off');
+	$('.payment-toggle2').addClass('p_off');
+});
+
+<!--결제수단별 디스플레이 on off -->
+$('.p_off').on('click', function(){
+	$('.pay_on').addClass('pay_off');
+});
+
+$('.p_on').on('click', function(){
+	$('.pay_on').removeClass('pay_off');
+})
+</script>
 </html>

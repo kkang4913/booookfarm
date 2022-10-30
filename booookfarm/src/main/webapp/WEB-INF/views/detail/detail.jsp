@@ -10,6 +10,7 @@
 <meta charset="UTF-8">
 <title>책 정보 페이지</title>
 <link rel="stylesheet" href="${path}/resources/css/styles.css">
+<script type="text/javascript" src="${path}/resources/js/jquery-3.6.0.min.js"></script>
 </head>
 <body>
 	<nav class="navigation-container">
@@ -21,6 +22,15 @@
 			<li class="element">장바구니</li>
 		</ul>
 	</nav>
+	<!-- 왼쪽 사이드 퀵메뉴(최근 본 목록) css: quick -->
+	<div class="quickmenu">
+	  <div class="quickmenu-title">
+	  	<div>최근 본 상품</div>
+	  		<div class="quickmenu-contianer">
+	  			<div></div>
+	  		</div>
+	  </div>
+	</div>
 		<header class="st-hd">
 			<div class="head-container">
 				<div class="mainlogo-img">
@@ -39,12 +49,14 @@
 			<div class="main-container">
 			<div class="book-info-container">
 				<div class="book--info">
-					<div class="main--info">
+					<div id="m_info" class="main--info">
+						<input id="book_code" name="bookCode" type="hidden" value="${book__code}">
+					<!--
 						<div class="book--condition">
 						최상급
 						</div>
 						<div class="book--name">
-						나오미와 가나코
+						 나오미와 가나코
 						</div>
 						<div class="book--detail-info">
 							<span>저자 오쿠다 히데오</span>
@@ -57,9 +69,11 @@
 							&nbsp;
 							<span>상품등록일 2022.10.20</span>
 						</div>
+					-->	
 					</div>
 					<div class="book-detail-layout">
-						<div class="book-detail-card">
+						<div id="c_info" class="book-detail-card">
+						<!--
 							<div class="book-img">
 								<img class="book--img" src="${path}/resources/img/naomi.png">
 							</div>
@@ -118,6 +132,7 @@
 									</div>
 								</div>
 							</div>
+							-->
 						</div>
 					</div>
 				</div>
@@ -323,4 +338,111 @@
 			</div>
 		</footer>
 </body>
+<!-- 왼쪽 퀵 메뉴(최근 본 상품) 조절 스크립트 -->
+<script type="text/javascript">
+function get_detail_page() {
+	$.ajax({
+		url: "./detail/"+ $('#book_code').val(),
+		type: "GET",
+		dataType: "json",
+		success: function(res) {
+			let _html = '';
+			for (var i=0 ; i < res.datas.length; i++) {
+				_html += '<div class="book--condition">'+res.datas[i].bookCondition+'</div>';
+				_html += '<div class="book--name">'+res.datas[i].bookTitle+'</div>';
+				_html += '<div class="book--detail-info">';
+				_html += '<span>저자 '+res.datas[i].bookAuthor+'</span>&nbsp;|&nbsp;';
+				_html += '<span>출판사 '+res.datas[i].publisher+'</span>&nbsp;|&nbsp;';
+				_html += '<span>상품등록일 '+res.datas[i].createDate+'</span>';
+				_html += '</div>';
+			}	
+			$('#m_info').html(_html);
+			
+			let _html2 = '';
+			for (var i=0 ; i < res.datas.length; i++) {
+				_html2 += '<div class="book-img">';
+				_html2 += '<img class="book--img" src="${path}/resources/img/naomi.png">';
+				_html2 += '</div>';
+				_html2 += '<div class="detail-card-info">';
+				_html2 += '<div class="row-info">';
+				_html2 += '<div class="row-title">카테고리</div>';
+				_html2 += '<div class="basic-data">';
+				_html2 += '<div class="cate-info">';
+				_html2 += ''+res.datas[i].bookCategory+'';
+				_html2 += '</div>';
+				_html2 += '</div>';
+				_html2 += '</div>';
+				_html2 += '<div class="row-info">';
+				_html2 += '<div class="row-title">ISBN</div>';
+				_html2 += '<div class="basic-data">';
+				_html2 += '<div class="isbn-info">';
+				_html2 += ''+res.datas[i].isbn+'';
+				_html2 += '</div>';
+				_html2 += '</div>';
+				_html2 += '</div>';
+				_html2 += '<div class="row-info">';
+				_html2 += '<div class="row-title">판매가</div>';
+				_html2 += '<div class="basic-data">';
+				_html2 += '<div class="price-info">';
+				_html2 += '3,000원';
+				_html2 += '</div>';
+				_html2 += '<div class="sale-percent">';
+				_html2 += ''+res.datas[i].bookDiscount+'%';
+				_html2 += '</div>';
+				_html2 += '<div class="common-direction">';
+				_html2 += 'down';
+				_html2 += '</div>';
+				_html2 += '</div>';
+				_html2 += '</div>';
+				_html2 += '<div class="row-info">';
+				_html2 += '<div class="row-title">정가</div>';
+				_html2 += '<div class="basic-data">';
+				_html2 += '<div class="origin-price">';
+				_html2 += ''+res.datas[i].bookPrice+'원';
+				_html2 += '</div>';
+				_html2 += '</div>';
+				_html2 += '</div>';
+				_html2 += '<div class="row-info">';
+				_html2 += '<div class="row-title">배송비</div>';
+				_html2 += '<div class="basic-data">';
+				_html2 += '<div class="delivery-fee">';
+				_html2 += '3000원';
+				_html2 += '</div>';
+				_html2 += '</div>';
+				_html2 += '</div>';
+				_html2 += '<div class="row-info">';
+				_html2 += '<div class="basic-data">';
+				_html2 += '<div class="delivery-info">';
+				_html2 += '판매자 상품 30,000원이상 구매시 무료배송';
+				_html2 += '</div>';
+				_html2 += '</div>';
+				_html2 += '</div>';
+			}
+			$('#c_info').html(_html2);
+		}
+	});
+}
+
+$('.basket-btn').on('click', function() {
+	location.href="/boookfarm/basket";
+});
+
+$('.purchase-btn').on('click', function(){
+	location.href="/boookfarm/payment"
+});
+
+$(document).ready(function(){
+  var currentPosition = parseInt($(".quickmenu").css("top"));
+  $(window).scroll(function() {
+    var position = $(window).scrollTop();
+    $(".quickmenu").stop().animate({"top":position+currentPosition+"px"},500);
+  });
+});
+
+
+
+$(document).ready(function() {
+	get_detail_page();
+});
+</script>
 </html>

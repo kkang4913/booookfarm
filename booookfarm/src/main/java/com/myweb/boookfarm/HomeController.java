@@ -27,28 +27,4 @@ public class HomeController {
 		return "standard/standard";
 	}
 	
-	@RequestMapping(value = "/detail", method = RequestMethod.GET)
-	public String detail(Locale locale, Model model) {
-	
-		return "detail/detail";
-	}
-	
-	@RequestMapping(value = "/basket", method = RequestMethod.GET)
-	public String basket(Locale locale, Model model) {
-	
-		return "basket/basket";
-	}
-	
-	@RequestMapping(value = "/payment", method = RequestMethod.GET)
-	public String payment(Locale locale, Model model) {
-	
-		return "basket/payment";
-	}
-	
-	@RequestMapping(value = "/locker", method = RequestMethod.GET)
-	public String locker(Locale locale, Model model) {
-	
-		return "basket/locker";
-	}
-	
 }

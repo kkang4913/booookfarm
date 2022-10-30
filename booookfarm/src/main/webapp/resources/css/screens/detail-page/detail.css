@@ -277,3 +277,15 @@
 .book-fix{
 	padding: 0 6rem 0 0; 
 }
+
+.left>button:hover{
+	cursor: pointer;
+	background-color: #202020;
+	border-color: #202020;
+}
+
+.right>button:hover{
+	cursor: pointer;
+	background-color: #1854A9;
+	border-color: #1854A9;
+}
