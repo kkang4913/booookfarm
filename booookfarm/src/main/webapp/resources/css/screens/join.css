@@ -109,6 +109,8 @@
 .join-err-line {
     width: 100%;
     margin: 1rem 0 0 25rem;
+    display: flex;
+    flex-direction: column;
 }
 
 .join-err-msg {

@@ -1,8 +1,7 @@
 /**
  *  로그인 페이지 스크립트
  */
-
-let colorTemp;
+let flag = false;
 
 /** 패스워드 입력 내용 보기 기능 */
 $('#showPw').on("click", () => {
@@ -23,10 +22,13 @@ $('#hidePw').on("click", () => {
  *  @todo 빠르게 hover, unhover시  오류 있음 로직 수정 필요
  */
 $('.login-input-box').hover( e => {
-    colorTemp =  $(e.target).css('border-color');
     $(e.target).css('border-color', 'var(--blue)');
 }, e=> {
-    $(e.target).css('border-color', colorTemp);
+    if(flag) {
+        $(e.target).parent().css('border-color', 'var(--red)');
+    } else {
+        $(e.target).css('border-color', '#bebebe');
+    }
 });
 
 /** id, pw 입력 창 focus 시 테두리 강조 기능 */
@@ -39,8 +41,10 @@ $('.login-form__input').on('focusout', e => {
     if(  $(e.target).val() == "" || $(e.target).val() == null ) { // 입력 내용이 없을 경우 테두리 강조 및 메시지 표시
         $(e.target).parent().css('border-color', 'var(--red)');
         $(e.target).parent().next('div').children('span').removeClass('hidden');
+        flag = true;
     } else { // 입력 내용 있을 경우 기본
         $(e.target).parent().css('border-color', '#bebebe');
+        flag = false;
     }
 });
 
@@ -49,8 +53,10 @@ $('.login-form__input').on('change keydown keyup paste', e => {
     if(  $(e.target).val() == "" || $(e.target).val() == null ) { // 입력 내용이 없을 경우 테두리 강조 및 메시지 표시
         $(e.target).parent().css('border-color', 'var(--red)');
         $(e.target).parent().next('div').children('span').removeClass('hidden');
+        flag = true;
     } else { // 입력 내용이 있을 경우 기본
         $(e.target).parent().css('border-color', 'var(--blue)');
         $(e.target).parent().next('div').children('span').addClass('hidden');
+        flag = false;
     }
 });
