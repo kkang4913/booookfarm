@@ -55,13 +55,13 @@
           </div>
           <div class="join-input-box">
             <div class="join-form__input">
-              <input type="text" placeholder="이름을 입력해주세요.">
+              <input type="text" placeholder="이름을 입력해주세요." name="name">
             </div>
           </div>
         </div>
         <div class="join-err-line hidden">
           <span class="join-err-msg null-err hidden">이름을 입력해주세요.</span>
-          <span class="join-err-msg hidden">이름이 너무 깁니다. 관리자에게 문의해주세요.</span>
+          <span class="join-err-msg len-err hidden">이름이 너무 깁니다. 관리자에게 문의해주세요.</span>
         </div>
         <div class="join-form-line">
           <div class="join-label-box">
@@ -70,14 +70,14 @@
           </div>
           <div class="join-input-box">
             <div class="join-form__input">
-              <input type="text" placeholder="아이디를 입력해주세요.">
+              <input type="text" placeholder="아이디를 입력해주세요." name="id">
             </div>
             <button class="btn--rec btn--gray btn--w120h50 join-form__btn">중복확인</button>
           </div>
         </div>
         <div class="join-err-line hidden">
           <span class="join-err-msg null-err hidden">아이디를 입력해주세요.</span>
-          <span class="join-err-msg hidden">아이디는 5~15자의 영문 소문자와 숫자만 사용가능합니다.</span>
+          <span class="join-err-msg len-err hidden">아이디는 5~15자의 영문자와 숫자만 사용가능합니다.</span>
         </div>
         <div class="join-form-line">
           <div class="join-label-box">
@@ -86,7 +86,7 @@
           </div>
           <div class="join-input-box">
             <div class="join-form__input">
-              <input type="password" placeholder="비밀번호를 입력해주세요.">
+              <input type="password" placeholder="비밀번호를 입력해주세요." name="pw">
               <i id="showPw" class="fa-solid fa-eye"></i>
               <i id="hidePw" class="fa-solid fa-eye-slash hidden"></i>
             </div>
@@ -94,7 +94,7 @@
         </div>
         <div class="join-err-line hidden">
           <span class="join-err-msg null-err hidden">비밀번호를 입력해주세요.</span>
-          <span class="join-err-msg hidden">비밀번호는 8~15자의 영문 대/소문자, 숫자, 특수문자를 모두 사용해야합니다.</span>
+          <span class="join-err-msg len-err hidden">비밀번호는 8~15자의 영문자, 숫자, 특수문자를 모두 사용해야합니다.</span>
         </div>
         <div class="join-form-line">
           <div class="join-label-box">
@@ -103,14 +103,14 @@
           </div>
           <div class="join-input-box">
             <div class="join-form__input">
-              <input type="password" placeholder="동일한 비밀번호를 입력해주세요.">
+              <input type="password" placeholder="동일한 비밀번호를 입력해주세요." name="chkPw">
               <i id="showChkPw" class="fa-solid fa-eye"></i>
               <i id="hideChkPw" class="fa-solid fa-eye-slash hidden"></i>
             </div>
           </div>
         </div>
         <div class="join-err-line hidden">
-          <span class="join-err-msg not-match-err">비밀번호가 일치하지 않습니다.</span>
+          <span class="join-err-msg not-match-err hidden">비밀번호가 일치하지 않습니다.</span>
         </div>
         <div class="join-form-line">
           <div class="join-label-box">
@@ -119,7 +119,7 @@
           </div>
           <div class="join-input-box">
             <div class="join-form__input">
-              <input type="text" placeholder="-없이 숫자만 입력해주세요.">
+              <input type="text" placeholder="-없이 숫자만 입력해주세요." name="phone">
             </div>
             <button class="btn--rec btn--gray btn--w120h50 join-form__btn">인증번호 요청</button>
           </div>
@@ -145,7 +145,7 @@
           </div>
           <div class="join-input-box">
             <div class="join-form__input">
-              <input type="text" placeholder="이메일을 입력해주세요.">
+              <input type="text" placeholder="이메일을 입력해주세요." name="email">
             </div>
           </div>
         </div>
@@ -158,8 +158,8 @@
             <label>성별</label>
           </div>
           <div class="join-input-box">
-            <input class="join-form_gender" type="radio" value="M"><span>남</span>
-            <input class="join-form_gender" type="radio" value="W"><span>여</span>
+            <input class="join-form_gender" type="radio" value="M" name="gender"><span>남</span>
+            <input class="join-form_gender" type="radio" value="W" name="gender"><span>여</span>
           </div>
         </div>
         <div class="join-form-line">
@@ -169,7 +169,7 @@
           </div>
           <div class="join-input-box">
             <div class="join-form__input">
-              <input type="text" placeholder="우편번호" readonly>
+              <input type="text" placeholder="우편번호" name="postalCode"readonly>
             </div>
             <button class="btn--rec btn--gray btn--w120h50 join-form__btn">우편번호 검색</button>
           </div>
@@ -179,7 +179,7 @@
           </div>
           <div class="join-input-box">
             <div class="join-form__input">
-              <input type="text" placeholder="기본 주소" readonly>
+              <input type="text" placeholder="기본 주소" name="address" readonly>
             </div>
           </div>
         </div>
@@ -190,7 +190,7 @@
           </div>
           <div class="join-input-box">
             <div class="join-form__input">
-              <input type="text" placeholder="상세 주소">
+              <input type="text" placeholder="상세 주소" name="detailAddress">
             </div>
           </div>
         </div>
