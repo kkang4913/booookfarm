@@ -72,7 +72,7 @@
             <div class="join-form__input">
               <input type="text" placeholder="아이디를 입력해주세요." name="id">
             </div>
-            <button class="btn--rec btn--gray btn--w120h50 join-form__btn">중복확인</button>
+            <button class="btn--rec btn--gray btn--w120h50 join-form__btn" type="button">중복확인</button>
           </div>
         </div>
         <div class="join-err-line hidden">
@@ -119,9 +119,9 @@
           </div>
           <div class="join-input-box">
             <div class="join-form__input">
-              <input type="text" placeholder="-없이 숫자만 입력해주세요." name="phone">
+              <input type="text" maxlength="13" oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1');" placeholder="-없이 숫자만 입력해주세요." name="phone">
             </div>
-            <button class="btn--rec btn--gray btn--w120h50 join-form__btn">인증번호 요청</button>
+            <button class="btn--rec btn--gray btn--w120h50 join-form__btn" type="button" onclick="sendSMS();">인증번호 요청</button>
           </div>
         </div>
         <div class="join-err-line hidden">
@@ -132,10 +132,10 @@
           </div>
           <div class="join-input-box">
             <div class="join-form__input">
-              <input type="text" placeholder="인증번호 5자리">
+              <input type="text" placeholder="인증번호 5자리" name="chkPhone">
               <span>5:00</span>
             </div>
-            <button class="btn--rec btn--gray btn--w120h50 join-form__btn">인증번호 확인</button>
+            <button class="btn--rec btn--gray btn--w120h50 join-form__btn" type="button" onclick="chkCNum();">인증번호 확인</button>
           </div>
         </div>
         <div class="join-form-line">
@@ -151,7 +151,7 @@
         </div>
         <div class="join-err-line hidden">
           <span class="join-err-msg null-err hidden">이메일을 입력해주세요.</span>
-          <span class="join-err-msg hidden">이메일 형식으로 입력해주세요.</span>
+          <span class="join-err-msg not-match-err hidden">이메일 형식으로 입력해주세요.</span>
         </div>
         <div class="join-form-line">
           <div class="join-label-box">
@@ -171,7 +171,7 @@
             <div class="join-form__input">
               <input type="text" placeholder="우편번호" name="postalCode"readonly>
             </div>
-            <button class="btn--rec btn--gray btn--w120h50 join-form__btn">우편번호 검색</button>
+            <button class="btn--rec btn--gray btn--w120h50 join-form__btn" type="button">우편번호 검색</button>
           </div>
         </div>
         <div class="join-form-line">
@@ -217,7 +217,7 @@
           </div>
           <div class="join-input-box">
             <div class="join-form__input">
-              <input type="text" placeholder="환불계좌">
+              <input type="text" placeholder="환불계좌" name="refundAccount">
             </div>
           </div>
         </div>

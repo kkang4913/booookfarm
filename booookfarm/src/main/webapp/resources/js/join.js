@@ -2,6 +2,7 @@
  *  회원가입 페이지 스크립트
  *  @todo 입력창 별 err메세지 출력 기능 추가
  */
+let certificationNumber = "";
 
 /** 패스워드 입력 내용 보기 기능 */
 $('#showPw').on("click", () => {
@@ -83,6 +84,21 @@ $('.join-form__input>input').on('focusout', e => {
     if($(e.target).attr('name') == 'chkPw') {
         chkChkPw($(e.target), e.type);
     }
+    if($(e.target).attr('name') == 'phone') {
+        chkPhone($(e.target), e.type);
+    }
+    if($(e.target).attr('name') == 'email') {
+        chkEmail($(e.target), e.type);
+    }
+    if($(e.target).attr('name') == 'detailAddress') {
+        chkDetailAddress($(e.target), e.type);
+    }
+    if($(e.target).attr('name') == 'refundAccount') {
+        chkRefundAccount($(e.target), e.type);
+    }
+    if($(e.target).attr('name') == 'chkCNum') {
+        chkChkPhone($(e.target), e.type);
+    }
 });
 
 /** 입력 창 입력시 조건에 따라 입력 내용 체크 기능 */
@@ -98,6 +114,21 @@ $('.join-form__input>input').on('change keydown keyup paste', e => {
     }
     if($(e.target).attr('name') == 'chkPw') {
         chkChkPw($(e.target), e.type);
+    }
+    if($(e.target).attr('name') == 'phone') {
+        chkPhone($(e.target), e.type);
+    }
+    if($(e.target).attr('name') == 'email') {
+        chkEmail($(e.target), e.type);
+    }
+    if($(e.target).attr('name') == 'detailAddress') {
+        chkDetailAddress($(e.target), e.type);
+    }
+    if($(e.target).attr('name') == 'refundAccount') {
+        chkRefundAccount($(e.target), e.type);
+    }
+    if($(e.target).attr('name') == 'chkCNum') {
+        chkChkPhone($(e.target), e.type);
     }
 });
 
@@ -181,17 +212,103 @@ function chkPw(element, type) {
     }
 }
 
+/**
+ *  패스워드 확인 입력 내용 체크 함수
+ * @param element input 값
+ * @param type 이벤트 종류
+ */
 function chkChkPw(element, type) {
     let pwChk = element.val();
     let pw = $('.join-form__input>input[name=pw]').val();
-    console.log(pwChk);
-    console.log(pw);
-    if(pw !== pwChk) {
+    if(pw !== pwChk) {  // 패스워드와 일치 여부 체크
         showErrMsg(element, '.not-match-err');
     } else {
         hideErrMsg(element, '.not-match-err', type);
     }
 
+}
+
+/**
+ *  핸드폰 내용 체크 함수
+ * @param element input 값
+ * @param type 이벤트 종류
+ */
+function chkPhone(element, type) {
+    let phone = element.val();
+
+    if(phone == '' || phone == null) {      // 입력 내용 유무 체크
+        showErrMsg(element, '.null-err');
+    } else {
+        hideErrMsg(element, '.null-err', type);
+    }
+}
+
+/**
+ *  인증번호 내용 체크 함수
+ * @param element input 값
+ * @param type 이벤트 종류
+ */
+function chkChkPhone(element, type) {
+    let chkPhone = element.val();
+
+    if(chkCNum == '' || chkCNum == null) {
+        showErrMsg(element, '');
+    } else {
+        hideErrMsg(element, '', type);
+    }
+}
+
+/**
+ *  이메일 내용 체크 함수
+ * @param element input 값
+ * @param type 이벤트 종류
+ */
+function chkEmail(element, type) {
+    let email = element.val();
+    let regex = new RegExp('[a-z0-9]+@[a-z]+\.[a-z]{2,3}');
+
+    if(email == '' || email == null) {      // 입력 내용 유무 체크
+        showErrMsg(element, '.null-err');
+        return;
+    } else {
+        hideErrMsg(element, '.null-err', type);
+    }
+
+    if(!(regex.test(email))) {
+        showErrMsg(element, '.not-match-err');
+    } else {
+        hideErrMsg(element, '.not-match-err', type);
+    }
+}
+
+/**
+ *  상세 주소 내용 체크 함수
+ * @param element input 값
+ * @param type 이벤트 종류
+ */
+function chkDetailAddress(element, type) {
+    let refundAccount = element.val();
+
+    if(refundAccount == '' || refundAccount == null) {      // 입력 내용 유무 체크
+        showErrMsg(element, '.null-err');
+    } else {
+        hideErrMsg(element, '.null-err', type);
+    }
+}
+
+/**
+ *  환불 계좌 내용 체크 함수
+ * @param element input 값
+ * @param type 이벤트 종류
+ */
+function chkRefundAccount(element, type) {
+    let refundAccount = element.val();
+
+    if(refundAccount == '' || refundAccount == null) {      // 입력 내용 유무 체크
+        showErrMsg(element, '.null-err');
+    } else {
+        hideErrMsg(element, '.null-err', type);
+    }
 }
 
 /**
@@ -201,8 +318,10 @@ function chkChkPw(element, type) {
  */
 function showErrMsg(element, className) {
     element.parent().css('border-color', 'var(--red)');
-    element.closest($('.join-form-line')).next('div').removeClass('hidden');
-    element.closest($('.join-form-line')).next('div').find(className).removeClass('hidden');
+    if(!(className == '' || className == null)) {
+        element.closest($('.join-form-line')).next('div').removeClass('hidden');
+        element.closest($('.join-form-line')).next('div').find(className).removeClass('hidden');
+    }
 };
 
 /**
@@ -216,9 +335,46 @@ function hideErrMsg(element, className, type) {
     } else {
         element.parent().css('border-color', 'var(--blue)');
     }
-    element.closest($('.join-form-line')).next('div').addClass('hidden');
-    element.closest($('.join-form-line')).next('div').find(className).addClass('hidden');
+    if(!(className == '' || className == null)) {
+        element.closest($('.join-form-line')).next('div').addClass('hidden');
+        element.closest($('.join-form-line')).next('div').find(className).addClass('hidden');
+    }
 };
+
+/**
+ *  인증번호 SMS 발송 요청 함수
+ */
+function sendSMS() {
+    const pNum = $('.join-form__input>input[name=phone]').val();
+    const sendData = { 'pNum' : pNum };
+
+    $.ajax({
+        type: "post",
+        url: "sens",
+        traditional: true,
+        contentType: "application/json",
+        data: JSON.stringify(sendData),
+        dataType: "json",
+        success: (res) => {
+            certificationNumber = res.cNum;
+            console.log(certificationNumber);
+        }
+    });
+}
+
+/**
+ *  인증번호 일치 체크 함수
+ *  @todo 인증 완료/실패시 처리 내용 추가
+ */
+function chkCNum() {
+    const cNum = $('.join-form__input>input[name=chkPhone]').val();
+
+    if(cNum == certificationNumber) {
+        alert("인증이 완료되었습니다.")
+    } else {
+        alert("인증이 실패하였습니다.")
+    }
+}
 
 $(document).ready( () => {
 
