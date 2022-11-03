@@ -1,8 +1,16 @@
 /**
  *  회원가입 페이지 스크립트
- *  @todo 입력창 별 err메세지 출력 기능 추가
+ *  @todo 핸드폰 중복 체크, alert->modal
  */
 let certificationNumber = "";
+let cNumTimer = null;
+let cNumTimerIsRun = false;
+let chkTimeOver = false;
+let isId = false;
+let isCNum = false;
+let isUseInfoTerms = false;
+let isOfferInfoTerms = false;
+let isServiceTerms = false;
 
 /** 패스워드 입력 내용 보기 기능 */
 $('#showPw').on("click", () => {
@@ -96,8 +104,14 @@ $('.join-form__input>input').on('focusout', e => {
     if($(e.target).attr('name') == 'refundAccount') {
         chkRefundAccount($(e.target), e.type);
     }
-    if($(e.target).attr('name') == 'chkCNum') {
+    if($(e.target).attr('name') == 'chkPhone') {
         chkChkPhone($(e.target), e.type);
+    }
+    if($(e.target).attr('name') == 'postalCode') {
+        chkPostalCode($(e.target), e.type);
+    }
+    if($(e.target).attr('name') == 'address') {
+        chkAddress($(e.target), e.type);
     }
 });
 
@@ -127,8 +141,14 @@ $('.join-form__input>input').on('change keydown keyup paste', e => {
     if($(e.target).attr('name') == 'refundAccount') {
         chkRefundAccount($(e.target), e.type);
     }
-    if($(e.target).attr('name') == 'chkCNum') {
+    if($(e.target).attr('name') == 'chkPhone') {
         chkChkPhone($(e.target), e.type);
+    }
+    if($(e.target).attr('name') == 'postalCode') {
+        chkPostalCode($(e.target), e.type);
+    }
+    if($(e.target).attr('name') == 'address') {
+        chkAddress($(e.target), e.type);
     }
 });
 
@@ -251,7 +271,7 @@ function chkPhone(element, type) {
 function chkChkPhone(element, type) {
     let chkPhone = element.val();
 
-    if(chkCNum == '' || chkCNum == null) {
+    if(chkPhone == '' || chkPhone == null) {
         showErrMsg(element, '');
     } else {
         hideErrMsg(element, '', type);
@@ -282,14 +302,44 @@ function chkEmail(element, type) {
 }
 
 /**
+ *  우편번호 내용 체크 함수
+ * @param element input 값
+ * @param type 이벤트 종류
+ */
+function chkPostalCode(element, type) {
+    let postalCode = element.val();
+
+    if(postalCode == '' || postalCode == null) {
+        showErrMsg(element, '');
+    } else {
+        hideErrMsg(element, '', type);
+    }
+}
+
+/**
+ *  기본주소 내용 체크 함수
+ * @param element input 값
+ * @param type 이벤트 종류
+ */
+function chkAddress(element, type) {
+    let address = element.val();
+
+    if(address == '' || address == null) {
+        showErrMsg(element, '');
+    } else {
+        hideErrMsg(element, '', type);
+    }
+}
+
+/**
  *  상세 주소 내용 체크 함수
  * @param element input 값
  * @param type 이벤트 종류
  */
 function chkDetailAddress(element, type) {
-    let refundAccount = element.val();
+    let detailAddress = element.val();
 
-    if(refundAccount == '' || refundAccount == null) {      // 입력 내용 유무 체크
+    if(detailAddress == '' || detailAddress == null) {      // 입력 내용 유무 체크
         showErrMsg(element, '.null-err');
     } else {
         hideErrMsg(element, '.null-err', type);
@@ -342,39 +392,204 @@ function hideErrMsg(element, className, type) {
 };
 
 /**
- *  인증번호 SMS 발송 요청 함수
+ *  아이디 중복 체크 함수
+ *  @todo 사용가능한 ID일 경우 사용 여부 묻는 기능 추가
  */
-function sendSMS() {
-    const pNum = $('.join-form__input>input[name=phone]').val();
-    const sendData = { 'pNum' : pNum };
+function idDupChk() {
+    if(isId) {
+        alert('사용 가능한 아이디입니다.');
+        return ;
+    }
+
+    const id = $('.join-form__input>input[name=id]').val();
+    const sendId = { 'id' : id };
 
     $.ajax({
         type: "post",
-        url: "sens",
+        url: "idDupChk",
         traditional: true,
         contentType: "application/json",
-        data: JSON.stringify(sendData),
+        data: JSON.stringify(sendId),
         dataType: "json",
         success: (res) => {
+            console.log(res.dupChk);
+            if(res.dupChk) {
+                alert('중복입니다.')
+            } else {
+                $('.join-form__input>input[name=id]').prop('readonly', true);
+                isId = true;
+            }
+        }
+    });
+}
+
+/**
+ *  인증번호 SMS 발송 요청 함수
+ *  @todo alert -> modal 변경
+ */
+function sendSMS() {
+    if(isCNum) {
+        alert('인증이 완료되었습니다.');
+        return ;
+    }
+
+    const pNum = $('.join-form__input>input[name=phone]').val();
+    const sendPhone = { 'pNum' : pNum };
+
+    $.ajax({
+        type: "post",
+        url: "phoneChk",
+        traditional: true,
+        contentType: "application/json",
+        data: JSON.stringify(sendPhone),
+        dataType: "json",
+        success: (res) => {
+            $('.join-form__input>input[name=phone]').prop('readonly', true);
             certificationNumber = res.cNum;
+            let display = $('#cNumTimer');
+            let leftSec = 300;
+
+            if(cNumTimerIsRun){
+                clearInterval(cNumTimer);
+                display.html("");
+                startTimer(leftSec, display);
+            } else {
+                startTimer(leftSec, display);
+            }
             console.log(certificationNumber);
         }
     });
 }
 
 /**
+ *  인증번호 인증 시간 제한
+ * @param count 제한시간 (초 단위)
+ * @param display 타이머 표시할 element
+ */
+function startTimer(count, display) {
+    let minutes, seconds;
+    chkTimeOver = false;
+    cNumTimer = setInterval( () => {
+        minutes = parseInt(count / 60, 10);
+        seconds = parseInt(count % 60, 10);
+
+        minutes = minutes < 10 ? "0" + minutes : minutes;
+        seconds = seconds < 10 ? "0" + seconds : seconds;
+
+        display.html(minutes + ":" + seconds);
+
+        if (--count < 0) {
+            clearInterval(cNumTimer);
+            display.html("00:00");
+            chkTimeOver = true;
+            cNumTimerIsRun = false;
+        }
+    }, 1000);
+    cNumTimerIsRun = true;
+}
+
+/**
  *  인증번호 일치 체크 함수
- *  @todo 인증 완료/실패시 처리 내용 추가
+ *  @todo 인증 완료/실패시 처리 내용 추가, alert -> modal 변경
  */
 function chkCNum() {
     const cNum = $('.join-form__input>input[name=chkPhone]').val();
 
+    if(chkTimeOver) {
+        alert("인증 시간이 만료되었습니다. 다시 요청해주세요.");
+        return ;
+    }
+
     if(cNum == certificationNumber) {
+        clearInterval(cNumTimer);
+        $('.join-form__input>input[name=chkPhone]').prop('disabled', true);
+        isCNum = true;
         alert("인증이 완료되었습니다.")
     } else {
         alert("인증이 실패하였습니다.")
     }
 }
+
+/**
+ *  다음 우편번호 검색 API
+ */
+function daumPostcode() {
+    new daum.Postcode({
+        oncomplete: function(data) {
+            // 팝업에서 검색결과 항목을 클릭했을때 실행할 코드를 작성하는 부분.
+
+            // 각 주소의 노출 규칙에 따라 주소를 조합한다.
+            // 내려오는 변수가 값이 없는 경우엔 공백('')값을 가지므로, 이를 참고하여 분기 한다.
+            var addr = ''; // 주소 변수
+            var extraAddr = ''; // 참고항목 변수
+
+            //사용자가 선택한 주소 타입에 따라 해당 주소 값을 가져온다.
+            if (data.userSelectedType === 'R') { // 사용자가 도로명 주소를 선택했을 경우
+                addr = data.roadAddress;
+            } else { // 사용자가 지번 주소를 선택했을 경우(J)
+                addr = data.jibunAddress;
+            }
+
+            // 사용자가 선택한 주소가 도로명 타입일때 참고항목을 조합한다.
+            if(data.userSelectedType === 'R'){
+                // 법정동명이 있을 경우 추가한다. (법정리는 제외)
+                // 법정동의 경우 마지막 문자가 "동/로/가"로 끝난다.
+                if(data.bname !== '' && /[동|로|가]$/g.test(data.bname)){
+                    extraAddr += data.bname;
+                }
+                // 건물명이 있고, 공동주택일 경우 추가한다.
+                if(data.buildingName !== '' && data.apartment === 'Y'){
+                    extraAddr += (extraAddr !== '' ? ', ' + data.buildingName : data.buildingName);
+                }
+                // 표시할 참고항목이 있을 경우, 괄호까지 추가한 최종 문자열을 만든다.
+                if(extraAddr !== ''){
+                    extraAddr = ' (' + extraAddr + ')';
+                }
+            }
+
+            // 우편번호와 주소 정보+참고항목을 해당 필드에 넣는다.
+            document.getElementById('postalCode').value = data.zonecode;
+            document.getElementById("address").value = addr + extraAddr;
+            // 커서를 상세주소 필드로 이동한다.
+            document.getElementById("detailAddress").focus();
+        }
+    }).open();
+}
+
+$('input[type=checkbox]').on('click', e => {
+    const chkboxId = $(e.target).attr('id');
+    let isAllChk = false;
+    switch (chkboxId) {
+        case "allCheck" :
+            if($(e.target).is(':checked')) {
+                $('input[type=checkbox]').prop('checked', true);
+                isUseInfoTerms = true;
+                isOfferInfoTerms = true;
+                isServiceTerms = true;
+            } else {
+                $('input[type=checkbox]').prop('checked', false);
+                isUseInfoTerms = false;
+                isOfferInfoTerms = false;
+                isServiceTerms = false;
+            }
+            break;
+        case "chkUseInfoTerms" :
+            isUseInfoTerms = $(e.target).is(':checked') ? true : false;
+            isAllChk = isUseInfoTerms && isOfferInfoTerms && isServiceTerms;
+            $('#allCheck').prop('checked', isAllChk);
+            break;
+        case "chkOfferInfoTerms" :
+            isOfferInfoTerms = $(e.target).is(':checked') ? true : false;
+            isAllChk = isUseInfoTerms && isOfferInfoTerms && isServiceTerms;
+            $('#allCheck').prop('checked', isAllChk);
+            break;
+        case "chkServiceTerms" :
+            isServiceTerms = $(e.target).is(':checked') ? true : false;
+            isAllChk = isUseInfoTerms && isOfferInfoTerms && isServiceTerms;
+            $('#allCheck').prop('checked', isAllChk);
+            break;
+    }
+});
 
 $(document).ready( () => {
 

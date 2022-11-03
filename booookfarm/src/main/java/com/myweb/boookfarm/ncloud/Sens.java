@@ -71,7 +71,7 @@ public class Sens {
         String method = "POST";                                            // 요청 method
         String timestamp = Long.toString(System.currentTimeMillis());    // current timestamp (epoch)
         requestUrl += serviceId + requestUrlType;
-        String apiUrl = hostNameUrl + requestUrl;
+        String apiUrl = hostNameUrl + requestUrl;   // 요청할 최종 URL
 
         // JSON 을 활용한 body data 생성
         JSONObject bodyJson = new JSONObject();
