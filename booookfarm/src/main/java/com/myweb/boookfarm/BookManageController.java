@@ -106,7 +106,7 @@ public class BookManageController {
 	}
 	*/
 	
-	@GetMapping(value = "/list",produces="application/json; charset=utf-8")
+	@GetMapping(value = "/detailList",produces="application/json; charset=utf-8")
 	@ResponseBody
 	public String detail_list(@RequestParam("bookCode") String bookCode) {
 		List<BookDetailDTO> dataList = service.getDatas();

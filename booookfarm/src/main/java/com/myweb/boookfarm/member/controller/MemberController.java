@@ -34,8 +34,8 @@ public class MemberController {
     @ResponseBody
     public String phoneChk(@RequestBody Map<String, String> param) {
         Sens sens = new Sens();
-//        String cNum = sens.callSendSMS(param.get("pNum"));  // 인증번호 발송과 함께 난수 인증번호 저장
-        String cNum = "12345";
+        String cNum = sens.callSendSMS(param.get("pNum"));  // 인증번호 발송과 함께 난수 인증번호 저장
+//        String cNum = "12345";
         JSONObject jsonObject = new JSONObject();
         jsonObject.put("cNum", cNum);   // 클라이언트로 보낼 인증번호 JSON 객체 생성
         return jsonObject.toJSONString();

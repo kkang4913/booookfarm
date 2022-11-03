@@ -246,6 +246,7 @@ function get_detail_page() {
 			d_amount= (res.bookPrice - (res.bookPrice * (res.bookDiscount*0.01)));
 			d_price= res.bookPrice;
 			d_discount= res.bookDiscount;
+
 			form= {
 				bookCode : res.bookCode,
 				bookTitle : res.bookTitle,
@@ -258,7 +259,7 @@ function get_detail_page() {
 
 function get_detail_list(){
 	$.ajax({
-		url: "./list?bookCode="+ $('#book_code').val(),
+		url: "./detailList?bookCode="+ $('#book_code').val(),
 		type: "GET",
 		dataType: "json",
 		success: function(data){
@@ -301,6 +302,7 @@ function get_detail_amount(){
 	const resultStock = document.getElementById('d-stock');
 	let amount = resultAmount.value;
 	let stock = resultStock.value;
+
 	amount = (parseInt(amount) + parseInt(d_amount)) * parseInt(stock);
 	resultAmount.value = amount;
 }
@@ -336,7 +338,7 @@ $(document).ready(function(){
   });
   
   get_detail_page();
-  get_detail_amount();
+	get_detail_amount();
   get_detail_list();
 });
 

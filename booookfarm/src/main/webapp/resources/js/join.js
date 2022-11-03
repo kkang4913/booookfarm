@@ -556,6 +556,9 @@ function daumPostcode() {
     }).open();
 }
 
+/**
+ *  약관 동의 체크 클릭시 기능 함수
+ */
 $('input[type=checkbox]').on('click', e => {
     const chkboxId = $(e.target).attr('id');
     let isAllChk = false;
