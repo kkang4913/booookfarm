@@ -11,6 +11,7 @@
         integrity="sha512-1sCRPdkRXhBV2PBLUdRb4tMg1w2YPf37qatUFeS7zlBy7jJI8Lf4VHwWfZZfpXtYSLy85pkm9GaYVYMfw5BC1A=="
         crossorigin="anonymous" referrerpolicy="no-referrer" />
   <link rel="stylesheet" href="${path}/resources/css/styles.css" />
+  <script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
   <script type="text/javascript" src="${path}/resources/js/jquery-3.6.0.min.js"></script>
 </head>
 <body>
@@ -72,7 +73,7 @@
             <div class="join-form__input">
               <input type="text" placeholder="아이디를 입력해주세요." name="id">
             </div>
-            <button class="btn--rec btn--gray btn--w120h50 join-form__btn">중복확인</button>
+            <button class="btn--rec btn--gray btn--w120h50 join-form__btn" type="button" onclick="idDupChk();">중복확인</button>
           </div>
         </div>
         <div class="join-err-line hidden">
@@ -119,9 +120,9 @@
           </div>
           <div class="join-input-box">
             <div class="join-form__input">
-              <input type="text" placeholder="-없이 숫자만 입력해주세요." name="phone">
+              <input type="text" maxlength="13" oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1');" placeholder="-없이 숫자만 입력해주세요." name="phone">
             </div>
-            <button class="btn--rec btn--gray btn--w120h50 join-form__btn">인증번호 요청</button>
+            <button class="btn--rec btn--gray btn--w120h50 join-form__btn" type="button" onclick="sendSMS();">인증번호 요청</button>
           </div>
         </div>
         <div class="join-err-line hidden">
@@ -132,10 +133,10 @@
           </div>
           <div class="join-input-box">
             <div class="join-form__input">
-              <input type="text" placeholder="인증번호 5자리">
-              <span>5:00</span>
+              <input type="text" placeholder="인증번호 5자리" name="chkPhone">
+              <span id="cNumTimer"></span>
             </div>
-            <button class="btn--rec btn--gray btn--w120h50 join-form__btn">인증번호 확인</button>
+            <button class="btn--rec btn--gray btn--w120h50 join-form__btn" type="button" onclick="chkCNum();">인증번호 확인</button>
           </div>
         </div>
         <div class="join-form-line">
@@ -151,7 +152,7 @@
         </div>
         <div class="join-err-line hidden">
           <span class="join-err-msg null-err hidden">이메일을 입력해주세요.</span>
-          <span class="join-err-msg hidden">이메일 형식으로 입력해주세요.</span>
+          <span class="join-err-msg not-match-err hidden">이메일 형식으로 입력해주세요.</span>
         </div>
         <div class="join-form-line">
           <div class="join-label-box">
@@ -169,9 +170,9 @@
           </div>
           <div class="join-input-box">
             <div class="join-form__input">
-              <input type="text" placeholder="우편번호" name="postalCode"readonly>
+              <input type="text" id="postalCode" placeholder="우편번호" name="postalCode" readonly>
             </div>
-            <button class="btn--rec btn--gray btn--w120h50 join-form__btn">우편번호 검색</button>
+            <button class="btn--rec btn--gray btn--w120h50 join-form__btn" type="button" onclick="daumPostcode()">우편번호 검색</button>
           </div>
         </div>
         <div class="join-form-line">
@@ -179,7 +180,7 @@
           </div>
           <div class="join-input-box">
             <div class="join-form__input">
-              <input type="text" placeholder="기본 주소" name="address" readonly>
+              <input type="text" id="address" placeholder="기본 주소" name="address" readonly>
             </div>
           </div>
         </div>
@@ -190,7 +191,7 @@
           </div>
           <div class="join-input-box">
             <div class="join-form__input">
-              <input type="text" placeholder="상세 주소" name="detailAddress">
+              <input type="text" id="detailAddress" placeholder="상세 주소" name="detailAddress">
             </div>
           </div>
         </div>
@@ -217,7 +218,7 @@
           </div>
           <div class="join-input-box">
             <div class="join-form__input">
-              <input type="text" placeholder="환불계좌">
+              <input type="text" placeholder="환불계좌" name="refundAccount">
             </div>
           </div>
         </div>
@@ -227,13 +228,13 @@
         <div class="join-terms-box">
           <div class="join-form-terms">
             <div>
-              <input type="checkbox">
+              <input id="allCheck" type="checkbox">
               <span>전체약관에 동의합니다.</span>
             </div>
           </div>
           <div class="join-form-terms">
             <div>
-              <input type="checkbox">
+              <input id="chkUseInfoTerms" type="checkbox">
               <span class="terms-est">[필수]</span>
               <span>개인정보 수집/이용 안내</span>
             </div>
@@ -243,7 +244,7 @@
           </div>
           <div class="join-form-terms">
             <div>
-              <input type="checkbox">
+              <input id="chkOfferInfoTerms" type="checkbox">
               <span class="terms-est">[필수]</span>
               <span>개인정보 제3자 제공</span>
             </div>
@@ -253,7 +254,7 @@
           </div>
           <div class="join-form-terms">
             <div>
-              <input type="checkbox">
+              <input id="chkServiceTerms" type="checkbox">
               <span class="terms-est">[필수]</span>
               <span>회원이용 약관</span>
             </div>
