@@ -17,8 +17,35 @@
 			 , BOOK_CONDITION AS bookCondition
 			 , BOOK_CONDITION_INFO AS bookConditionInfo
 			 , BOOK_IMG_PATH AS bookImgPath
-			 , SYSDATE
+			 , CREATE_DATE AS createDate
 		FROM BOOK
-		WHERE BOOK_CODE = '2201a1b1c1'
+		WHERE BOOK_CODE = '2201a2b2c2'
+	</select>
+	<select id="selectSort"  resultType="bookDetailDTO">
+		SELECT RNUM
+			 , bookCode, bookTitle, bookAuthor
+			 , bookInfo, bookPrice, bookDiscount
+			 , isbn, bookCategory, stock 
+			 , publisher, bookCondition, bookConditionInfo
+			 , bookImgPath , createDate
+		FROM	 
+		(SELECT ROWNUM AS RNUM, BOOK_CODE AS bookCode
+			 , BOOK_TITLE AS bookTitle
+			 , BOOK_AUTHOR AS bookAuthor
+			 , BOOK_INFO AS bookInfo
+			 , BOOK_PRICE AS bookPrice
+			 , BOOK_DISCOUNT AS bookDiscount
+			 , ISBN AS isbn
+			 , BOOK_CATEGORY AS bookCategory
+			 , STOCK AS stock
+			 , PUBLISHER AS publisher
+			 , BOOK_CONDITION AS bookCondition
+			 , BOOK_CONDITION_INFO AS bookConditionInfo
+			 , BOOK_IMG_PATH AS bookImgPath
+			 , CREATE_DATE AS createDate
+		FROM BOOK
+		ORDER BY CREATE_DATE DESC)
+		WHERE <![CDATA[ ROWNUM <= 6]]>
+		AND <![CDATA[ ROWNUM >= 1]]>
 	</select>
 </mapper>  

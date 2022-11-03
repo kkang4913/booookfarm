@@ -1,6 +1,9 @@
 package com.myweb.boookfarm.detail.model;
 
+import java.text.SimpleDateFormat;
 import java.util.Date;
+
+import com.fasterxml.jackson.annotation.JsonFormat;
 
 public class BookDetailDTO {
 	private String bookCode;
@@ -122,8 +125,10 @@ public class BookDetailDTO {
 		this.bookImgPath = bookImgPath;
 	}
 	
-	public Date getCreateDate() {
-		return createDate;
+	public String getCreateDate() {
+		SimpleDateFormat format = new SimpleDateFormat("yyyy. MM. dd");
+		String nowDate = format.format(createDate);
+		return nowDate;
 	}
 	
 	public void setCreateDate(Date createDate) {

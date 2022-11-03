@@ -13,16 +13,7 @@
 <script type="text/javascript" src="${path}/resources/js/jquery-3.6.0.min.js"></script>
 </head>
 <body>
-	<nav class="navigation-container">
-		<ul class="navigation-element">
-			<li class="element">로그인</li>
-			<li class="element">회원가입</li>
-			<li class="element">1:1문의</li>
-			<li class="element">마이페이지</li>
-			<li class="element">장바구니</li>
-		</ul>
-	</nav>
-	<!-- 왼쪽 사이드 퀵메뉴(최근 본 목록) css: quick -->
+<%@include file="/WEB-INF/views/module/header.jsp" %>
 	<div class="quickmenu">
 	  <div class="quickmenu-title">
 	  	<div>최근 본 상품</div>
@@ -31,344 +22,140 @@
 	  		</div>
 	  </div>
 	</div>
-		<header class="st-hd">
-			<div class="head-container">
-				<div class="mainlogo-img">
-					<div class="mainlogo">
-						<p class="page-name">booookfarm</p>
-					</div>
+	<main class="st-ma">
+		<div class="main-container">
+		<div class="book-info-container">
+			<div class="book--info">
+				<div id="m_info" class="main--info">
+					<input id="book_code" name="bookCode" type="hidden" value="${book_code}">
 				</div>
-				<div class="full-sear">
-					<div class="sear-place">
-						<input class="sear" type="text">
-					</div>
-				</div>	
-			</div>
-		</header>
-		<main class="st-ma">
-			<div class="main-container">
-			<div class="book-info-container">
-				<div class="book--info">
-					<div id="m_info" class="main--info">
-						<input id="book_code" name="bookCode" type="hidden" value="${book__code}">
-					<!--
-						<div class="book--condition">
-						최상급
-						</div>
-						<div class="book--name">
-						 나오미와 가나코
-						</div>
-						<div class="book--detail-info">
-							<span>저자 오쿠다 히데오</span>
-							&nbsp;
-							|
-							&nbsp;
-							<span>출판사 예담</span>
-							&nbsp;
-							|
-							&nbsp;
-							<span>상품등록일 2022.10.20</span>
-						</div>
-					-->	
-					</div>
-					<div class="book-detail-layout">
-						<div id="c_info" class="book-detail-card">
-						<!--
-							<div class="book-img">
-								<img class="book--img" src="${path}/resources/img/naomi.png">
-							</div>
-							<div class="detail-card-info">
-								<div class="row-info">
-									<div class="row-title">카테고리</div>
-									<div class="basic-data">
-										<div class="cate-info">
-											소설>일본소설
-										</div>
-									</div>
-								</div>
-								<div class="row-info">	
-									<div class="row-title">ISBN</div>
-									<div class="basic-data">
-										<div class="isbn-info">
-											9788959139224
-										</div>
-									</div>
-								</div>
-								<div class="row-info">	
-									<div class="row-title">판매가</div>
-									<div class="basic-data">
-										<div class="price-info">
-											3,000원
-										</div>
-										<div class="sale-percent">
-											88%
-										</div>
-										<div class="common-direction">
-											down
-										</div>
-									</div>
-								</div>
-								<div class="row-info">	
-									<div class="row-title">정가</div>
-									<div class="basic-data">
-										<div class="origin-price">
-											13,500원
-										</div>
-									</div>
-								</div>
-								<div class="row-info">	
-									<div class="row-title">배송비</div>
-									<div class="basic-data">
-										<div class="delivery-fee">
-											3000원
-										</div>
-									</div>
-								</div>
-								<div class="row-info">	
-									<div class="basic-data">
-										<div class="delivery-info">
-											판매자 상품 30,000원이상 구매시 무료배송
-										</div>
-									</div>
-								</div>
-							</div>
-							-->
-						</div>
-					</div>
-				</div>
-				<div class="book-intro-container">
-					<div class="book-intro-layout">
-						<div class="book-intro-card">
-							<div class="book-card">
-								<div class="row-intro">
-									<div class="row-intro-title">판매자 책설명</div>
-								</div>
-								<div class="row-intro-data">	
-									<div class="intro-data">
-										안쪽 제목밑에 직인 있습니다.<br>
-										그외 깨끗합니다.
-									</div>
-								</div>
-							</div>
-							<div class="book-card">
-								<div class="row-intro">
-									<div class="row-intro-title">책소개</div>
-								</div>
-								<div class="row-intro-data">	
-									<div class="intro-data">
-										오쿠다 히데오만이 쓸 수 있는 최고의 서스펜스 당신도 이 여자들을 응원할 수밖에 없다! 마지막 한 줄까지 손에 땀을 쥐게
-										한다! 유머와 페이소스를 장착한 최고의 스토리텔러 오쿠다 히데오의 신작 장편소설『나오미와 가나코』가 예담출판사에서
-										출간됐다. 오쿠다 히데오가 고도의 서스펜스 스타일로...
-									</div>
-								</div>
-							</div>
-							<div class="book-card">
-								<div class="row-intro">
-									<div class="row-intro-title rule">북팜 안내사항</div>
-								</div>
-								<div class="row-intro-data">	
-									<div class="intro-rule">
-										- 위 판매상품은 판매자가 직접 등록/판매하는 상품으로 판매자가 해당 상품과 내용에 모든 책임을 지며 중개시스템만 &nbsp;&nbsp;제공하는 북팜은 일체책임을 지지않습니다.<br>
-										- 북팜에서는 개인정보보호법을 위반하는 개인정보가 포함된 도서는 판매금지입니다.위반내용이 접수되는 경우 북팜 &nbsp;&nbsp;에서는 임의로 해당도서를 삭제할 수 있습니다.<br>
-										- 북팜에서 판매되는 중고상품의 취소 및 반품은 판매자와 별도 협의 후 진행 가능합니다.<br>
-										- ISBN으로 등록된 도서 이미지 및 정가는 실제와 다를 수 있습니다.
-									</div>
-								</div>
-							</div>	
-						</div>
+				<div class="book-detail-layout">
+					<div id="c_info" class="book-detail-card">
+					
 					</div>
 				</div>
 			</div>
-			<div class="order-select-container">
-				<div class="order-inner-layout">
-					<div class="order-frame">
-						<div class="col-name">
-							수량
-						</div>
-						<div class="quantity-img-box">
-							<img class="minus-img" src="${path}/resources/img/icon/minus.png">
-						</div>
-						<div class="col-amount">
-							1
-						</div>
-						<div class="quantity-img-box">
-							<img class="plus-img" src="${path}/resources/img/icon/plus.png">						
-						</div>
-					</div>
- 					<div class="order-frame alpa">
-						<div class="col-name delta">
-							결제예정금액
-						</div>
-						<div class="col-price">
-							10,000
-						</div>
-						<div class="col-won">
-							원
-						</div>
-					</div>
-					<div class="order-button-frame">
-						<div class="botton-col left">
-							<button class="basket-btn" type="button"><span>장바구니</span></button>
-						</div>
-						<div class="botton-col right">
-							<button class="purchase-btn" type="button"><span>바로구매</span></button>
-						</div>
+			<div class="book-intro-container">
+				<div class="book-intro-layout">
+					<div id="i_info" class="book-intro-card">
 					</div>
 				</div>
 			</div>
-			</div>
-		</main>
-		<footer class="st-ft-detail">
-			<div class="book-recommend-container">
-					<div class="book-recommend-layout">
-						<div class="recommend-card">
-							<div class="recommend-title">
-								<div class="recommend-name">북팜 최신 등록도서</div>
-							</div>
-						<div class="book-sort">	
-							<div class="book-fix">
-								<div class="latest-book-img">
-									<div class="latest-book">
-										<img class="latest-recommend" src="${path}/resources/img/naomi.png">
-									</div>
-								</div>
-								<div class="book-name-place">
-									<div class="latest-book-name">나오미와 가나코</div>
-								</div>
-								<div class="author-name-place">
-									<div class="recommend-author">오쿠다 히데오</div>
-								</div>
-							</div>
-							<div class="book-fix">
-								<div class="latest-book-img">
-									<div class="latest-book">
-										<img class="latest-recommend" src="${path}/resources/img/nolove.png">
-									</div>
-								</div>
-								<div class="book-name-place">
-									<div class="latest-book-name">사랑받지 못한 여자</div>
-								</div>
-								<div class="author-name-place">
-									<div class="recommend-author">넬레 노이하우스</div>
-								</div>
-							</div>	
-							<div class="book-fix">
-								<div class="latest-book-img">
-									<div class="latest-book">
-										<img class="latest-recommend" src="${path}/resources/img/sample.png">
-									</div>
-								</div>
-								<div class="book-name-place">
-									<div class="latest-book-name">정미소 풍경</div>
-								</div>
-								<div class="author-name-place">
-									<div class="recommend-author">구활</div>
-								</div>
-							</div>
-							<div class="book-fix">
-								<div class="latest-book-img">
-									<div class="latest-book">
-										<img class="latest-recommend" src="${path}/resources/img/polimath.png">
-									</div>
-								</div>
-								<div class="book-name-place">
-									<div class="latest-book-name">폴리매스</div>
-								</div>
-								<div class="author-name-place">
-									<div class="recommend-author">와카스 아매드</div>
-								</div>
-							</div>
-							<div class="book-fix">
-								<div class="latest-book-img">
-									<div class="latest-book">
-										<img class="latest-recommend" src="${path}/resources/img/wkwhsrka.png">
-									</div>
-								</div>
-								<div class="book-name-place">
-									<div class="latest-book-name">자존감 수업</div>
-								</div>
-								<div class="author-name-place">
-									<div class="recommend-author">윤홍균</div>
-								</div>
-							</div>
-							<div class="book-fix">
-								<div class="latest-book-img">
-									<div class="latest-book">
-										<img class="latest-recommend" src="${path}/resources/img/vkvldyd.png">
-									</div>
-								</div>
-								<div class="book-name-place">
-									<div class="latest-book-name">파피용</div>
-								</div>
-								<div class="author-name-place">
-									<div class="recommend-author">베르나르 베르베르</div>
-								</div>
-							</div>
-						</div>			
-						</div>
+		</div>
+		<div class="order-select-container">
+			<div class="order-inner-layout">
+				<div class="order-frame">
+					<div class="col-name">
+						수량
+					</div>
+					<div class="quantity-img-box">
+						<img class="minus-img" src="${path}/resources/img/icon/minus.png" onclick="get_detail_stock('minus')">
+					</div>
+					<div class="col-amount">
+						<input id="d-stock" class="detail-stock" name="stockValue" type="text" value="1" disabled="disabled">
+					</div>
+					<div class="quantity-img-box">
+						<img class="plus-img" src="${path}/resources/img/icon/plus.png" onclick="get_detail_stock('plus')">						
 					</div>
 				</div>
-			<div class="footer-container">
-				<div class="footer-layout">
-					<div class="footer-frame">
-						<div class="footer-menu">
-							<p class="ft-link">회사소개</p>
-							|
-							<p class="ft-link">개인정보취급방침</p>
-							|
-							<p class="ft-link">이용약관</p>
-							|
-							<p class="ft-link">고객센터</p>
+				<div class="order-frame alpa">
+					<div class="col-name delta">
+						결제예정금액
+					</div>
+					<div class="col-price">
+						<input id="d-amount" class="detail-amount" name="amountValue" type="text" value="0" disabled="disabled">
+					</div>
+					<div class="col-won">
+						원
+					</div>
+				</div>
+				<div class="order-button-frame">
+					<div class="botton-col left">
+						<button class="basket-btn" type="button"><span>장바구니</span></button>
+					</div>
+					<div class="botton-col right">
+						<button class="purchase-btn" type="button"><span>바로구매</span></button>
+					</div>
+				</div>
+			</div>
+		</div>
+		</div>
+	</main>
+	<footer class="st-ft-detail">
+		<div class="book-recommend-container">
+				<div class="book-recommend-layout">
+					<div class="recommend-card">
+						<div class="recommend-title">
+							<div class="recommend-name">북팜 최신 등록도서</div>
 						</div>
-						<div class="footer-info">
-							Copyright(c) 2022 ㈜ 시퀀스엔. All Rights Reserved [사업자정보] 대표전화 : 1544 -2949 | 대표(CEO) : 양종선 | 개인정보 보호책임자 : 양종선 사업자등록번<br>
-							호 : 285-81-00634 | 통신판매업 신고번호 : 제 2017-서울서초-0272호. 서울시 서초구 서초대로 397 부띠크모나코 A동 301호 | Email : help@bookoa.com 
-						</div>
-						<div class="cs-frame">
-							<div class="cs-inner">
-								<div class="cus">고객만족센터</div>
-								<div class="cus-num">1544-2949</div>
-							</div>
-						</div>
-						<div class="cs-info web">
-							<a href="#">상담시간 안내</a>
+						<div id="r_info" class="book-rsort">
+						</div>		
+					</div>
+				</div>
+			</div>
+		<div class="footer-container">
+			<div class="footer-layout">
+				<div class="footer-frame">
+					<div class="footer-menu">
+						<p class="ft-link">회사소개</p>
+						|
+						<p class="ft-link">개인정보취급방침</p>
+						|
+						<p class="ft-link">이용약관</p>
+						|
+						<p class="ft-link">고객센터</p>
+					</div>
+					<div class="footer-info">
+						Copyright(c) 2022 ㈜ 시퀀스엔. All Rights Reserved [사업자정보] 대표전화 : 1544 -2949 | 대표(CEO) : 양종선 | 개인정보 보호책임자 : 양종선 사업자등록번<br>
+						호 : 285-81-00634 | 통신판매업 신고번호 : 제 2017-서울서초-0272호. 서울시 서초구 서초대로 397 부띠크모나코 A동 301호 | Email : help@bookoa.com 
+					</div>
+					<div class="cs-frame">
+						<div class="cs-inner">
+							<div class="cus">고객만족센터</div>
+							<div class="cus-num">1544-2949</div>
 						</div>
 					</div>
-				</div>		
-			</div>
-		</footer>
+					<div class="cs-info web">
+						<a href="#">상담시간 안내</a>
+					</div>
+				</div>
+			</div>		
+		</div>
+	</footer>
 </body>
 <!-- 왼쪽 퀵 메뉴(최근 본 상품) 조절 스크립트 -->
 <script type="text/javascript">
+let d_stock = '';
+let d_amount = '';
+let d_price = '';
+let d_discount = '';
+const form ='';
 function get_detail_page() {
 	$.ajax({
-		url: "./detail/"+ $('#book_code').val(),
+		url: "./view?bookCode="+ $('#book_code').val(),
 		type: "GET",
 		dataType: "json",
 		success: function(res) {
 			let _html = '';
-			for (var i=0 ; i < res.datas.length; i++) {
-				_html += '<div class="book--condition">'+res.datas[i].bookCondition+'</div>';
-				_html += '<div class="book--name">'+res.datas[i].bookTitle+'</div>';
+				_html += '<div class="book--condition">'+res.bookCondition+'</div>';
+				_html += '<div class="book--name">'+res.bookTitle+'</div>';
 				_html += '<div class="book--detail-info">';
-				_html += '<span>저자 '+res.datas[i].bookAuthor+'</span>&nbsp;|&nbsp;';
-				_html += '<span>출판사 '+res.datas[i].publisher+'</span>&nbsp;|&nbsp;';
-				_html += '<span>상품등록일 '+res.datas[i].createDate+'</span>';
+				_html += '<span>저자 '+res.bookAuthor+'</span>&nbsp;|&nbsp;';
+				_html += '<span>출판사 '+res.publisher+'</span>&nbsp;|&nbsp;';
+				_html += '<span>상품등록일 '+res.createDate+'</span>';
 				_html += '</div>';
-			}	
 			$('#m_info').html(_html);
 			
 			let _html2 = '';
-			for (var i=0 ; i < res.datas.length; i++) {
 				_html2 += '<div class="book-img">';
-				_html2 += '<img class="book--img" src="${path}/resources/img/naomi.png">';
+				_html2 += '<img class="book--img" src="'+res.bookImgPath+'">';
 				_html2 += '</div>';
 				_html2 += '<div class="detail-card-info">';
 				_html2 += '<div class="row-info">';
 				_html2 += '<div class="row-title">카테고리</div>';
 				_html2 += '<div class="basic-data">';
 				_html2 += '<div class="cate-info">';
-				_html2 += ''+res.datas[i].bookCategory+'';
+				_html2 += ''+res.bookCategory+'';
 				_html2 += '</div>';
 				_html2 += '</div>';
 				_html2 += '</div>';
@@ -376,7 +163,7 @@ function get_detail_page() {
 				_html2 += '<div class="row-title">ISBN</div>';
 				_html2 += '<div class="basic-data">';
 				_html2 += '<div class="isbn-info">';
-				_html2 += ''+res.datas[i].isbn+'';
+				_html2 += ''+res.isbn+'';
 				_html2 += '</div>';
 				_html2 += '</div>';
 				_html2 += '</div>';
@@ -384,10 +171,10 @@ function get_detail_page() {
 				_html2 += '<div class="row-title">판매가</div>';
 				_html2 += '<div class="basic-data">';
 				_html2 += '<div class="price-info">';
-				_html2 += '3,000원';
+				_html2 += ''+res.bookPrice - (res.bookPrice * (res.bookDiscount*0.01)) +'원';
 				_html2 += '</div>';
 				_html2 += '<div class="sale-percent">';
-				_html2 += ''+res.datas[i].bookDiscount+'%';
+				_html2 += ''+res.bookDiscount+'%';
 				_html2 += '</div>';
 				_html2 += '<div class="common-direction">';
 				_html2 += 'down';
@@ -398,7 +185,7 @@ function get_detail_page() {
 				_html2 += '<div class="row-title">정가</div>';
 				_html2 += '<div class="basic-data">';
 				_html2 += '<div class="origin-price">';
-				_html2 += ''+res.datas[i].bookPrice+'원';
+				_html2 += ''+res.bookPrice+'원';
 				_html2 += '</div>';
 				_html2 += '</div>';
 				_html2 += '</div>';
@@ -417,15 +204,125 @@ function get_detail_page() {
 				_html2 += '</div>';
 				_html2 += '</div>';
 				_html2 += '</div>';
-			}
 			$('#c_info').html(_html2);
+			
+			let _html3='';
+				_html3 += '<div class="book-card">';
+				_html3 += '<div class="row-intro">';
+				_html3 += '<div class="row-intro-title">판매자 책설명</div>';
+				_html3 += '</div>';
+				_html3 += '<div class="row-intro-data">';
+				_html3 += '<div class="intro-data">';
+				_html3 += ''+res.bookInfo+'';
+				_html3 += '</div>';
+				_html3 += '</div>';
+				_html3 += '</div>';
+				_html3 += '<div class="book-card">';
+				_html3 += '<div class="row-intro">';
+				_html3 += '<div class="row-intro-title">책소개</div>';
+				_html3 += '</div>';
+				_html3 += '<div class="row-intro-data">';
+				_html3 += '<div class="intro-data">';
+				_html3 += ''+res.bookConditionInfo+'';
+				_html3 += '</div>';
+				_html3 += '</div>';
+				_html3 += '</div>';
+				_html3 += '<div class="book-card">';
+				_html3 += '<div class="row-intro">';
+				_html3 += '<div class="row-intro-title rule">북팜 안내사항</div>';
+				_html3 += '</div>';
+				_html3 += '<div class="row-intro-data">';
+				_html3 += '<div class="intro-rule">';
+				_html3 += '- 위 판매상품은 판매자가 직접 등록/판매하는 상품으로 판매자가 해당 상품과 내용에 모든 책임을 지며 중개시스템만 &nbsp;&nbsp;제공하는 북팜은 일체책임을 지지않습니다.<br>';
+				_html3 += '- 북팜에서는 개인정보보호법을 위반하는 개인정보가 포함된 도서는 판매금지입니다.위반내용이 접수되는 경우 북팜 &nbsp;&nbsp;에서는 임의로 해당도서를 삭제할 수 있습니다.<br>';	
+				_html3 += '- 북팜에서 판매되는 중고상품의 취소 및 반품은 판매자와 별도 협의 후 진행 가능합니다.<br>';	
+				_html3 += '- ISBN으로 등록된 도서 이미지 및 정가는 실제와 다를 수 있습니다.';	
+				_html3 += '</div>';
+				_html3 += '</div>';
+				_html3 += '</div>';
+			$('#i_info').html(_html3);
+			
+			d_stock= res.stock;
+			d_amount= (res.bookPrice - (res.bookPrice * (res.bookDiscount*0.01)));
+			d_price= res.bookPrice;
+			d_discount= res.bookDiscount;
+			form= {
+				bookCode : res.bookCode,
+				bookTitle : res.bookTitle,
+				bookAuthor : res.bookAuthor,
+			};
+			console.log(form);
 		}
 	});
 }
 
-$('.basket-btn').on('click', function() {
-	location.href="/boookfarm/basket";
+function get_detail_list(){
+	$.ajax({
+		url: "./list?bookCode="+ $('#book_code').val(),
+		type: "GET",
+		dataType: "json",
+		success: function(data){
+			let _html='';
+			for (var j=0; j < data.dataList.length; j++) {
+				_html += '<div class="book-sort">';
+				_html += '<div class="book-fix">';
+				_html += '<div class="latest-book-img">';
+				_html += '<div class="latest-book">';
+				_html += '<img class="latest-recommend" src="'+data.dataList[j].bookImgPath+'">';
+				_html += '</div>';
+				_html += '</div>';
+				_html += '<div class="book-name-place">';
+				_html += '<div class="latest-book-name">'+data.dataList[j].bookTitle+'</div>';
+				_html += '</div>';
+				_html += '<div class="author-name-place">';
+				_html += '<div class="recommend-author">'+data.dataList[j].bookAuthor+'</div>';
+				_html += '</div>';
+				_html += '</div>';
+				_html += '</div>';
+			}
+			$('#r_info').html(_html);
+		}
+	});
+}
+
+function get_detail_stock(type){
+	const resultElement = document.getElementById('d-stock');
+	let stock = resultElement.value;
+	if(type === "plus") {
+		stock = parseInt(stock) >= d_stock ? d_stock : parseInt(stock) + 1;
+	}else if(type === "minus") {
+		stock = parseInt(stock) <= 1 ? 1 : parseInt(stock) - 1;
+	}
+	resultElement.value = stock;
+}
+
+function get_detail_amount(){
+	const resultAmount = document.getElementById('d-amount');
+	const resultStock = document.getElementById('d-stock');
+	let amount = resultAmount.value;
+	let stock = resultStock.value;
+	amount = (parseInt(amount) + parseInt(d_amount)) * parseInt(stock);
+	resultAmount.value = amount;
+}
+
+
+
+
+$('.basket-btn').on('click', function(e) {
+	$.ajax({
+		url: "./basket/add",
+		type:"POST",
+		data: from,
+		success: function(data){
+			location.href="/boookfarm/basket";
+			
+			
+		}
+		
+	});
 });
+
+
 
 $('.purchase-btn').on('click', function(){
 	location.href="/boookfarm/payment"
@@ -435,14 +332,13 @@ $(document).ready(function(){
   var currentPosition = parseInt($(".quickmenu").css("top"));
   $(window).scroll(function() {
     var position = $(window).scrollTop();
-    $(".quickmenu").stop().animate({"top":position+currentPosition+"px"},500);
+    $(".quickmenu").stop().animate({"top":position+currentPosition-100+"px"},500);
   });
+  
+  get_detail_page();
+  get_detail_amount();
+  get_detail_list();
 });
 
-
-
-$(document).ready(function() {
-	get_detail_page();
-});
 </script>
 </html>

@@ -158,7 +158,7 @@
 
 .order-frame{
 	display: flex;
-	padding: 0 4rem 0 12rem;
+	margin: 0 4rem 0 12rem;
 }
 
 .alpa{
@@ -172,26 +172,13 @@
 }
 
 .delta{
-	padding: 0 5rem 0 0;
-}
-
-.col-price{
-	color: rgb(35, 122, 246);
-	font-size: 2.4rem;
-	font-weight: bold;
+	padding: 0 7rem 0 2rem;
 }
 
 .col-won{
 	padding: 0 0 0 0.5rem;
 }
-/*
-.img-box{
-	padding: 0 3.5rem 0 3.5rem;
-	background-color:rgb(250,250,250);
-	border: 1px solid;
-	border-color: rgb(240,240,240);
-}
-*/
+
 .quantity-img-box{
 	display: flex;
 	justify-content: center;
@@ -200,6 +187,11 @@
 	background-color:rgb(250,250,250);
 	border-color: rgb(240,240,240);
 }
+
+.quantity-img-box:hover{
+	cursor: pointer;
+}
+
 .minus-img, .plus-img{
 	width: 2.4rem;
 	height: 2.4rem;
@@ -270,8 +262,30 @@
 	color: #616161;
 }
 
-.book-sort{
+.book-rsort{
 	display: flex;
+}
+
+.detail-stock{
+	outline: none;
+	background-color:rgb(250, 250, 250);
+	border: none;
+	width:1rem;
+	height: 1.5rem;
+	font-size: 1.6rem;
+	font-weight: bold;
+	margin: 0 1.5rem 0 1.5rem;
+}
+
+.detail-amount{
+	outline: none;
+	background-color:rgb(250, 250, 250);
+	border: none;
+	width: 7rem;
+	height: 2.6rem;
+	color: rgb(35, 122, 246);
+	font-size: 2.4rem;
+	font-weight: bold;
 }
 
 .book-fix{

@@ -14,8 +14,13 @@ public class BookManageService {
 	@Autowired
 	private BookDetailDAO dao;
 	
-	public List<BookDetailDTO> getData() {
-		List<BookDetailDTO> datas = dao.getData();
+	public BookDetailDTO getData() {
+		BookDetailDTO datas = dao.getData();
 		return datas;
+	}
+	
+	public List<BookDetailDTO> getDatas() {
+		List<BookDetailDTO> data = dao.getDatas();
+		return data;
 	}
 }

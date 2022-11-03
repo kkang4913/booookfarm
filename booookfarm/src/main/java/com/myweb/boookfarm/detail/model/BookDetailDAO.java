@@ -14,10 +14,16 @@ public class BookDetailDAO {
 	private String mapper = "bookManageMapper.%s";
 	
 	
-	public List<BookDetailDTO> getData() {
+	public BookDetailDTO getData() {
 		String mapperId = String.format(mapper, "selectData");
-		List<BookDetailDTO> datas = session.selectList(mapperId);
+		BookDetailDTO datas = session.selectOne(mapperId);
 		return datas;
+	}
+	
+	public List<BookDetailDTO> getDatas(){
+		String mapperId = String.format(mapper, "selectSort");
+		List<BookDetailDTO> data = session.selectList(mapperId);
+		return data;
 	}
 
 }
