@@ -24,7 +24,15 @@
 	font-weight: normal;
 	height: 4rem;
 	margin-left: 10rem;
-	width: 100%;
+	width: 40rem;
+}
+.serch-box > img{
+	width: 3rem;
+}
+.serch-box{
+	position: relative;
+	left: 4.3rem;
+	cursor: pointer;
 }
 .serach-container{
 	display: flex;
@@ -53,6 +61,10 @@
 	height: 12.5rem;
 	background-color: rgb(100,157,237);
 }
+.sidemenu-item-container > div{
+	cursor: pointer;
+	}
+	
 .sidemenu-title{
 	font-size: 2.4rem;
 	font-weight: normal;
@@ -73,7 +85,7 @@
 	border-bottom: 1px solid var(--grey);
 	color: var(--deepgrey);
 }
-	.selected > span{
+.selected > span{
 	    background: linear-gradient(to top, #FFFF92 40%, #FAFAFA 60%);
 	    color: #202020;
 }
@@ -265,6 +277,16 @@
 	font-weight: bolder;
 }
 
+.top>button:hover{
+	cursor: pointer;
+	background-color: #1854A9;
+	border-color: #1854A9;
+}
+.bottom>button:hover{
+	cursor: pointer;
+	border-color: #202020;
+}
+
 .card-info-box{
 	margin: 1.5rem -0.5rem 0 2rem;
 	width: 53rem;
@@ -317,5 +339,36 @@
 }
 .mainlogo{
 	margin: 0 8.7rem 0 0;
+}
+.mainlogo>img{
+	width: 20rem;
+	cursor: pointer;
+}
+ul {
+    border-right: 0;
+    display: flex;
+    justify-content: center;
+    margin: 2rem auto 2rem auto;
+}
+
+ul li {
+    text-align: center;
+    float: left;
+}
+
+ul li a.paging-_btn {
+    display: block;
+    font-size: 14px;
+    padding: 9px 12px;
+    border-right: solid 1px #ccc;
+    box-sizing: border-box;
+}
+
+ul li.paging_on {
+    background: #eda712;
+}
+
+ul li.paging_on a {
+    color: #fff;
 }
 }

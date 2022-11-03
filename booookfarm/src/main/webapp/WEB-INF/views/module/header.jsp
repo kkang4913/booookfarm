@@ -13,7 +13,7 @@
 				<div class="head-container">
 					<div class="mainlogo-img">
 						<a class="mainlogo" onclick="location.href='/boookfarm'">
-							<img src="${path}/resources/img/mainlogo.png" style="width: 20rem;">
+							<img src="${path}/resources/img/mainlogo.png">
 						</a>
 					</div>
 					<div class="serach-container">
@@ -28,6 +28,9 @@
 						<div class="sear-place input-layout">
 							<input class="sear input-box" type="text">
 						</div>
+							<a class="serch-box">
+								<img src="${path}/resources/img/icon/serch_icon.png">
+							</a>
 					</div>
 				</div>
 				</div>
