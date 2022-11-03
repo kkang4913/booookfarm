@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="bookTestMapper">
+	<select id="selectAll"  resultType="bookDTO">
+		SELECT BOOK_CODE AS bookCode
+			 , BOOK_TITLE AS bookTitle
+			 , BOOK_AUTHOR AS bookAuthor
+			 , BOOK_INFO AS bookInfo
+			 , BOOK_PRICE AS bookPrice
+			 , BOOK_DISCOUNT AS bookDiscount
+			 , ISBN AS isbn
+			 , BOOK_CATEGORY AS bookCategory
+			 , STOCK AS stock
+			 , PUBLISHER AS publisher
+			 , BOOK_CONDITION AS bookCondition
+			 , BOOK_CONDITION_INFO AS bookConditionInfo
+			 , BOOK_IMG_PATH AS bookImgPath
+			 , TO_CHAR(CREATE_DATE,'YYYY.MM.DD') AS createDate
+		FROM BOOK
+	</select>
+	<select id="selectCnt"  resultType="_int">
+   	SELECT COUNT(*)
+     FROM BOOK
+	</select>
+</mapper>  

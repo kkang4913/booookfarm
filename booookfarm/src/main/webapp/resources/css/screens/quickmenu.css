@@ -1,12 +1,6 @@
 @charset "UTF-8";
 
-.menu-item{
-	cursor: default;
-	}
 
-.menu-item >span {
-	cursor: pointer;
-}
 .menu-item-checked >span {
 	cursor: pointer;
 }
