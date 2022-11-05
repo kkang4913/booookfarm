@@ -412,7 +412,6 @@ function idDupChk() {
         data: JSON.stringify(sendId),
         dataType: "json",
         success: (res) => {
-            console.log(res.dupChk);
             if(res.dupChk) {
                 alert('중복입니다.')
             } else {
@@ -428,9 +427,9 @@ function idDupChk() {
  *  @todo alert -> modal 변경
  */
 function sendSMS() {
-    if(isCNum) {
+    if(isCNum) {    // 인증여부 확인
         alert('인증이 완료되었습니다.');
-        return ;
+        return;
     }
 
     const pNum = $('.join-form__input>input[name=phone]').val();
@@ -444,19 +443,22 @@ function sendSMS() {
         data: JSON.stringify(sendPhone),
         dataType: "json",
         success: (res) => {
-            $('.join-form__input>input[name=phone]').prop('readonly', true);
-            certificationNumber = res.cNum;
-            let display = $('#cNumTimer');
-            let leftSec = 300;
+            if(res.phoneDupChk) {   // 이미 등록된 핸드폰일 경우
+                alert("중복입니다.");
+            } else {    // 등록된 정보가 없을 경우
+                $('.join-form__input>input[name=phone]').prop('readonly', true);    // 핸드폰 입력 부분 비활성화
+                certificationNumber = res.cNum; // 인증번호 저장
+                let display = $('#cNumTimer');  // 타이머 출력할 span
+                let leftSec = 300;  // 제한시간 5분 설정
 
-            if(cNumTimerIsRun){
-                clearInterval(cNumTimer);
-                display.html("");
-                startTimer(leftSec, display);
-            } else {
-                startTimer(leftSec, display);
+                if(cNumTimerIsRun){ // 이미 타이머가 작동중일 경우
+                    clearInterval(cNumTimer);   // 타이머 중지
+                    display.html("");   // 타이머 span 비우기
+                    startTimer(leftSec, display);   // 타이머 다시 시작
+                } else {
+                    startTimer(leftSec, display);   // 타이머 시작
+                }
             }
-            console.log(certificationNumber);
         }
     });
 }
@@ -474,18 +476,18 @@ function startTimer(count, display) {
         seconds = parseInt(count % 60, 10);
 
         minutes = minutes < 10 ? "0" + minutes : minutes;
-        seconds = seconds < 10 ? "0" + seconds : seconds;
+        seconds = seconds < 10 ? "0" + seconds : seconds;   // 01:01 형식으로 출력위한 삼항 연산
 
-        display.html(minutes + ":" + seconds);
+        display.html(minutes + ":" + seconds);  // 남은시간 출력
 
-        if (--count < 0) {
-            clearInterval(cNumTimer);
-            display.html("00:00");
-            chkTimeOver = true;
-            cNumTimerIsRun = false;
+        if (--count < 0) {  // 제한시간이 초과될 경우
+            clearInterval(cNumTimer);   // 타이머 종료
+            display.html("00:00");  // 00:00 출력
+            chkTimeOver = true; // 제한시간 초과 true
+            cNumTimerIsRun = false; // 타이머 작동 false
         }
     }, 1000);
-    cNumTimerIsRun = true;
+    cNumTimerIsRun = true; // 타이머 작동중
 }
 
 /**

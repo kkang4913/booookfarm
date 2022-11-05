@@ -16,7 +16,17 @@
              , SOCIAL_TYPE AS socialType
              , MEMBER_POSITION AS memPos
              , JOIN_DATE AS joinDate
-        FROM MEMBERS
-        WHERE MEMBER_ID = #{memId}
+          FROM MEMBERS
+         WHERE MEMBER_ID = #{memId}
+    </select>
+    <select id="selectMemId" resultType="string">
+        SELECT MEMBER_ID
+          FROM MEMBERS
+         WHERE MEMBER_ID = #{id}
+    </select>
+    <select id="selectMemPhone" resultType="string">
+        SELECT PHONE
+          FROM MEMBERS
+         WHERE PHONE = #{phone}
     </select>
 </mapper>
