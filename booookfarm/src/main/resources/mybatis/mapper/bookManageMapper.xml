@@ -19,7 +19,7 @@
 			 , BOOK_IMG_PATH AS bookImgPath
 			 , CREATE_DATE AS createDate
 		FROM BOOK
-		WHERE BOOK_CODE = '2201a2b2c2'
+		WHERE BOOK_CODE = '2201a5b5c5'
 	</select>
 	<select id="selectSort"  resultType="bookDetailDTO">
 		SELECT RNUM
@@ -48,4 +48,46 @@
 		WHERE <![CDATA[ ROWNUM <= 6]]>
 		AND <![CDATA[ ROWNUM >= 1]]>
 	</select>
+	<select id="selectAllBasketData"  resultType="bookDetailDTO" parameterType="bookBasketDTO">
+		SELECT b.BOOK_CODE AS bookCode
+			 , b.BOOK_TITLE AS bookTitle
+			 , b.BOOK_AUTHOR AS bookAuthor
+			 , b.BOOK_INFO AS bookInfo
+			 , b.BOOK_PRICE AS bookPrice
+			 , b.BOOK_DISCOUNT AS bookDiscount
+			 , b.ISBN AS isbn
+			 , b.BOOK_CATEGORY AS bookCategory
+			 , b.STOCK AS stock
+			 , b.PUBLISHER AS publisher
+			 , b.BOOK_CONDITION AS bookCondition
+			 , b.BOOK_CONDITION_INFO AS bookConditionInfo
+			 , b.BOOK_IMG_PATH AS bookImgPath
+			 , b.CREATE_DATE AS createDate
+		FROM BOOK b
+		JOIN BASKET bb
+		  ON b.BOOK_CODE = bb.BOOK_CODE 
+		WHERE bb.MEMBER_ID = 'user01'
+	</select>
+	<select id="selectBasketData"  resultType="bookBasketDTO">
+		SELECT BASKET_CODE AS basketCode
+			 , MEMBER_ID AS memberId
+			 , BOOK_CODE AS bookCode
+			 , QUANTITY AS quantity
+			 , DELIVERY_FEE AS deluveryFee
+		FROM BASKET
+		WHERE BOOK_CODE = #{bookCode}
+	</select>
+	<insert id="insertBasketData" parameterType="bookBasketDTO">
+		INSERT INTO BASKET(BASKET_CODE 
+			 , MEMBER_ID 
+			 , BOOK_CODE 
+			 , QUANTITY 
+			 , DELIVERY_FEE)
+		VALUES(SQU_BASKET.NEXTVAL
+			 , #{memberId}
+			 , #{bookCode}
+			 , #{quantity}
+			 , #{deliveryFee})
+	</insert>
+	
 </mapper>  

@@ -19,6 +19,7 @@ public class BookDetailDTO {
 	private String bookCondition;
 	private String bookConditionInfo;
 	private String bookImgPath;
+	@JsonFormat(shape=JsonFormat.Shape.STRING, pattern="yyyy. MM. dd")
 	private Date createDate;
 	
 	public String getBookCode() {

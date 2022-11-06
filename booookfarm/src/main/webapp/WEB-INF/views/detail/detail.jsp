@@ -14,122 +14,119 @@
 </head>
 <body>
 <%@include file="/WEB-INF/views/module/header.jsp" %>
-	<div class="quickmenu">
-	  <div class="quickmenu-title">
-	  	<div>최근 본 상품</div>
-	  		<div class="quickmenu-contianer">
-	  			<div></div>
-	  		</div>
-	  </div>
+<!-- 왼쪽 사이드 퀵메뉴(최근 본 목록) css: quick -->
+<div class="quickmenu">
+  <div class="quickmenu-title">
+  	<div>최근 본 상품</div>
+  		<div class="quickmenu-contianer">
+  			<div></div>
+  		</div>
+  </div>
+</div>
+<main class="st-ma">
+	<div class="main-container">
+	<div class="book-info-container">
+		<div class="book--info">
+			<div id="m_info" class="main--info">
+				<input id="book_code" name="bookCode" type="hidden" value="${book_code}">
+			</div>
+			<div class="book-detail-layout">
+				<div id="c_info" class="book-detail-card">
+				
+				</div>
+			</div>
+		</div>
+		<div class="book-intro-container">
+			<div class="book-intro-layout">
+				<div id="i_info" class="book-intro-card">
+				</div>
+			</div>
+		</div>
 	</div>
-	<main class="st-ma">
-		<div class="main-container">
-		<div class="book-info-container">
-			<div class="book--info">
-				<div id="m_info" class="main--info">
-					<input id="book_code" name="bookCode" type="hidden" value="${book_code}">
+	<div class="order-select-container">
+		<div class="order-inner-layout">
+			<div class="order-frame">
+				<div class="col-name">
+					수량
 				</div>
-				<div class="book-detail-layout">
-					<div id="c_info" class="book-detail-card">
-					
-					</div>
+				<div class="quantity-img-box">
+					<img class="minus-img" src="${path}/resources/img/icon/minus.png" onclick="get_detail_stock('minus')">
 				</div>
-			</div>
-			<div class="book-intro-container">
-				<div class="book-intro-layout">
-					<div id="i_info" class="book-intro-card">
-					</div>
+				<div class="col-amount">
+					<input id="d-stock" class="detail-stock" name="stockValue" type="text" value="1" disabled="disabled">
+				</div>
+				<div class="quantity-img-box">
+					<img class="plus-img" src="${path}/resources/img/icon/plus.png" onclick="get_detail_stock('plus')">						
 				</div>
 			</div>
-		</div>
-		<div class="order-select-container">
-			<div class="order-inner-layout">
-				<div class="order-frame">
-					<div class="col-name">
-						수량
-					</div>
-					<div class="quantity-img-box">
-						<img class="minus-img" src="${path}/resources/img/icon/minus.png" onclick="get_detail_stock('minus')">
-					</div>
-					<div class="col-amount">
-						<input id="d-stock" class="detail-stock" name="stockValue" type="text" value="1" disabled="disabled">
-					</div>
-					<div class="quantity-img-box">
-						<img class="plus-img" src="${path}/resources/img/icon/plus.png" onclick="get_detail_stock('plus')">						
-					</div>
+			<div class="order-frame alpa">
+				<div class="col-name delta">
+					결제예정금액
 				</div>
-				<div class="order-frame alpa">
-					<div class="col-name delta">
-						결제예정금액
-					</div>
-					<div class="col-price">
-						<input id="d-amount" class="detail-amount" name="amountValue" type="text" value="0" disabled="disabled">
-					</div>
-					<div class="col-won">
-						원
-					</div>
+				<div class="col-price">
+					<input id="d-amount" class="detail-amount" name="amountValue" type="text" value="0" disabled="disabled">
 				</div>
-				<div class="order-button-frame">
-					<div class="botton-col left">
-						<button class="basket-btn" type="button"><span>장바구니</span></button>
-					</div>
-					<div class="botton-col right">
-						<button class="purchase-btn" type="button"><span>바로구매</span></button>
-					</div>
+				<div class="col-won">
+					원
+				</div>
+			</div>
+			<div class="order-button-frame">
+				<div class="botton-col left">
+					<button class="basket-btn" type="button"><span>장바구니</span></button>
+				</div>
+				<div class="botton-col right">
+					<button class="purchase-btn" type="button"><span>바로구매</span></button>
 				</div>
 			</div>
 		</div>
-		</div>
-	</main>
-	<footer class="st-ft-detail">
-		<div class="book-recommend-container">
-				<div class="book-recommend-layout">
-					<div class="recommend-card">
-						<div class="recommend-title">
-							<div class="recommend-name">북팜 최신 등록도서</div>
-						</div>
-						<div id="r_info" class="book-rsort">
-						</div>		
+	</div>
+	</div>
+</main>
+<footer class="st-ft-detail">
+	<div class="book-recommend-container">
+			<div class="book-recommend-layout">
+				<div class="recommend-card">
+					<div class="recommend-title">
+						<div class="recommend-name">북팜 최신 등록도서</div>
 					</div>
+					<div id="r_info" class="book-rsort">
+					</div>		
 				</div>
 			</div>
-		<div class="footer-container">
-			<div class="footer-layout">
-				<div class="footer-frame">
-					<div class="footer-menu">
-						<p class="ft-link">회사소개</p>
-						|
-						<p class="ft-link">개인정보취급방침</p>
-						|
-						<p class="ft-link">이용약관</p>
-						|
-						<p class="ft-link">고객센터</p>
-					</div>
-					<div class="footer-info">
-						Copyright(c) 2022 ㈜ 시퀀스엔. All Rights Reserved [사업자정보] 대표전화 : 1544 -2949 | 대표(CEO) : 양종선 | 개인정보 보호책임자 : 양종선 사업자등록번<br>
-						호 : 285-81-00634 | 통신판매업 신고번호 : 제 2017-서울서초-0272호. 서울시 서초구 서초대로 397 부띠크모나코 A동 301호 | Email : help@bookoa.com 
-					</div>
-					<div class="cs-frame">
-						<div class="cs-inner">
-							<div class="cus">고객만족센터</div>
-							<div class="cus-num">1544-2949</div>
-						</div>
-					</div>
-					<div class="cs-info web">
-						<a href="#">상담시간 안내</a>
+		</div>
+	<div class="footer-container">
+		<div class="footer-layout">
+			<div class="footer-frame">
+				<div class="footer-menu">
+					<p class="ft-link">회사소개</p>
+					|
+					<p class="ft-link">개인정보취급방침</p>
+					|
+					<p class="ft-link">이용약관</p>
+					|
+					<p class="ft-link">고객센터</p>
+				</div>
+				<div class="footer-info">
+					Copyright(c) 2022 ㈜ 시퀀스엔. All Rights Reserved [사업자정보] 대표전화 : 1544 -2949 | 대표(CEO) : 양종선 | 개인정보 보호책임자 : 양종선 사업자등록번<br>
+					호 : 285-81-00634 | 통신판매업 신고번호 : 제 2017-서울서초-0272호. 서울시 서초구 서초대로 397 부띠크모나코 A동 301호 | Email : help@bookoa.com 
+				</div>
+				<div class="cs-frame">
+					<div class="cs-inner">
+						<div class="cus">고객만족센터</div>
+						<div class="cus-num">1544-2949</div>
 					</div>
 				</div>
-			</div>		
-		</div>
-	</footer>
+				<div class="cs-info web">
+					<a href="#">상담시간 안내</a>
+				</div>
+			</div>
+		</div>		
+	</div>
+</footer>
 </body>
 <!-- 왼쪽 퀵 메뉴(최근 본 상품) 조절 스크립트 -->
 <script type="text/javascript">
 let d_stock = '';
-let d_amount = '';
-let d_price = '';
-let d_discount = '';
-const form ='';
 function get_detail_page() {
 	$.ajax({
 		url: "./view?bookCode="+ $('#book_code').val(),
@@ -241,18 +238,7 @@ function get_detail_page() {
 				_html3 += '</div>';
 				_html3 += '</div>';
 			$('#i_info').html(_html3);
-			
 			d_stock= res.stock;
-			d_amount= (res.bookPrice - (res.bookPrice * (res.bookDiscount*0.01)));
-			d_price= res.bookPrice;
-			d_discount= res.bookDiscount;
-
-			form= {
-				bookCode : res.bookCode,
-				bookTitle : res.bookTitle,
-				bookAuthor : res.bookAuthor,
-			};
-			console.log(form);
 		}
 	});
 }
@@ -281,7 +267,7 @@ function get_detail_list(){
 				_html += '</div>';
 				_html += '</div>';
 			}
-			$('#r_info').html(_html);
+		$('#r_info').html(_html);
 		}
 	});
 }
@@ -295,34 +281,57 @@ function get_detail_stock(type){
 		stock = parseInt(stock) <= 1 ? 1 : parseInt(stock) - 1;
 	}
 	resultElement.value = stock;
+	get_detail_amount();
 }
-
+//수량에 맞게 자동계산이 적용이 안됨. = 해결 => 수량 클릭이벤트때마다 가격 계산함수 가 실해되어야 함.
 function get_detail_amount(){
 	const resultAmount = document.getElementById('d-amount');
 	const resultStock = document.getElementById('d-stock');
 	let amount = resultAmount.value;
 	let stock = resultStock.value;
-
-	amount = (parseInt(amount) + parseInt(d_amount)) * parseInt(stock);
+	amount = (${book_info.bookPrice} - (${book_info.bookPrice} * (${book_info.bookDiscount}*0.01))) * parseInt(stock);
 	resultAmount.value = amount;
 }
-
-
-
-
-$('.basket-btn').on('click', function(e) {
+//디테일 페이지에서 장바구니 버튼클릭시 데이터 전달 코드
+/*FormData는 ajax로 이미지 파일을 업로드할 때 사용 */
+function add_cart() {
+	const form = {
+		bookCode:'${book_info.bookCode}',
+		bookTitle:'${book_info.bookTitle}',
+		bookAuthor: '${book_info.bookAuthor}',
+		bookInfo: '${book_info.bookInfo}',
+		bookPrice: ${book_info.bookPrice},
+		bookDiscount: ${book_info.bookDiscount},
+		isbn: '${book_info.isbn}',
+		bookCategory: '${book_info.bookCategory}',
+		stock: ${book_info.stock},
+		publisher: '${book_info.publisher}',
+		bookCondition: '${book_info.bookCondition}',
+		bookConditionInfo: '${book_info.bookConditionInfo}',
+		bookImgPath: '${book_info.bookImgPath}',
+		createDate: '${book_info.createDate}' //지정한 날짜 형식이 맞지 않아 에러발생
+	}
 	$.ajax({
-		url: "./basket/add",
+		url: "./basket_info",
 		type:"POST",
-		data: from,
+		data: JSON.stringify(form),
+		dataType: "json",
+		contentType : "application/json; charset=UTF-8",
 		success: function(data){
-			location.href="/boookfarm/basket";
-			
-			
+			if(data.code == 'success'){
+				alert("장바구니에 추가되었습니다.");
+				location.href="/boookfarm/basket";
+			}else if(data.code == 'fail'){
+				alert("이미 담겨진 상품입니다.");
+			}
 		}
-		
 	});
+}
+//장바구니 버튼 이벤트
+$('.basket-btn').on('click', function(e) {
+	add_cart();
 });
+
 
 
 
@@ -338,7 +347,6 @@ $(document).ready(function(){
   });
   
   get_detail_page();
-	get_detail_amount();
   get_detail_list();
 });
 

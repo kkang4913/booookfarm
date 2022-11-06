@@ -36,7 +36,7 @@ public class HomeController {
 	public String home(Locale locale, Model model) {
 		return "standard/standard";
 	}
-
+	
 	@GetMapping(value = "/list",produces="application/json; charset=utf-8")
 	@ResponseBody
 	public String bookList() {
