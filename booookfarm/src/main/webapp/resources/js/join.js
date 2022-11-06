@@ -1,13 +1,21 @@
 /**
  *  회원가입 페이지 스크립트
- *  @todo 핸드폰 중복 체크, alert->modal
+ *  @todo alert->modal
  */
+let joinColorTemp = "";
 let certificationNumber = "";
 let cNumTimer = null;
 let cNumTimerIsRun = false;
 let chkTimeOver = false;
+let idDubChk = false;
+let isName = false;
 let isId = false;
+let isPw = false;
+let isPwChk = false;
 let isCNum = false;
+let isEmail = false;
+let isAddr = false;
+let isDetailAddr = false;
 let isUseInfoTerms = false;
 let isOfferInfoTerms = false;
 let isServiceTerms = false;
@@ -16,28 +24,28 @@ let isServiceTerms = false;
 $('#showPw').on("click", () => {
     $('#showPw').addClass('hidden');
     $('#hidePw').removeClass('hidden');
-    $('input[name=pw]').attr('type', 'text');
+    $('#pw').attr('type', 'text');
 });
 
 /** 패스워드 입력 내용 숨기기 기능 */
 $('#hidePw').on("click", () => {
     $('#hidePw').addClass('hidden');
     $('#showPw').removeClass('hidden');
-    $('input[name=pw]').attr('type', 'password');
+    $('#pw').attr('type', 'password');
 });
 
 /** 패스워드 확인 입력 내용 보기 기능 */
 $('#showChkPw').on("click", () => {
     $('#showChkPw').addClass('hidden');
     $('#hideChkPw').removeClass('hidden');
-    $('input[name=chkPw]').attr('type', 'text');
+    $('#chkPw').attr('type', 'text');
 });
 
 /** 패스워드 확인 입력 내용 숨기기 기능 */
 $('#hideChkPw').on("click", () => {
     $('#hideChkPw').addClass('hidden');
     $('#showChkPw').removeClass('hidden');
-    $('input[name=chkPw]').attr('type', 'password');
+    $('#chkPw').attr('type', 'password');
 });
 
 /** 약관 모달 보기 기능 */
@@ -64,18 +72,19 @@ $('.hide-modal').on('click', e => {
 
 /**
  *  입력 창 hover 기능
- *  @todo 빠르게 hover, unhover시  오류 있음 로직 수정 필요
  */
-// $('.join-form__input').hover( e => {
-//     joinColorTemp =  $(e.target).css('border-color');
-//     $(e.target).css('border-color', 'var(--blue)');
-// }, e=> {
-//     $(e.target).css('border-color', joinColorTemp);
-// });
+$('.join-form__input').hover( e => {
+    $(e.target).addClass('bd-color--blue');
+    $(window).scroll( () => {
+        $(e.target).removeClass('bd-color--blue');
+    });
+}, e => {
+    $(e.target).removeClass('bd-color--blue');
+});
 
 /** 입력 창 focus 시 테두리 강조 기능 */
 $('.join-form__input>input').on('focus', e => {
-    $(e.target).parent().css('border-color', 'var(--blue)');
+    $(e.target).parent().addClass('bd-color--blue');
 });
 
 /** 입력 창 focusout 시 조건에 따라 입력 내용 체크 기능 */
@@ -161,6 +170,7 @@ function chkName(element, type) {
     let name = element.val();
     if(name == '' || name == null) {    // 입력 내용 유무 체크
         showErrMsg(element, '.null-err');
+        isName = false;
         return;
     } else {
         hideErrMsg(element, '.null-err', type);
@@ -168,8 +178,10 @@ function chkName(element, type) {
 
     if(name.length > 33) {      // 입력 내용 길이 체크
         showErrMsg(element, '.len-err');
+        isName = false;
     } else {
         hideErrMsg(element, '.len-err', type);
+        isName = true;
     }
 };
 
@@ -183,29 +195,34 @@ function chkId(element, type) {
     let id = element.val();
     const reg = /[`~!@@#$%^&*|₩₩₩'₩";:₩/?]/gi;    // 특수문자 체크용 변수
     const hangeulcheck = /[ㄱ-ㅎ|ㅏ-ㅣ|가-힣]/;     // 한글 체크용 변수
-    let idFlag = false;     //
+    let idFlag = false;     // 각종 조건 일치 여부 확인 변수
 
-    if(hangeulcheck.test(id)) {
+    if(hangeulcheck.test(id)) {     // id에 한글이 있는지
         idFlag = true;
-    } else if(id.search(/\s/) != -1) {
+    } else if(id.search(/\s/) != -1) {      // 공백이 있는지
         idFlag = true;
-    } else if(id.search(reg)>0) {
+    } else if(id.search(reg)>0) {       // 특수문자가 있는지
+        idFlag = true;
+    } else if(id.length < 5 || id.length > 15) {     // id 길이가 5~15자가 아닌지
         idFlag = true;
     } else {
         idFlag = false;
     }
 
-    if(id == '' || name == null) {    // 입력 내용 유무 체크
+    if(id == '' || id == null) {    // 입력 내용 유무 체크
         showErrMsg(element, '.null-err');
+        isId = false;
         return;
     } else {
         hideErrMsg(element, '.null-err', type);
     }
 
-    if(id.length <5 || id.length > 15 || idFlag) {      // 입력 내용 길이 및 한글&특수문자 체크
+    if(idFlag) {     // 각종 조건 체크
         showErrMsg(element, '.len-err');
+        isId = false;
     } else {
         hideErrMsg(element, '.len-err', type);
+        isId = true;
     }
 }
 
@@ -216,19 +233,29 @@ function chkId(element, type) {
  */
 function chkPw(element, type) {
     let pw = element.val();
-    const num = pw.search(/[0-9]/g);
-    const eng = pw.search(/[a-z]/ig);
-    const spe = pw.search(/[`~!@@#$%^&*|₩₩₩'₩";:₩/?]/gi);
+    const num = pw.search(/[0-9]/g);    // 숫자가 들어가는지
+    const eng = pw.search(/[a-z]/ig);   // 영문자가 들어가는지
+    const spe = pw.search(/[`~!@@#$%^&*|₩₩₩'₩";:₩/?]/gi);   // 특수문자가 들어가는지
     let pwFlag = false;
 
-    if(num < 0 || eng < 0 || spe <0) {
+    if(num < 0 || eng < 0 || spe <0) {  // 하나라도 불만족시
         pwFlag = true;
+    }
+
+    if(pw == '' || pw == null) {    // 입력 내용 유무 체크
+        showErrMsg(element, '.null-err');
+        isPw = false;
+        return;
+    } else {
+        hideErrMsg(element, '.null-err', type);
     }
 
     if(pw.length <8 || pw.length > 15 || pwFlag) {      // 입력 내용 길이 체크
         showErrMsg(element, '.len-err');
+        isPw = false;
     } else {
         hideErrMsg(element, '.len-err', type);
+        isPw = true;
     }
 }
 
@@ -239,11 +266,13 @@ function chkPw(element, type) {
  */
 function chkChkPw(element, type) {
     let pwChk = element.val();
-    let pw = $('.join-form__input>input[name=pw]').val();
+    let pw = $('#pw').val();
     if(pw !== pwChk) {  // 패스워드와 일치 여부 체크
         showErrMsg(element, '.not-match-err');
+        isPwChk = false;
     } else {
         hideErrMsg(element, '.not-match-err', type);
+        isPwChk = true;
     }
 
 }
@@ -289,6 +318,7 @@ function chkEmail(element, type) {
 
     if(email == '' || email == null) {      // 입력 내용 유무 체크
         showErrMsg(element, '.null-err');
+        isEmail = false;
         return;
     } else {
         hideErrMsg(element, '.null-err', type);
@@ -296,8 +326,10 @@ function chkEmail(element, type) {
 
     if(!(regex.test(email))) {
         showErrMsg(element, '.not-match-err');
+        isEmail = false;
     } else {
         hideErrMsg(element, '.not-match-err', type);
+        isEmail = true;
     }
 }
 
@@ -311,8 +343,10 @@ function chkPostalCode(element, type) {
 
     if(postalCode == '' || postalCode == null) {
         showErrMsg(element, '');
+        isAddr = false;
     } else {
         hideErrMsg(element, '', type);
+        isAddr = true;
     }
 }
 
@@ -326,8 +360,10 @@ function chkAddress(element, type) {
 
     if(address == '' || address == null) {
         showErrMsg(element, '');
+        isAddr = false;
     } else {
         hideErrMsg(element, '', type);
+        isAddr = true;
     }
 }
 
@@ -341,8 +377,10 @@ function chkDetailAddress(element, type) {
 
     if(detailAddress == '' || detailAddress == null) {      // 입력 내용 유무 체크
         showErrMsg(element, '.null-err');
+        isDetailAddr = false;
     } else {
         hideErrMsg(element, '.null-err', type);
+        isDetailAddr = true;
     }
 }
 
@@ -367,7 +405,8 @@ function chkRefundAccount(element, type) {
  * @param className 표시할 오류 class명
  */
 function showErrMsg(element, className) {
-    element.parent().css('border-color', 'var(--red)');
+    element.parent().removeClass('bd-color--blue');
+    element.parent().addClass('bd-color--red');
     if(!(className == '' || className == null)) {
         element.closest($('.join-form-line')).next('div').removeClass('hidden');
         element.closest($('.join-form-line')).next('div').find(className).removeClass('hidden');
@@ -381,11 +420,14 @@ function showErrMsg(element, className) {
  */
 function hideErrMsg(element, className, type) {
     if(type == 'focusout') {
-        element.parent().css('border-color', '#bebebe');
+        element.parent().removeClass('bd-color--red');
+        element.parent().removeClass('bd-color--blue');
     } else {
-        element.parent().css('border-color', 'var(--blue)');
+        element.parent().removeClass('bd-color--red');
+        element.parent().addClass('bd-color--blue');
     }
     if(!(className == '' || className == null)) {
+        element.parent().removeClass('bd-color--red');
         element.closest($('.join-form-line')).next('div').addClass('hidden');
         element.closest($('.join-form-line')).next('div').find(className).addClass('hidden');
     }
@@ -396,12 +438,16 @@ function hideErrMsg(element, className, type) {
  *  @todo 사용가능한 ID일 경우 사용 여부 묻는 기능 추가
  */
 function idDupChk() {
-    if(isId) {
+    if(!isId) {
+        alert("아이디를 확인해주세요.");
+        return;
+    }
+    if(idDubChk) {
         alert('사용 가능한 아이디입니다.');
         return ;
     }
 
-    const id = $('.join-form__input>input[name=id]').val();
+    const id = $('#id').val();
     const sendId = { 'id' : id };
 
     $.ajax({
@@ -412,11 +458,12 @@ function idDupChk() {
         data: JSON.stringify(sendId),
         dataType: "json",
         success: (res) => {
-            console.log(res.dupChk);
             if(res.dupChk) {
-                alert('중복입니다.')
+                alert('중복입니다.');
+                $('#id').prop('readonly', false);
+                isId = false;
             } else {
-                $('.join-form__input>input[name=id]').prop('readonly', true);
+                $('#id').prop('readonly', true);
                 isId = true;
             }
         }
@@ -428,12 +475,12 @@ function idDupChk() {
  *  @todo alert -> modal 변경
  */
 function sendSMS() {
-    if(isCNum) {
+    if(isCNum) {    // 인증여부 확인
         alert('인증이 완료되었습니다.');
-        return ;
+        return;
     }
 
-    const pNum = $('.join-form__input>input[name=phone]').val();
+    const pNum = $('#phone').val();
     const sendPhone = { 'pNum' : pNum };
 
     $.ajax({
@@ -444,19 +491,22 @@ function sendSMS() {
         data: JSON.stringify(sendPhone),
         dataType: "json",
         success: (res) => {
-            $('.join-form__input>input[name=phone]').prop('readonly', true);
-            certificationNumber = res.cNum;
-            let display = $('#cNumTimer');
-            let leftSec = 300;
+            if(res.phoneDupChk) {   // 이미 등록된 핸드폰일 경우
+                alert("중복입니다.");
+            } else {    // 등록된 정보가 없을 경우
+                $('#phone').prop('readonly', true);    // 핸드폰 입력 부분 비활성화
+                certificationNumber = res.cNum; // 인증번호 저장
+                let display = $('#cNumTimer');  // 타이머 출력할 span
+                let leftSec = 300;  // 제한시간 5분 설정
 
-            if(cNumTimerIsRun){
-                clearInterval(cNumTimer);
-                display.html("");
-                startTimer(leftSec, display);
-            } else {
-                startTimer(leftSec, display);
+                if(cNumTimerIsRun){ // 이미 타이머가 작동중일 경우
+                    clearInterval(cNumTimer);   // 타이머 중지
+                    display.html("");   // 타이머 span 비우기
+                    startTimer(leftSec, display);   // 타이머 다시 시작
+                } else {
+                    startTimer(leftSec, display);   // 타이머 시작
+                }
             }
-            console.log(certificationNumber);
         }
     });
 }
@@ -474,18 +524,18 @@ function startTimer(count, display) {
         seconds = parseInt(count % 60, 10);
 
         minutes = minutes < 10 ? "0" + minutes : minutes;
-        seconds = seconds < 10 ? "0" + seconds : seconds;
+        seconds = seconds < 10 ? "0" + seconds : seconds;   // 01:01 형식으로 출력위한 삼항 연산
 
-        display.html(minutes + ":" + seconds);
+        display.html(minutes + ":" + seconds);  // 남은시간 출력
 
-        if (--count < 0) {
-            clearInterval(cNumTimer);
-            display.html("00:00");
-            chkTimeOver = true;
-            cNumTimerIsRun = false;
+        if (--count < 0) {  // 제한시간이 초과될 경우
+            clearInterval(cNumTimer);   // 타이머 종료
+            display.html("00:00");  // 00:00 출력
+            chkTimeOver = true; // 제한시간 초과 true
+            cNumTimerIsRun = false; // 타이머 작동 false
         }
     }, 1000);
-    cNumTimerIsRun = true;
+    cNumTimerIsRun = true; // 타이머 작동중
 }
 
 /**
@@ -493,7 +543,7 @@ function startTimer(count, display) {
  *  @todo 인증 완료/실패시 처리 내용 추가, alert -> modal 변경
  */
 function chkCNum() {
-    const cNum = $('.join-form__input>input[name=chkPhone]').val();
+    const cNum = $('#chkPhone').val();
 
     if(chkTimeOver) {
         alert("인증 시간이 만료되었습니다. 다시 요청해주세요.");
@@ -502,11 +552,12 @@ function chkCNum() {
 
     if(cNum == certificationNumber) {
         clearInterval(cNumTimer);
-        $('.join-form__input>input[name=chkPhone]').prop('disabled', true);
+        $('#chkPhone').prop('disabled', true);
         isCNum = true;
-        alert("인증이 완료되었습니다.")
+        alert("인증이 완료되었습니다.");
     } else {
-        alert("인증이 실패하였습니다.")
+        alert("인증이 실패하였습니다.");
+        isCNum = false;
     }
 }
 
@@ -550,6 +601,7 @@ function daumPostcode() {
             // 우편번호와 주소 정보+참고항목을 해당 필드에 넣는다.
             document.getElementById('postalCode').value = data.zonecode;
             document.getElementById("address").value = addr + extraAddr;
+            isAddr = true;
             // 커서를 상세주소 필드로 이동한다.
             document.getElementById("detailAddress").focus();
         }
@@ -593,6 +645,102 @@ $('input[type=checkbox]').on('click', e => {
             break;
     }
 });
+
+function joinFormChk() {
+    if(!isName) {
+        alert("이름을 확인해주세요.");
+        $('#name').focus();
+        return;
+    }
+    if(!isId) {
+        alert("아이디를 확인해주세요.");
+        $('#id').focus();
+        return;
+    }
+    if(!isPw) {
+        alert("비밀번호를 확인해주세요.");
+        $('#pw').focus();
+        return;
+    }
+    if(!isPwChk) {
+        alert("비밀번호를 확인해주세요.");
+        $('#chkPw').focus();
+        return;
+    }
+    if(!isCNum) {
+        alert("핸드폰 인증을 진행해주세요.");
+        $('#chkPhone').focus();
+        return;
+    }
+    if(!isEmail) {
+        alert("이메일을 확인해주세요.");
+        $('#email').focus();
+        return;
+    }
+    if(!isAddr) {
+        alert("주소를 확인해주세요.");
+        $('#address').focus();
+        return;
+    }
+    if(!isDetailAddr) {
+        alert("상세주소를 확인해주세요.");
+        $('#detailAddress').focus();
+        return;
+    }
+    if(!isUseInfoTerms || !isOfferInfoTerms || !isServiceTerms) {
+        alert("약관에 동의해주세요.");
+        $('#allCheck').focus();
+        return;
+    }
+    form.submit();
+}
+
+// function joinFormSubmit() {
+//     const name = $('#name').val();
+//     const id = $('#id').val();
+//     const pw = $('#pw').val();
+//     const phone = $('#phone').val();
+//     const email = $('#email').val();
+//     const addr = $('#address').val();
+//     const detailAddr = $('detailAddress').val();
+//     const gender = $('input[type=radio]:checked').length == 0 ? 'N' : $('input[type=radio]:checked').val();
+//
+//     const sendForm = { 'name' : name
+//                      , 'id' : id
+//                      , 'pw' : pw
+//                      , 'phone' : phone
+//                      , 'email' : email
+//                      , 'addr' : addr
+//                      , 'detailAddr' : detailAddr
+//                      , 'gender' : gender};
+//
+//     $.ajax({
+//         type: "post",
+//         url: "join",
+//         traditional: true,
+//         contentType: "application/json",
+//         data: JSON.stringify(sendPhone),
+//         dataType: "json",
+//         success: (res) => {
+//             if(res.phoneDupChk) {   // 이미 등록된 핸드폰일 경우
+//                 alert("중복입니다.");
+//             } else {    // 등록된 정보가 없을 경우
+//                 $('#phone').prop('readonly', true);    // 핸드폰 입력 부분 비활성화
+//                 certificationNumber = res.cNum; // 인증번호 저장
+//                 let display = $('#cNumTimer');  // 타이머 출력할 span
+//                 let leftSec = 300;  // 제한시간 5분 설정
+//
+//                 if(cNumTimerIsRun){ // 이미 타이머가 작동중일 경우
+//                     clearInterval(cNumTimer);   // 타이머 중지
+//                     display.html("");   // 타이머 span 비우기
+//                     startTimer(leftSec, display);   // 타이머 다시 시작
+//                 } else {
+//                     startTimer(leftSec, display);   // 타이머 시작
+//                 }
+//             }
+//         }
+//     });
+// }
 
 $(document).ready( () => {
 

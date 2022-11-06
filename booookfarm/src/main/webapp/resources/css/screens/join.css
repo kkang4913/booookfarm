@@ -88,6 +88,14 @@
     border: 1px solid #bebebe;
 }
 
+.bd-color--red {
+    border-color: var(--red);
+}
+
+.bd-color--blue {
+    border-color: var(--blue);
+}
+
 .join-form__input>i:hover {
     cursor: pointer;
 }
