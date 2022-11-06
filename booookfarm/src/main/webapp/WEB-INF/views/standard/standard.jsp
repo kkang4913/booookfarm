@@ -112,12 +112,12 @@
                 		<option value="100">100개씩 보기</option>
             		</select>
             	</div>
-            		<select class="select-list-box"  title="목록 보기 유형 선택" id="selListPer">
-                		<option value="">최신 등록순</option>
-                		<option value="">정확도 높은순</option>
-                		<option value="">낮은 가격순</option>
-                		<option value="">높은 가격순</option>
-                		<option value="">출간일순</option>
+            		<select class="select-list-box"  title="목록 보기 유형 선택" id="select_sort_data">
+                		<option value="sortDate">최신 등록순</option>
+                		<option value="sortAccuracy">정확도 높은순</option>
+                		<option value="sortLprice">낮은 가격순</option>
+                		<option value="sortHprice">높은 가격순</option>
+                		<option value="sortDate">출간일순</option>
             		</select>
             		</div>
 				 </div>
@@ -181,8 +181,22 @@
 				</div>
 				--%>
 			</div>
-				<ul id="pagingul">
-				</ul>
+					<ul class="pagination">
+						<li id="p_btn" class="page-item">
+							<button id="p_page" class="page-link">
+								<img src="${path}/resources/img/icon/prev_arrow.png">
+							</button>
+						</li>
+						<li id="page_list" class="paging_on">
+						</li>
+						<li id="n_btn" class="page-item">
+							<button id="n_page" class="page-link" >
+								<img src="${path}/resources/img/icon/next_arrow.png">
+							</button>
+						</li>
+					</ul>
+				<!-- <ul id="pagingul">
+				</ul> -->
 		</main>
 <%@ include file="/WEB-INF/views/module/footer.jsp" %>
 </body>
@@ -190,25 +204,176 @@
 
 <!-- 왼쪽 퀵 메뉴(최근 본 상품) 조절 스크립트 -->
 <script type="text/javascript">
-let totalData ='';
-let dataPerPage= '';
+
+/* let totalData =''; //총 데이터 수
+let dataPerPage= ''; // 한 페이지에 나타낼 데이터 수
 let globalCurrentPage = 1; //현재 페이지
 let pageCount = 5; //페이징에 나타낼 페이지 수
-
+ */
 $(document).ready(function(){
-	dataPerPage= $('#select_page_cnt').val();
-	main_page_list(1,dataPerPage);
-	   
-var currentPosition = parseInt($(".quickmenu").css("top"));
+	main_page_list(1);
 
+<!-- 사이드바 카테고리 리스트 & 선택  -->
+const categoryname=['전체보기','건강,취미 스포츠/잡지,만화','여행/요리,가정생활/예술','어린이교구,아동','초/중/고학습','日本書籍','Foreign Books/어린이 영어','외국어/한국소개도서'
+	,'경제,경영,자기계발/정치,사회','과학,기술,컴퓨터','소설,시,에세이','인문,역사,문화,종교'];
+	
+	let _sidehtml ='';
+	for (var i = 0; i < categoryname.length; i++) {
+		var categorylist = categoryname[i];
+		_sidehtml +=  '<div class="menu-item"><span>'+categoryname[i]+'</span></div>'
+	}
+	$('#main-category-list').html(_sidehtml);
+	
+	
+const menuWrap = document.querySelector('.sidemenu-item-container');
+        function select(divEl,target){
+            Array.from(divEl.children).forEach(
+                v => v.classList.remove('selected')
+            )
+            if(target) target.classList.add('selected');
+        }
+       	 menuWrap.addEventListener('click', e => {
+          	  const selected = e.target;
+            	select(menuWrap, selected);
+        });
+//오른쪽 최근 본 목록 탑 스크롤 따라다니기
+var currentPosition = parseInt($(".quickmenu").css("top"));
 $(window).scroll(function() {
   var position = $(window).scrollTop();
   $(".quickmenu").stop().animate({"top":position+currentPosition+"px"},500);
 	});
 });
 
+// 할인이 적용된 가격에 (,)와 원 단위에 맞춰 소주점을 계산
+// 원 단위=*10 , 십 단위 =*100 백 단위=*1000
+ function AmountCommas(price){
+	 	modify_price = Math.floor(price/10) * 10;
+	 	return modify_price.toString().replace(/\B(?=(\d{3})+(?!\d))/g,",");
+	}
+let main_page = 1;
+let category_id = 0;
 
-let m_page = 1;
+let sort_data = '';
+
+
+let m_price = 0;
+let result_price = 0;
+
+function main_page_list(page) {
+	main_page = page;
+	let _url = "./list?page=" + page + "&page_count=" + $('#select_page_cnt').val();
+	$.ajax({
+		url: _url,
+		type: "GET",
+		dataType: "json",
+		success: function(res) {
+			let book_html = '';
+			let _page = '';
+			for (var i=0 ; i < res.datas.length ; i++) {
+				result_price ='';
+				book_html += '<div class="bookcard-container">';
+				book_html += '<ol>';
+				book_html += '<li class="bookcard-flex">';
+				book_html += '<div>';
+				book_html += '<input class="bookcard-chkbox-card" id="chkbox-input" type="checkbox">';
+				book_html += '<label class="bookcard-chkbox-input" for="chkbox-input">';
+				book_html += '<span>상품선택</span>';
+				book_html += '</label>';
+				book_html += '</div>';
+				book_html += '<div>';
+				book_html += '</div>';
+				book_html += '<div onclick=location.href="detail?bookcode='+res.datas[i].bookCode+'">';
+				book_html += '<div>';
+				book_html += '<a>';
+				book_html += '<span>';
+				book_html += '<img class="bookcard-img" src="${path}/resources/img/card-img.png">';
+				book_html += '</span>';
+				book_html += '</a>';
+				book_html += '</div>';
+				book_html += '</div>';
+				book_html += '<div class="card-info-box">';
+				book_html += '<div class="book-view">';
+				book_html += '<a href=# onclick=location.href="detail?bookcode='+res.datas[i].bookCode+'">';
+				book_html += '<span >'+res.datas[i].bookTitle+'</span>';
+				book_html += '</a>';
+				book_html += '<span class="book-view-cnt">조회수 :'+0+'</span>';
+				book_html += '</div>';
+				book_html += '<div class="book-info-author">';
+				book_html += '<span>';
+				book_html += '<a>저자 '+res.datas[i].bookAuthor+'&nbsp;|&nbsp;출판사 '+res.datas[i].publisher+'&nbsp;|&nbsp; 출간일 '+res.datas[i].createDate+'</a>';
+				book_html += '</span>';
+				book_html += '</div>';
+				book_html += '<div class="card-info-price">';
+				book_html += '<div class="card-price">정가: '+AmountCommas(res.datas[i].bookPrice)+'원</div>';
+				book_html += '<div class="card-sale-price">';
+				book_html += ''+AmountCommas(res.datas[i].bookPrice - (res.datas[i].bookPrice * (res.datas[i].bookDiscount*0.01))) +'원';
+				book_html += '</div>';
+				if (res.datas[i].bookPrice > result_price) {
+					book_html += '<div class="down-sale">'+res.datas[i].bookDiscount+'%';
+					book_html += '<div class="down-arrow">➔</div>';	
+				}else if(res.datas[i].bookPrice < result_price){
+					book_html += '<div class="up-sale">'+res.datas[i].bookDiscount+'%';
+					book_html += '<div class="up-arrow">➔</div>';
+				}
+				book_html += '</div>';
+				book_html += '</div>';
+				book_html += '</div>';
+				book_html += '<div class="book-basket-buy">';
+				book_html += '<div class="book-buy-layout top">';
+				book_html += '<button class="book-buy-btn"  type="button">';
+				book_html += '<span>바로구매</span>';
+				book_html += '</button>';
+				book_html += '</div>';
+				book_html += '<div class="book-basket-layout bottom">';
+				book_html += '<button class="book-basket-btn" type="button">';
+				book_html += '<span>장바구니</span>';
+				book_html += '</button>';
+				book_html += '</div>';
+				book_html += '</div>';
+				book_html += '</div>';
+				book_html += '</li>';
+				book_html += '</ol>';
+				book_html += '</div>';
+			}
+			$('#book-list').html(book_html);
+			
+			for (var i=0 ; i < res.pager.pagelist.length; i++) {
+				let add_class = '';
+					if (res.pager.c_page == res.pager.pagelist[i]) {
+						add_class = 'selected_on';
+					}
+					_page += '<button class="page-link '+ add_class +'" onclick="main_page_list('+ res.pager.pagelist[i] +');">'+ res.pager.pagelist[i] +'</button>';
+					
+			}	
+			$('#p_page').attr('onclick', 'main_page_list('+ res.pager.p_page +');');
+			if (res.pager.c_page == 1) {
+				$('#p_page').prop('disabled', true);
+				$('#p_btn').addClass('disabled');
+				$('#p_btn').addClass('disnone');
+			} else {
+				$('#p_page').prop('disabled', false);
+				$('#p_btn').removeClass('disabled');
+				$('#p_btn').removeClass('disnone');
+			}
+			$('#n_page').attr('onclick', 'main_page_list('+ res.pager.n_page +');');
+
+			if (res.pager.is_npage == false) {
+				$('#n_page').prop('disabled', true);
+				$('#n_btn').addClass('disabled');
+				$('#n_btn').addClass('disnone');
+			}else{
+				$('#n_page').prop('disabled', false);
+				$('#n_btn').removeClass('disabled');
+				$('#n_btn').removeClass('disnone');
+			}
+			$('#page_list').html(_page);
+		},
+
+	})
+}
+// 시작페이지
+
+/* let m_page = 1;
 function main_page_list(page,dataPerPage) {
 	m_page = page;
 	let _url = "./list?page="+ page + "&page_count=" + $('#select_page_cnt').val();
@@ -226,8 +391,15 @@ function main_page_list(page,dataPerPage) {
 		    console.log("현재 페이지" + m_page);
 		    console.log("한 페이지에 나타낼 글 수" + dataPerPage);
 		    
-		    for ( var i = (m_page - 1) * dataPerPage;
+		    if(res.pages.Cnt < 5  ){
+		    	dataPerPage = res.pages.Cnt;
+		    }
+		    
+		    console.log(dataPerPage);
+			
+		    	for ( var i = (m_page - 1) * dataPerPage;
 		    			i < (m_page - 1) * dataPerPage + dataPerPage; i++) {
+					
 				book_html += '<div class="bookcard-container">';
 				book_html += '<ol>';
 				book_html += '<li class="bookcard-flex">';
@@ -237,7 +409,7 @@ function main_page_list(page,dataPerPage) {
 				book_html += '<span>상품선택</span>';
 				book_html += '</label>';
 				book_html += '</div>';
-				book_html += '<div>';
+				book_html += '<div onclick=location.href="detail?bookcode='+res.datas[i].bookCode+'">';
 				book_html += '<div>';
 				book_html += '<a>';
 				book_html += '<span>';
@@ -285,7 +457,9 @@ function main_page_list(page,dataPerPage) {
 			}
 			$('#book-list').html(book_html);
 			
+
 			totalData = res.pages.Cnt; //총 데이터 수
+     		console.log("//총 데이터 수 = " + totalData);
 			paging(totalData, dataPerPage, pageCount, page);
 			
 			$("#select_page_cnt").change(function () {
@@ -369,45 +543,16 @@ function paging(totalData, dataPerPage, pageCount, currentPage) {
 	  });
 	}
 
-
-	
-$(document).on('mouseover', '.boookcard-view-box', function(e){
-    e.preventDefault();  
-  $('.bookcard-view-info').css('display', 'block');
+*/
+// 페이지 정렬 기능 --> 보여질 게시글 수 변경시 기능
+$('#select_page_cnt').on('change', function() {
+	console.log(main_page);
+	main_page_list(main_page);
 });
-
-
-$(document).on('mouseout', '.boookcard-view-box', function(e){
-    e.preventDefault();  
-  $('.bookcard-view-info').css('display', 'none');
+//페이지 정렬 기능 --> 상황에 따라 기능
+$('#select_sort_data').on('change', function() {
+	console.log($('#select_sort_data').val());
 });
-
-<!-- 사이드바 카테고리 리스트 & 선택  -->
-$(document).ready(function(){
-const categoryname=['전체보기','건강,취미 스포츠/잡지,만화','여행/요리,가정생활/예술','어린이교구,아동','초/중/고학습','日本書籍','Foreign Books/어린이 영어','외국어/한국소개도서'
-	,'경제,경영,자기계발/정치,사회','과학,기술,컴퓨터','소설,시,에세이','인문,역사,문화,종교'];
-	
-	let _sidehtml ='';
-	for (var i = 0; i < categoryname.length; i++) {
-		var categorylist = categoryname[i];
-		_sidehtml +=  '<div class="menu-item"><span>'+categoryname[i]+'</span></div>'
-	}
-	$('#main-category-list').html(_sidehtml);
-	
-	
-const menuWrap = document.querySelector('.sidemenu-item-container');
-        function select(divEl,target){
-            Array.from(divEl.children).forEach(
-                v => v.classList.remove('selected')
-            )
-            if(target) target.classList.add('selected');
-        }
-       	 menuWrap.addEventListener('click', e => {
-          	  const selected = e.target;
-            	select(menuWrap, selected);
-        });
-});
-<!-- 전체 체크박스 스크립트 -->
 function selectAll(selectAll)  {
 	  const checkboxes 
 	     = document.querySelectorAll('input[type="checkbox"]');
@@ -416,8 +561,6 @@ function selectAll(selectAll)  {
 	    checkbox.checked = selectAll.checked
 	  });
 	}
-	
-	
 
 </script>
 </html>

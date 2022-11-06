@@ -10,6 +10,7 @@ import org.springframework.stereotype.Repository;
 
 
 
+
 @Repository
 public class BookDAO {
 	
@@ -24,9 +25,15 @@ public class BookDAO {
 		return datas;
 	}
 
-	public int getDataCnt() {
+	public int getDataCnt(Map<String, Object> map) {
 		String mapperId = String.format(mapper, "selectCnt");
 		int datas = session.selectOne(mapperId);
+		return datas;
+	}
+
+	public List<BookDTO> selectAll(Map<String, Object> map) {
+		String mapperId = String.format(mapper, "selectAll");
+		List<BookDTO> datas = session.selectList(mapperId, map);
 		return datas;
 	}
 
