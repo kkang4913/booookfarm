@@ -308,12 +308,24 @@
 	padding-right: 1rem;
 	float: left;
 }
-.sale{
+.up-sale{
+	font-size: 1.6rem;
+	font-weight: bold;
+	margin-top: 1rem;
+	color: rgb(35,122,246);
+	display: inline-block;
+}
+
+.down-sale{
 	font-size: 1.6rem;
 	font-weight: bold;
 	margin-top: 1rem;
 	color: #E14F4F;
 	display: inline-block;
+}
+.up-arrow{
+	 transform: rotate(270deg); 
+	 display: inline-block;"
 }
 .down-arrow{
 	 transform: rotate(90deg); 
@@ -348,7 +360,7 @@ ul {
     border-right: 0;
     display: flex;
     justify-content: center;
-    margin: 2rem auto 2rem auto;
+    margin: 3rem auto 6rem auto;
 }
 
 ul li {
@@ -364,10 +376,46 @@ ul li a.paging-_btn {
     box-sizing: border-box;
 }
 
-ul li.paging_on {
-    background: #eda712;
+ul li.paging_on>.page-link {
+ 	margin: 0 0.9rem;
+ 	padding: 0;
+ 	width: 3rem;
+ 	height: 3rem;
+ 	font-size: 1.6rem;
+ 	font-weight: normal;
+ 	color: #616161;
+}
+ul li.paging_on>.page-link:hover {
+	border: 1px solid;
+	color: #237AF6;
 }
 
 ul li.paging_on a {
     color: #fff;
+}
+.page-item{
+	width: 3.3rem;
+	height: 3rem;
+}
+.page-link{
+	width: 100%;
+	height: 100%;
+	border-style: none;
+	background-color: white;
+}
+.selected_on{
+	border: 1px solid #237AF6;
+	color:  #237AF6;	
+background-color: rgba(35, 122, 246, 0.1);
+}
+.page-link:hover{
+	border: 1px solid;
+	color: #237AF6;
+}
+.page-item > .page-link > img{
+	width: 2rem;
+	display: flex;
+} 
+.disnone{
+	display: none;
 }
