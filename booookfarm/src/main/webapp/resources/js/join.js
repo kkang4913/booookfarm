@@ -2,6 +2,7 @@
  *  회원가입 페이지 스크립트
  *  @todo alert->modal
  */
+let joinColorTemp = "";
 let certificationNumber = "";
 let cNumTimer = null;
 let cNumTimerIsRun = false;
@@ -71,18 +72,19 @@ $('.hide-modal').on('click', e => {
 
 /**
  *  입력 창 hover 기능
- *  @todo 빠르게 hover, unhover시  오류 있음 로직 수정 필요
  */
-// $('.join-form__input').hover( e => {
-//     joinColorTemp =  $(e.target).css('border-color');
-//     $(e.target).css('border-color', 'var(--blue)');
-// }, e=> {
-//     $(e.target).css('border-color', joinColorTemp);
-// });
+$('.join-form__input').hover( e => {
+    $(e.target).addClass('bd-color--blue');
+    $(window).scroll( () => {
+        $(e.target).removeClass('bd-color--blue');
+    });
+}, e => {
+    $(e.target).removeClass('bd-color--blue');
+});
 
 /** 입력 창 focus 시 테두리 강조 기능 */
 $('.join-form__input>input').on('focus', e => {
-    $(e.target).parent().css('border-color', 'var(--blue)');
+    $(e.target).parent().addClass('bd-color--blue');
 });
 
 /** 입력 창 focusout 시 조건에 따라 입력 내용 체크 기능 */
@@ -403,7 +405,8 @@ function chkRefundAccount(element, type) {
  * @param className 표시할 오류 class명
  */
 function showErrMsg(element, className) {
-    element.parent().css('border-color', 'var(--red)');
+    element.parent().removeClass('bd-color--blue');
+    element.parent().addClass('bd-color--red');
     if(!(className == '' || className == null)) {
         element.closest($('.join-form-line')).next('div').removeClass('hidden');
         element.closest($('.join-form-line')).next('div').find(className).removeClass('hidden');
@@ -417,11 +420,14 @@ function showErrMsg(element, className) {
  */
 function hideErrMsg(element, className, type) {
     if(type == 'focusout') {
-        element.parent().css('border-color', '#bebebe');
+        element.parent().removeClass('bd-color--red');
+        element.parent().removeClass('bd-color--blue');
     } else {
-        element.parent().css('border-color', 'var(--blue)');
+        element.parent().removeClass('bd-color--red');
+        element.parent().addClass('bd-color--blue');
     }
     if(!(className == '' || className == null)) {
+        element.parent().removeClass('bd-color--red');
         element.closest($('.join-form-line')).next('div').addClass('hidden');
         element.closest($('.join-form-line')).next('div').find(className).addClass('hidden');
     }
@@ -640,7 +646,7 @@ $('input[type=checkbox]').on('click', e => {
     }
 });
 
-function joinFormChk(form) {
+function joinFormChk() {
     if(!isName) {
         alert("이름을 확인해주세요.");
         $('#name').focus();
@@ -688,6 +694,53 @@ function joinFormChk(form) {
     }
     form.submit();
 }
+
+// function joinFormSubmit() {
+//     const name = $('#name').val();
+//     const id = $('#id').val();
+//     const pw = $('#pw').val();
+//     const phone = $('#phone').val();
+//     const email = $('#email').val();
+//     const addr = $('#address').val();
+//     const detailAddr = $('detailAddress').val();
+//     const gender = $('input[type=radio]:checked').length == 0 ? 'N' : $('input[type=radio]:checked').val();
+//
+//     const sendForm = { 'name' : name
+//                      , 'id' : id
+//                      , 'pw' : pw
+//                      , 'phone' : phone
+//                      , 'email' : email
+//                      , 'addr' : addr
+//                      , 'detailAddr' : detailAddr
+//                      , 'gender' : gender};
+//
+//     $.ajax({
+//         type: "post",
+//         url: "join",
+//         traditional: true,
+//         contentType: "application/json",
+//         data: JSON.stringify(sendPhone),
+//         dataType: "json",
+//         success: (res) => {
+//             if(res.phoneDupChk) {   // 이미 등록된 핸드폰일 경우
+//                 alert("중복입니다.");
+//             } else {    // 등록된 정보가 없을 경우
+//                 $('#phone').prop('readonly', true);    // 핸드폰 입력 부분 비활성화
+//                 certificationNumber = res.cNum; // 인증번호 저장
+//                 let display = $('#cNumTimer');  // 타이머 출력할 span
+//                 let leftSec = 300;  // 제한시간 5분 설정
+//
+//                 if(cNumTimerIsRun){ // 이미 타이머가 작동중일 경우
+//                     clearInterval(cNumTimer);   // 타이머 중지
+//                     display.html("");   // 타이머 span 비우기
+//                     startTimer(leftSec, display);   // 타이머 다시 시작
+//                 } else {
+//                     startTimer(leftSec, display);   // 타이머 시작
+//                 }
+//             }
+//         }
+//     });
+// }
 
 $(document).ready( () => {
 
