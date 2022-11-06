@@ -44,7 +44,10 @@ public class MemberService {
 	 * @return 중복이면 true 아니면 false 반환
 	 */
 	public boolean chkIdDup(String id) {
-		boolean result = getMemId(id).equals(id) ? true : false;
+		boolean result = false;
+		if(getMemId(id) != null) {
+			result = getMemId(id).equals(id) ? true : false;
+		}
 		return result;
 	}
 
@@ -54,7 +57,10 @@ public class MemberService {
 	 * @return 중복이면 true 아니면 false 반환
 	 */
     public boolean chkPhoneDup(String phone) {
-		boolean result = getMemPhone(phone).equals(phone) ? true : false;
+		boolean result = false;
+		if(getMemPhone(phone) != null) {
+			result = getMemPhone(phone).equals(phone) ? true : false;
+		}
 		return result;
     }
 }

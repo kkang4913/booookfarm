@@ -25,6 +25,18 @@ public class MemberController {
         return "join";
     }
 
+    @PostMapping(value = "/join")
+    public String joinMem(@RequestParam String name
+                        , @RequestParam String id
+                        , @RequestParam String pw
+                        , @RequestParam String phone
+                        , @RequestParam String email
+                        , @RequestParam String postalCode
+                        , @RequestParam String address
+                        , @RequestParam String detailAddress) {
+        System.out.println(name + id + pw + phone + email + postalCode + address + detailAddress);
+        return "standard/standard";
+    }
     /**
      *  인증번호 발송 요청 받는 메서드
      * @param param 수신 받을 핸드폰 번호를 담은 JSON 객체 (key : pNum)

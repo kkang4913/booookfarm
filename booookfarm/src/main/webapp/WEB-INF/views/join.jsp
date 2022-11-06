@@ -15,29 +15,7 @@
   <script type="text/javascript" src="${path}/resources/js/jquery-3.6.0.min.js"></script>
 </head>
 <body>
-<nav class="navigation-container">
-  <ul class="navigation-element">
-    <li class="element"><a href="login">로그인</a></li>
-    <li class="element"><a href="join">회원가입</a></li>
-    <li class="element">1:1문의</li>
-    <li class="element">마이페이지</li>
-    <li class="element">장바구니</li>
-  </ul>
-</nav>
-<header class="st-hd">
-  <div class="head-container">
-    <div class="mainlogo-img">
-      <div class="mainlogo">
-        <p class="page-name">booookfarm</p>
-      </div>
-    </div>
-    <div class="full-sear">
-      <div class="sear-place">
-        <input class="sear" type="text">
-      </div>
-    </div>
-  </div>
-</header>
+<%@include file="/WEB-INF/views/module/header.jsp" %>
 <main class="st-ma">
   <div class="main-container">
     <div class="join-container">
@@ -48,7 +26,7 @@
         <span class="dot--red"></span>
         <span>필수 입력사항</span>
       </div>
-      <form class="join-form">
+      <form class="join-form" method="post" action="join">
         <div class="join-form-line">
           <div class="join-label-box">
             <label>이름</label>
@@ -56,7 +34,7 @@
           </div>
           <div class="join-input-box">
             <div class="join-form__input">
-              <input type="text" placeholder="이름을 입력해주세요." name="name">
+              <input id="name" type="text" placeholder="이름을 입력해주세요." name="name">
             </div>
           </div>
         </div>
@@ -71,7 +49,7 @@
           </div>
           <div class="join-input-box">
             <div class="join-form__input">
-              <input type="text" placeholder="아이디를 입력해주세요." name="id">
+              <input id="id" type="text" placeholder="아이디를 입력해주세요." name="id">
             </div>
             <button class="btn--rec btn--gray btn--w120h50 join-form__btn" type="button" onclick="idDupChk();">중복확인</button>
           </div>
@@ -87,7 +65,7 @@
           </div>
           <div class="join-input-box">
             <div class="join-form__input">
-              <input type="password" placeholder="비밀번호를 입력해주세요." name="pw">
+              <input id="pw" type="password" placeholder="비밀번호를 입력해주세요." name="pw">
               <i id="showPw" class="fa-solid fa-eye"></i>
               <i id="hidePw" class="fa-solid fa-eye-slash hidden"></i>
             </div>
@@ -104,7 +82,7 @@
           </div>
           <div class="join-input-box">
             <div class="join-form__input">
-              <input type="password" placeholder="동일한 비밀번호를 입력해주세요." name="chkPw">
+              <input id="chkPw" type="password" placeholder="동일한 비밀번호를 입력해주세요." name="chkPw">
               <i id="showChkPw" class="fa-solid fa-eye"></i>
               <i id="hideChkPw" class="fa-solid fa-eye-slash hidden"></i>
             </div>
@@ -120,7 +98,7 @@
           </div>
           <div class="join-input-box">
             <div class="join-form__input">
-              <input type="text" maxlength="13" oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1');" placeholder="-없이 숫자만 입력해주세요." name="phone">
+              <input id="phone" type="text" maxlength="13" oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1');" placeholder="-없이 숫자만 입력해주세요." name="phone">
             </div>
             <button class="btn--rec btn--gray btn--w120h50 join-form__btn" type="button" onclick="sendSMS();">인증번호 요청</button>
           </div>
@@ -133,7 +111,7 @@
           </div>
           <div class="join-input-box">
             <div class="join-form__input">
-              <input type="text" placeholder="인증번호 5자리" name="chkPhone">
+              <input id="chkPhone" type="text" placeholder="인증번호 5자리" name="chkPhone">
               <span id="cNumTimer"></span>
             </div>
             <button class="btn--rec btn--gray btn--w120h50 join-form__btn" type="button" onclick="chkCNum();">인증번호 확인</button>
@@ -146,7 +124,7 @@
           </div>
           <div class="join-input-box">
             <div class="join-form__input">
-              <input type="text" placeholder="이메일을 입력해주세요." name="email">
+              <input id="email" type="text" placeholder="이메일을 입력해주세요." name="email">
             </div>
           </div>
         </div>
@@ -265,7 +243,7 @@
         </div>
         <div class="join-btn-box">
           <button class="btn--rec btn--white" type="button">취소</button>
-          <button class="btn--rec btn--blue" type="button">회원가입</button>
+          <button class="btn--rec btn--blue" type="button" onclick="joinFormChk(this.form);">회원가입</button>
         </div>
       </form>
     </div>
@@ -503,36 +481,7 @@
     </div>
   </div>
 </main>
-<footer class="st-ft">
-  <div class="footer-container">
-    <div class="footer-layout">
-      <div class="footer-frame">
-        <div class="footer-menu">
-          <p class="ft-link">회사소개</p>
-          |
-          <p class="ft-link">개인정보취급방침</p>
-          |
-          <p class="ft-link">이용약관</p>
-          |
-          <p class="ft-link">고객센터</p>
-        </div>
-        <div class="footer-info">
-          Copyright(c) 2022 ㈜ 시퀀스엔. All Rights Reserved [사업자정보] 대표전화 : 1544 -2949 | 대표(CEO) : 양종선 | 개인정보 보호책임자 : 양종선 사업자등록번<br>
-          호 : 285-81-00634 | 통신판매업 신고번호 : 제 2017-서울서초-0272호. 서울시 서초구 서초대로 397 부띠크모나코 A동 301호 | Email : help@bookoa.com
-        </div>
-        <div class="cs-frame">
-          <div class="cs-inner">
-            <div class="cus">고객만족센터</div>
-            <div class="cus-num">1544-2949</div>
-          </div>
-        </div>
-        <div class="cs-info web">
-          <a href="#">상담시간 안내</a>
-        </div>
-      </div>
-    </div>
-  </div>
-</footer>
+<%@include file="/WEB-INF/views/module/footer.jsp" %>
 
 <script src="${path}/resources/js/join.js"></script>
 
