@@ -43,4 +43,10 @@ public class MemberDAO {
 
 		return memPhone;
 	}
+
+	public int addMemData(MemberDTO newMem) {
+		String mapperId = String.format(mapper, "insertMemData");
+		int result = session.insert(mapperId, newMem);
+		return result;
+	}
 }

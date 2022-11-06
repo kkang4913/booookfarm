@@ -1,5 +1,6 @@
 package com.myweb.boookfarm.member.controller;
 
+import com.myweb.boookfarm.member.model.MemberDTO;
 import com.myweb.boookfarm.member.service.MemberService;
 import com.myweb.boookfarm.ncloud.Sens;
 import org.json.simple.JSONObject;
@@ -31,11 +32,28 @@ public class MemberController {
                         , @RequestParam String pw
                         , @RequestParam String phone
                         , @RequestParam String email
+                        , @RequestParam (required = false) String gender
                         , @RequestParam String postalCode
                         , @RequestParam String address
                         , @RequestParam String detailAddress) {
-        System.out.println(name + id + pw + phone + email + postalCode + address + detailAddress);
-        return "standard/standard";
+        MemberDTO newMem = new MemberDTO();
+        newMem.setMemName(name);
+        newMem.setMemId(id);
+        newMem.setMemPw(pw);
+        newMem.setPhone(phone);
+        newMem.setEmail(email);
+        newMem.setPostCode(postalCode);
+        newMem.setAddr(address);
+        newMem.setDetailAddr(detailAddress);
+        newMem.setMileage("0");
+        newMem.setSocialType("com");
+        newMem.setMemPos("com");
+        boolean result = memServ.addMemData(newMem);
+        if (result) {
+            return "standard/standard";
+        }
+
+        return "join";
     }
     /**
      *  인증번호 발송 요청 받는 메서드

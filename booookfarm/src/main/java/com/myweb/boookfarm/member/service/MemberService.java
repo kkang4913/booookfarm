@@ -63,4 +63,9 @@ public class MemberService {
 		}
 		return result;
     }
+
+	public boolean addMemData(MemberDTO newMem) {
+		int result = dao.addMemData(newMem);
+		return result == 1 ? true : false;
+	}
 }

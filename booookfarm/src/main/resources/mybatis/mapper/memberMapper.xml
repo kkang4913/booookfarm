@@ -29,4 +29,31 @@
           FROM MEMBERS
          WHERE PHONE = #{phone}
     </select>
+    <insert id="insertMemData">
+        INSERT INTO MEMBERS(
+                    MEMBER_ID
+                  , MEMBER_PASSWORD
+                  , MEMBER_NAME
+                  , PHONE
+                  , EMAIL
+                  , POSTAL_CODE
+                  , ADDRESS
+                  , DETAIL_ADDRESS
+                  , MILEAGE
+                  , SOCIAL_TYPE
+                  , MEMBER_POSITION
+                  , JOIN_DATE)
+             VALUES ( #{memId}
+                    , #{memPw}
+                    , #{memName}
+                    , #{phone}
+                    , #{email}
+                    , #{postCode}
+                    , #{addr}
+                    , #{detailAddr}
+                    , #{mileage}
+                    , #{socialType}
+                    , #{memPos}
+                    , SYSDATE)
+    </insert>
 </mapper>
