@@ -102,7 +102,7 @@ public class BookManageController {
 		JSONObject json = new JSONObject();
 		BookBasketDTO bookBasketData = service.getBasketData(parm.getBookCode()); //북코드로 책정보가 장바구니에 존재하는지 확인
 		BookBasketDTO basket_add_data = new BookBasketDTO();
-		basket_add_data.setMemberId("user01"); // 로그인 데이타에서 받아와야함
+		basket_add_data.setMemberId("khs96523"); // 로그인 데이타에서 받아와야함
 		basket_add_data.setBookCode(parm.getBookCode());
 		basket_add_data.setQuantity(parm.getStock()); 
 		basket_add_data.setDeliveryFee(3000); // 배달비는 3천원 고정 산간지역은 추후 추가
@@ -119,7 +119,7 @@ public class BookManageController {
 	@GetMapping(value = "/basket_info",produces="application/json; charset=utf-8")
 	@ResponseBody
 	public String basket_select_list()  {
-		List<BookDetailDTO> Basket_all_book_Data = service.getBasketAllData("user01");// 로그인 아이디에 맞는 모든 장바구니 리스트
+		List<BookDetailDTO> Basket_all_book_Data = service.getBasketAllData("khs96523");// 로그인 아이디에 맞는 모든 장바구니 리스트
 		JSONArray data_arr = new JSONArray();
 		JSONObject list_data = new JSONObject();
 		for(BookDetailDTO bookList : (List<BookDetailDTO>) Basket_all_book_Data) {

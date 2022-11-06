@@ -311,6 +311,7 @@ function add_cart() {
 		bookImgPath: '${book_info.bookImgPath}',
 		createDate: '${book_info.createDate}' //지정한 날짜 형식이 맞지 않아 에러발생
 	}
+	console.log(form);
 	$.ajax({
 		url: "./basket_info",
 		type:"POST",
@@ -348,6 +349,7 @@ $(document).ready(function(){
   
   get_detail_page();
   get_detail_list();
+	get_detail_amount();
 });
 
 </script>

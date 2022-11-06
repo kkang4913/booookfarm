@@ -646,7 +646,7 @@ $('input[type=checkbox]').on('click', e => {
     }
 });
 
-function joinFormChk() {
+function joinFormChk(form) {
     if(!isName) {
         alert("이름을 확인해주세요.");
         $('#name').focus();

@@ -19,7 +19,7 @@
 			 , BOOK_IMG_PATH AS bookImgPath
 			 , CREATE_DATE AS createDate
 		FROM BOOK
-		WHERE BOOK_CODE = '2201a5b5c5'
+		WHERE BOOK_CODE = '2201a2b2c2'
 	</select>
 	<select id="selectSort"  resultType="bookDetailDTO">
 		SELECT RNUM
@@ -66,7 +66,7 @@
 		FROM BOOK b
 		JOIN BASKET bb
 		  ON b.BOOK_CODE = bb.BOOK_CODE 
-		WHERE bb.MEMBER_ID = 'user01'
+		WHERE bb.MEMBER_ID = 'khs96523'
 	</select>
 	<select id="selectBasketData"  resultType="bookBasketDTO">
 		SELECT BASKET_CODE AS basketCode
