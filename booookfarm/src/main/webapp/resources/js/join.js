@@ -631,17 +631,17 @@ $('input[type=checkbox]').on('click', e => {
             }
             break;
         case "chkUseInfoTerms" :
-            isUseInfoTerms = $(e.target).is(':checked') ? true : false;
+            isUseInfoTerms = $(e.target).is(':checked');
             isAllChk = isUseInfoTerms && isOfferInfoTerms && isServiceTerms;
             $('#allCheck').prop('checked', isAllChk);
             break;
         case "chkOfferInfoTerms" :
-            isOfferInfoTerms = $(e.target).is(':checked') ? true : false;
+            isOfferInfoTerms = $(e.target).is(':checked');
             isAllChk = isUseInfoTerms && isOfferInfoTerms && isServiceTerms;
             $('#allCheck').prop('checked', isAllChk);
             break;
         case "chkServiceTerms" :
-            isServiceTerms = $(e.target).is(':checked') ? true : false;
+            isServiceTerms = $(e.target).is(':checked');
             isAllChk = isUseInfoTerms && isOfferInfoTerms && isServiceTerms;
             $('#allCheck').prop('checked', isAllChk);
             break;

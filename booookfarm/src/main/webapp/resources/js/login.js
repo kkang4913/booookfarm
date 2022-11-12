@@ -1,6 +1,7 @@
 /**
  *  로그인 페이지 스크립트
  */
+const savedUserId = localStorage.getItem("userId");
 
 /** 패스워드 입력 내용 보기 기능 */
 $('#showPw').on("click", () => {
@@ -87,8 +88,9 @@ function loginFormSubmit() {
     if(loginFormChk()) {
         const id = $('#loginId').val();
         const pw = $('#loginPw').val();
+        const saveId = $('#saveId').is(':checked');
         const sendForm = { 'id' : id
-                         , 'pw' : pw };
+                         , 'pw' : pw};
 
         $.ajax({
             type: "post",
@@ -99,6 +101,16 @@ function loginFormSubmit() {
             dataType: "json",
             success: (res) => {
                 if(res.chkLogin) {   // 로그인 성공시
+                    if(saveId) {
+                        if(savedUserId === null) {
+                            localStorage.setItem("userId", id);
+                        } else {
+                            localStorage.removeItem("userId");
+                            localStorage.setItem("userId", id);
+                        }
+                    } else {
+                        localStorage.removeItem("userId");
+                    }
                     location.replace("./");
                 } else {    // 로그인 실패시
                     alert("로그인 실패");
@@ -107,3 +119,10 @@ function loginFormSubmit() {
         });
     }
 }
+
+$(document).ready( () => {
+    if(savedUserId !== null) {
+        $('#loginId').val(savedUserId);
+        $('#saveId').prop('checked', true);
+    }
+});

@@ -8,7 +8,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
-import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import java.util.Map;
 
@@ -53,6 +52,16 @@ public class MemberController {
         }
 
         return jsonObject.toJSONString();
+    }
+
+    @GetMapping(value = "/logout")
+    public String logout(HttpSession httpSession) {
+        MemberDTO loginData = (MemberDTO) httpSession.getAttribute("loginData");
+        if(loginData == null) {
+        } else {
+            httpSession.removeAttribute("loginData");
+        }
+        return "redirect:/";
     }
 
     /**
