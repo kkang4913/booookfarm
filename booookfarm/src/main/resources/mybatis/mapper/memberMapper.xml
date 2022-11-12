@@ -19,6 +19,23 @@
           FROM MEMBERS
          WHERE MEMBER_ID = #{memId}
     </select>
+    <select id="selectLoginData" resultType="memberDTO">
+        SELECT MEMBER_ID AS memId
+             , MEMBER_PASSWORD AS memPw
+             , MEMBER_NAME AS memName
+             , PHONE AS phone
+             , EMAIL AS email
+             , POSTAL_CODE AS postCode
+             , ADDRESS AS addr
+             , DETAIL_ADDRESS AS detailAddr
+             , MILEAGE AS mileage
+             , SOCIAL_TYPE AS socialType
+             , MEMBER_POSITION AS memPos
+             , JOIN_DATE AS joinDate
+        FROM MEMBERS
+        WHERE MEMBER_ID = #{memId}
+          AND MEMBER_PASSWORD = #{memPw}
+    </select>
     <select id="selectMemId" resultType="string">
         SELECT MEMBER_ID
           FROM MEMBERS

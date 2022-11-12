@@ -8,6 +8,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 import java.util.Map;
 
 @Controller
@@ -16,11 +18,47 @@ public class MemberController {
     @Autowired
     private MemberService memServ;
 
+    /**
+     * 로그인 페이지 요청 메서드
+     * @return 로그인 페이지 반환
+     */
     @GetMapping(value = "/login")
-    public String login() {
+    public String getLoginView() {
         return "login";
     }
 
+    /**
+     * 로그인 요청 메서드
+     * @param param 요청 로그인 정보
+     * @param httpSession
+     * @return 로그인 성공 여부 반환
+     */
+    @PostMapping(value = "/login")
+    @ResponseBody
+    public String login(@RequestBody Map<String, String> param
+                      , HttpSession httpSession) {
+        if(httpSession.getAttribute("loginData") != null) {
+            httpSession.removeAttribute("loginData");
+        }
+        String loginId = param.get("id");
+        String loginPw = param.get("pw");
+        JSONObject jsonObject = new JSONObject();
+
+        MemberDTO loginData = memServ.getLoginData(loginId, loginPw);
+        if(loginData == null) {
+            jsonObject.put("chkLogin", false);
+        } else {
+            jsonObject.put("chkLogin", true);
+            httpSession.setAttribute("loginData", loginData);
+        }
+
+        return jsonObject.toJSONString();
+    }
+
+    /**
+     * 회원가입 페이지 요청 메서드
+     * @return 회원가입 페이지 반환
+     */
     @GetMapping(value = "/join")
     public String join() {
         return "join";
@@ -55,6 +93,7 @@ public class MemberController {
 
         return "join";
     }
+
     /**
      *  인증번호 발송 요청 받는 메서드
      * @param param 수신 받을 핸드폰 번호를 담은 JSON 객체 (key : pNum)

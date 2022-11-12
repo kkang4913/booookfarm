@@ -21,6 +21,18 @@ public class MemberDAO {
 	}
 
 	/**
+	 * DB에서 요청한 로그인 정보와 일치하는 회원 정보를 찾는 메서드
+	 * @param reqLoginData	요청한 로그인 정보
+	 * @return DB에서 찾은 회원 정보 반환
+	 */
+	public MemberDTO getLoginData(MemberDTO reqLoginData) {
+		String mapperId = String.format(mapper, "selectLoginData");
+		MemberDTO loginData = session.selectOne(mapperId, reqLoginData);
+
+		return loginData;
+	}
+
+	/**
 	 *  DB에서 id와 일치하는 member_id를 찾는 메서드
 	 * @param id DB에서 찾을 id
 	 * @return DB에서 찾은 member_id 반환
@@ -49,4 +61,6 @@ public class MemberDAO {
 		int result = session.insert(mapperId, newMem);
 		return result;
 	}
+
+
 }

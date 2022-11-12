@@ -57,3 +57,53 @@ $('.login-form__input').on('change keydown keyup paste', e => {
         $(e.target).parent().next('div').children('span').addClass('hidden');
     }
 });
+
+/** 비밀번호 입력창에서 Enter 입력시 로그인 요청 */
+$('#loginPw').on("keyup", (key) => {
+    if(key.keyCode==13) {
+        loginFormSubmit();
+    }
+})
+
+/**
+ * 로그인 폼 입력 여부 확인 함수
+ * @returns {boolean} 하나라도 비어있으면 false, 전부 입력되어 있으면 true 반환
+ */
+function loginFormChk() {
+    if($('#loginId').val() == '' || $('#loginId').val() == null) {
+        $('#loginId').focus();
+        return false;
+    }
+    if($('#loginPw').val() == '' || $('#loginPw').val() == null) {
+        return false;
+    }
+    return true;
+}
+
+/**
+ *  로그인 요청 함수
+ */
+function loginFormSubmit() {
+    if(loginFormChk()) {
+        const id = $('#loginId').val();
+        const pw = $('#loginPw').val();
+        const sendForm = { 'id' : id
+                         , 'pw' : pw };
+
+        $.ajax({
+            type: "post",
+            url: "login",
+            traditional: true,
+            contentType: "application/json",
+            data: JSON.stringify(sendForm),
+            dataType: "json",
+            success: (res) => {
+                if(res.chkLogin) {   // 로그인 성공시
+                    location.replace("./");
+                } else {    // 로그인 실패시
+                    alert("로그인 실패");
+                }
+            }
+        });
+    }
+}
