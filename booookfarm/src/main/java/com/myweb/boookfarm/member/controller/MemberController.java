@@ -65,33 +65,25 @@ public class MemberController {
     }
 
     @PostMapping(value = "/join")
-    public String joinMem(@RequestParam String name
-                        , @RequestParam String id
-                        , @RequestParam String pw
-                        , @RequestParam String phone
-                        , @RequestParam String email
-                        , @RequestParam (required = false) String gender
-                        , @RequestParam String postalCode
-                        , @RequestParam String address
-                        , @RequestParam String detailAddress) {
+    @ResponseBody
+    public String joinMem(@RequestBody Map<String, String> param) {
         MemberDTO newMem = new MemberDTO();
-        newMem.setMemName(name);
-        newMem.setMemId(id);
-        newMem.setMemPw(pw);
-        newMem.setPhone(phone);
-        newMem.setEmail(email);
-        newMem.setPostCode(postalCode);
-        newMem.setAddr(address);
-        newMem.setDetailAddr(detailAddress);
+        newMem.setMemName(param.get("name"));
+        newMem.setMemId(param.get("id"));
+        newMem.setMemPw(param.get("pw"));
+        newMem.setPhone(param.get("phone"));
+        newMem.setEmail(param.get("email"));
+        newMem.setPostCode(param.get("postCode"));
+        newMem.setAddr(param.get("addr"));
+        newMem.setDetailAddr(param.get("detailAddr"));
         newMem.setMileage("0");
         newMem.setSocialType("com");
         newMem.setMemPos("com");
+        JSONObject jsonObject = new JSONObject();
         boolean result = memServ.addMemData(newMem);
-        if (result) {
-            return "standard/standard";
-        }
+        jsonObject.put("joinRes", result);
 
-        return "join";
+        return jsonObject.toJSONString();
     }
 
     /**

@@ -79,6 +79,11 @@ public class MemberService {
 		return result;
     }
 
+	/**
+	 *  회원가입 요청 메서드
+	 * @param newMem 회원가입 요청헌 회원정보
+	 * @return 회원가입 성공시 true, 실패시 false 반환
+	 */
 	public boolean addMemData(MemberDTO newMem) {
 		int result = dao.addMemData(newMem);
 		return result == 1 ? true : false;

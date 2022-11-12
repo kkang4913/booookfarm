@@ -56,6 +56,11 @@ public class MemberDAO {
 		return memPhone;
 	}
 
+	/**
+	 * DB에 회원정보를 추가하는 메서드
+	 * @param newMem 요청한 회원정보
+	 * @return 요청 결과(성공시 1) 반환
+	 */
 	public int addMemData(MemberDTO newMem) {
 		String mapperId = String.format(mapper, "insertMemData");
 		int result = session.insert(mapperId, newMem);
