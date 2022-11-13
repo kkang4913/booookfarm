@@ -3,7 +3,7 @@
   "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
 <mapper namespace="bookTestMapper">
-	<select id="selectAll"  resultType="bookDTO">
+<!-- 	<select id="selectAll"  resultType="bookDTO">
 		SELECT RNUM
 			 , bookCode, bookTitle, bookAuthor
 			 , bookPrice, bookDiscount
@@ -23,12 +23,87 @@
 			 , BOOK_IMG_PATH AS bookImgPath
 			 , TO_CHAR(CREATE_DATE,'YYYY.MM.DD') AS createDate
 		FROM BOOK
-		ORDER BY CREATE_DATE DESC)
+		<include refid="sort"></include>)
        WHERE <![CDATA[ RNUM <= #{num_end}]]>
 		AND <![CDATA[RNUM >= #{num_start}]]>
+	</select> -->
+	<select id="selectAll"  resultType="bookDTO">
+		SELECT RN.*
+		FROM
+		(SELECT ROWNUM AS RN ,TEMP.*
+		FROM
+		(SELECT BOOK_CODE AS bookCode
+			 , BOOK_TITLE AS bookTitle
+			 , BOOK_AUTHOR AS bookAuthor
+			 , BOOK_PRICE AS bookPrice
+			 , BOOK_DISCOUNT AS bookDiscount
+			 , ISBN AS isbn
+			 , BOOK_CATEGORY AS bookCategory
+			 , PUBLISHER AS publisher
+			 , BOOK_CONDITION AS bookCondition
+			 , BOOK_IMG_PATH AS bookImgPath
+			 , TO_CHAR(CREATE_DATE,'YYYY.MM.DD') AS createDate
+			 FROM BOOK
+			 WHERE 1=1
+			 <include refid="search"></include>
+			 <include refid="category"></include>
+			 <include refid="sort"></include>
+			 )TEMP
+		 	 )RN
+			 WHERE RN BETWEEN #{num_start} AND #{num_end}
 	</select>
 	<select id="selectCnt"  resultType="_int">
    	SELECT COUNT(*)
      FROM BOOK
+      WHERE 1=1 
+	 <include refid="search_category"></include>
+	 <include refid="category"></include>
+	
 	</select>
+	<sql id="sort">
+		<if test="sort_Type =='sortData'">
+			ORDER BY CREATE_DATE DESC
+		</if>
+		<if test="sort_Type == null || sort_Type ==''">
+			ORDER BY CREATE_DATE DESC
+		</if>
+		<if test="sort_Type =='sortAccuracy'">
+			ORDER BY REGEXP_COUNT(BOOK_TITLE,UPPER(REPLACE(#{search_Data},' '))) DESC
+		</if>
+		<if test="sort_Type=='sortLprice'">
+			ORDER BY BOOK_PRICE ASC
+		</if>
+		<if test="sort_Type=='sortHprice'">
+			ORDER BY BOOK_PRICE DESC
+		</if>
+	</sql>
+	<sql id="search">
+	<if test="search_Type == 'booktitle'">
+		<if test="search_Data != null">
+			AND UPPER(BOOK_TITLE) like UPPER(REPLACE('%'||#{search_Data}||'%',' '))
+		</if>
+	</if>
+	<if test="search_Type == 'bookpublisher'">
+		<if test="search_Data != ''">
+			AND UPPER(PUBLISHER) like UPPER(REPLACE('%'||#{search_Data}||'%',' '))
+		</if>
+	</if>
+	<if test="search_Type == 'isbn'">
+		<if test="search_Data != ''">
+			AND UPPER(ISBN) like UPPER(REPLACE('%'||#{search_Data}||'%',' '))
+		</if>
+	</if>
+	</sql>
+	
+	<sql id="search_category">
+		<if test="search_Data != ''">
+			AND UPPER(BOOK_TITLE) like UPPER(REPLACE('%'||#{search_Data}||'%',' '))
+		</if>
+	</sql>
+	
+	<sql id="category">
+		<if test="category_Type != ''">
+			AND BOOK_CATEGORY = #{category_Type}
+		</if>
+	</sql>
 </mapper>

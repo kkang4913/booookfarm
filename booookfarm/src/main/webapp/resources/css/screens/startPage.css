@@ -31,8 +31,11 @@
 }
 .serch-box{
 	position: relative;
-	left: 4.3rem;
+	left: 2.3rem;
 	cursor: pointer;
+    outline: none;
+    background-color: white;
+    border-style: none;
 }
 .serach-container{
 	display: flex;
@@ -419,3 +422,21 @@ background-color: rgba(35, 122, 246, 0.1);
 .disnone{
 	display: none;
 }
+
+.h-sticky{
+	position: sticky;
+    top: -1px;
+    margin-bottom: 4.8rem;
+    background-color: white;
+    z-index: 25;
+}
+.hc-sticky{
+	margin: -0.6rem auto;
+}
+.hn-sticky{
+	height: 4rem;
+}
+.form-box{
+	display: flex;
+}
+

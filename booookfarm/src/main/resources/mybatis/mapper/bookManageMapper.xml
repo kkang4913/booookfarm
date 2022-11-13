@@ -66,7 +66,7 @@
 		FROM BOOK b
 		JOIN BASKET bb
 		  ON b.BOOK_CODE = bb.BOOK_CODE 
-		WHERE bb.MEMBER_ID = 'khs96523'
+		WHERE bb.MEMBER_ID = 'kkang4913'
 	</select>
 	<select id="selectBasketData"  resultType="bookBasketDTO">
 		SELECT BASKET_CODE AS basketCode
