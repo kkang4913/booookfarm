@@ -37,7 +37,6 @@ public class BookManageController {
 	public String detailView(@RequestParam("bookcode") String bookCode, Model model) {
 		BookDetailDTO data = service.getData(bookCode);
 		model.addAttribute("book_code", bookCode);
-		BookDetailDTO data = service.getData();
 		model.addAttribute("book_info", data);
 		return "detail/detail";
 	}
