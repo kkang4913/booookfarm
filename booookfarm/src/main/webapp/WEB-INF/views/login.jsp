@@ -23,13 +23,13 @@
       </div>
       <form class="login-form">
         <div class="login-input-box">
-          <input class="login-form__input" type="text" name="id" placeholder="아이디를 입력해주세요.">
+          <input id="loginId" class="login-form__input" type="text" name="id" placeholder="아이디를 입력해주세요.">
         </div>
         <div class="login-err-box">
           <span class="login-err-msg hidden">아이디를 입력해주세요.</span>
         </div>
         <div class="login-input-box">
-          <input class="login-form__input" type="password" name="password" placeholder="비밀번호를 입력해주세요.">
+          <input id="loginPw" class="login-form__input" type="password" name="password" placeholder="비밀번호를 입력해주세요.">
           <i id="showPw" class="fa-solid fa-eye"></i>
           <i id="hidePw" class="fa-solid fa-eye-slash hidden"></i>
         </div>
@@ -40,7 +40,7 @@
           <input id="saveId" class="login-form__checkbox" type="checkbox">
           <label for="saveId">아이디 기억하기</label>
         </div>
-        <button class="login-form__btn btn--rec btn--blue" type="button">로그인</button>
+        <button class="login-form__btn btn--rec btn--blue" type="button" onclick="loginFormSubmit();">로그인</button>
       </form>
       <button class="login-form__btn btn--rec btn--green" type="button"><img src="${path}/resources/img/logos/naver-logo.png" /><span>네이버 아이디로 로그인</span></button>
       <button class="login-form__btn btn--rec btn--yellow" type="button"><img src="${path}/resources/img/logos/kakao-logo.png" /><span>카카오 아이디로 로그인</span></button>
@@ -53,7 +53,6 @@
   </div>
 </main>
 <%@include file="/WEB-INF/views/module/footer.jsp" %>
-
 <script src="${path}/resources/js/login.js"></script>
 
 </body>

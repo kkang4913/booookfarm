@@ -243,7 +243,7 @@
         </div>
         <div class="join-btn-box">
           <button class="btn--rec btn--white" type="button">취소</button>
-          <button class="btn--rec btn--blue" type="button" onclick="joinFormChk(this.form);">회원가입</button>
+          <button class="btn--rec btn--blue" type="button" onclick="joinFormSubmit();">회원가입</button>
         </div>
       </form>
     </div>

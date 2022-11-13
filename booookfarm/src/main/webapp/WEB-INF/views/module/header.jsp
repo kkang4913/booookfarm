@@ -2,7 +2,14 @@
     pageEncoding="UTF-8"%>
 <nav class="navigation-container">
   <ul class="navigation-element">
-    <li class="element"><a href="login">로그인</a></li>
+		<c:choose>
+			<c:when test="${not empty sessionScope.loginData}">
+				<li class="element"><a href="logout">로그아웃</a></li>
+			</c:when>
+			<c:otherwise>
+				<li class="element"><a href="login">로그인</a></li>
+			</c:otherwise>
+		</c:choose>
     <li class="element"><a href="join">회원가입</a></li>
     <li class="element">1:1문의</li>
     <li class="element">마이페이지</li>

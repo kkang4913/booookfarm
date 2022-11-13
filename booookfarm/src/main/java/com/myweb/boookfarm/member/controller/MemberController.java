@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpSession;
 import java.util.Map;
 
 @Controller
@@ -16,45 +17,84 @@ public class MemberController {
     @Autowired
     private MemberService memServ;
 
+    /**
+     * 로그인 페이지 요청 메서드
+     * @return 로그인 페이지 반환
+     */
     @GetMapping(value = "/login")
-    public String login() {
+    public String getLoginView() {
         return "login";
     }
 
+    /**
+     * 로그인 요청 메서드
+     * @param param 요청 로그인 정보
+     * @param httpSession
+     * @return 로그인 성공 여부 반환
+     */
+    @PostMapping(value = "/login")
+    @ResponseBody
+    public String login(@RequestBody Map<String, String> param
+                      , HttpSession httpSession) {
+        if(httpSession.getAttribute("loginData") != null) {
+            httpSession.removeAttribute("loginData");
+        }
+        String loginId = param.get("id");
+        String loginPw = param.get("pw");
+        JSONObject jsonObject = new JSONObject();
+
+        MemberDTO loginData = memServ.getLoginData(loginId, loginPw);
+        if(loginData == null) {
+            jsonObject.put("chkLogin", false);
+        } else {
+            jsonObject.put("chkLogin", true);
+            httpSession.setAttribute("loginData", loginData);
+        }
+
+        return jsonObject.toJSONString();
+    }
+
+    @GetMapping(value = "/logout")
+    public String logout(HttpSession httpSession) {
+        MemberDTO loginData = (MemberDTO) httpSession.getAttribute("loginData");
+        if(loginData == null) {
+        } else {
+            httpSession.removeAttribute("loginData");
+        }
+        return "redirect:/";
+    }
+
+    /**
+     * 회원가입 페이지 요청 메서드
+     * @return 회원가입 페이지 반환
+     */
     @GetMapping(value = "/join")
     public String join() {
         return "join";
     }
 
     @PostMapping(value = "/join")
-    public String joinMem(@RequestParam String name
-                        , @RequestParam String id
-                        , @RequestParam String pw
-                        , @RequestParam String phone
-                        , @RequestParam String email
-                        , @RequestParam (required = false) String gender
-                        , @RequestParam String postalCode
-                        , @RequestParam String address
-                        , @RequestParam String detailAddress) {
+    @ResponseBody
+    public String joinMem(@RequestBody Map<String, String> param) {
         MemberDTO newMem = new MemberDTO();
-        newMem.setMemName(name);
-        newMem.setMemId(id);
-        newMem.setMemPw(pw);
-        newMem.setPhone(phone);
-        newMem.setEmail(email);
-        newMem.setPostCode(postalCode);
-        newMem.setAddr(address);
-        newMem.setDetailAddr(detailAddress);
+        newMem.setMemName(param.get("name"));
+        newMem.setMemId(param.get("id"));
+        newMem.setMemPw(param.get("pw"));
+        newMem.setPhone(param.get("phone"));
+        newMem.setEmail(param.get("email"));
+        newMem.setPostCode(param.get("postCode"));
+        newMem.setAddr(param.get("addr"));
+        newMem.setDetailAddr(param.get("detailAddr"));
         newMem.setMileage("0");
         newMem.setSocialType("com");
         newMem.setMemPos("com");
+        JSONObject jsonObject = new JSONObject();
         boolean result = memServ.addMemData(newMem);
-        if (result) {
-            return "standard/standard";
-        }
+        jsonObject.put("joinRes", result);
 
-        return "join";
+        return jsonObject.toJSONString();
     }
+
     /**
      *  인증번호 발송 요청 받는 메서드
      * @param param 수신 받을 핸드폰 번호를 담은 JSON 객체 (key : pNum)

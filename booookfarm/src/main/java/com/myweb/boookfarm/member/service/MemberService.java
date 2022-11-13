@@ -19,7 +19,22 @@ public class MemberService {
 	}
 
 	/**
-	 *  DAO에 id와 일치하는 member_id를 요청하는메서드
+	 * 로그인 데이터 요청 메서드
+	 * @param loginId 요청 로그인 id
+	 * @param loginPw 요청 로그인 pw
+	 * @return 로그인 데이터 반환
+	 */
+	public MemberDTO getLoginData(String loginId, String loginPw) {
+		MemberDTO reqLoginData = new MemberDTO();
+		reqLoginData.setMemId(loginId);
+		reqLoginData.setMemPw(loginPw);
+		MemberDTO loginData = dao.getLoginData(reqLoginData);
+		return loginData;
+	}
+
+
+	/**
+	 *  DAO에 id와 일치하는 member_id를 요청하는 메서드
 	 * @param id DB에서 찾을 id
 	 * @return DAO에서 받은 member_id 반환
 	 */
@@ -64,8 +79,15 @@ public class MemberService {
 		return result;
     }
 
+	/**
+	 *  회원가입 요청 메서드
+	 * @param newMem 회원가입 요청헌 회원정보
+	 * @return 회원가입 성공시 true, 실패시 false 반환
+	 */
 	public boolean addMemData(MemberDTO newMem) {
 		int result = dao.addMemData(newMem);
 		return result == 1 ? true : false;
 	}
+
+
 }

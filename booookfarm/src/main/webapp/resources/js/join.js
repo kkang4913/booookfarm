@@ -463,7 +463,9 @@ function idDupChk() {
                 $('#id').prop('readonly', false);
                 isId = false;
             } else {
+                alert('사용 가능한 아이디입니다.');
                 $('#id').prop('readonly', true);
+                idDubChk = true;
                 isId = true;
             }
         }
@@ -629,118 +631,121 @@ $('input[type=checkbox]').on('click', e => {
             }
             break;
         case "chkUseInfoTerms" :
-            isUseInfoTerms = $(e.target).is(':checked') ? true : false;
+            isUseInfoTerms = $(e.target).is(':checked');
             isAllChk = isUseInfoTerms && isOfferInfoTerms && isServiceTerms;
             $('#allCheck').prop('checked', isAllChk);
             break;
         case "chkOfferInfoTerms" :
-            isOfferInfoTerms = $(e.target).is(':checked') ? true : false;
+            isOfferInfoTerms = $(e.target).is(':checked');
             isAllChk = isUseInfoTerms && isOfferInfoTerms && isServiceTerms;
             $('#allCheck').prop('checked', isAllChk);
             break;
         case "chkServiceTerms" :
-            isServiceTerms = $(e.target).is(':checked') ? true : false;
+            isServiceTerms = $(e.target).is(':checked');
             isAllChk = isUseInfoTerms && isOfferInfoTerms && isServiceTerms;
             $('#allCheck').prop('checked', isAllChk);
             break;
     }
 });
 
-function joinFormChk(form) {
+/**
+ * 회원가입 폼 체크 함수
+ * @returns {boolean} 각 정보 모두 문제가 없으면 true, 아닐 경우 false 반환
+ */
+function joinFormChk() {
     if(!isName) {
         alert("이름을 확인해주세요.");
         $('#name').focus();
-        return;
+        return false;
+    }
+    if(!idDubChk) {
+        alert("아이디 중복 여부를 확인해주세요.");
+        $('#id').focus();
+        return false;
     }
     if(!isId) {
         alert("아이디를 확인해주세요.");
         $('#id').focus();
-        return;
+        return false;
     }
     if(!isPw) {
         alert("비밀번호를 확인해주세요.");
         $('#pw').focus();
-        return;
+        return false;
     }
     if(!isPwChk) {
         alert("비밀번호를 확인해주세요.");
         $('#chkPw').focus();
-        return;
+        return false;
     }
     if(!isCNum) {
         alert("핸드폰 인증을 진행해주세요.");
         $('#chkPhone').focus();
-        return;
+        return false;
     }
     if(!isEmail) {
         alert("이메일을 확인해주세요.");
         $('#email').focus();
-        return;
+        return false;
     }
     if(!isAddr) {
         alert("주소를 확인해주세요.");
         $('#address').focus();
-        return;
+        return false;
     }
     if(!isDetailAddr) {
         alert("상세주소를 확인해주세요.");
         $('#detailAddress').focus();
-        return;
+        return false;
     }
     if(!isUseInfoTerms || !isOfferInfoTerms || !isServiceTerms) {
         alert("약관에 동의해주세요.");
         $('#allCheck').focus();
-        return;
+        return false;
     }
-    form.submit();
+    return true;
 }
 
-// function joinFormSubmit() {
-//     const name = $('#name').val();
-//     const id = $('#id').val();
-//     const pw = $('#pw').val();
-//     const phone = $('#phone').val();
-//     const email = $('#email').val();
-//     const addr = $('#address').val();
-//     const detailAddr = $('detailAddress').val();
-//     const gender = $('input[type=radio]:checked').length == 0 ? 'N' : $('input[type=radio]:checked').val();
-//
-//     const sendForm = { 'name' : name
-//                      , 'id' : id
-//                      , 'pw' : pw
-//                      , 'phone' : phone
-//                      , 'email' : email
-//                      , 'addr' : addr
-//                      , 'detailAddr' : detailAddr
-//                      , 'gender' : gender};
-//
-//     $.ajax({
-//         type: "post",
-//         url: "join",
-//         traditional: true,
-//         contentType: "application/json",
-//         data: JSON.stringify(sendPhone),
-//         dataType: "json",
-//         success: (res) => {
-//             if(res.phoneDupChk) {   // 이미 등록된 핸드폰일 경우
-//                 alert("중복입니다.");
-//             } else {    // 등록된 정보가 없을 경우
-//                 $('#phone').prop('readonly', true);    // 핸드폰 입력 부분 비활성화
-//                 certificationNumber = res.cNum; // 인증번호 저장
-//                 let display = $('#cNumTimer');  // 타이머 출력할 span
-//                 let leftSec = 300;  // 제한시간 5분 설정
-//
-//                 if(cNumTimerIsRun){ // 이미 타이머가 작동중일 경우
-//                     clearInterval(cNumTimer);   // 타이머 중지
-//                     display.html("");   // 타이머 span 비우기
-//                     startTimer(leftSec, display);   // 타이머 다시 시작
-//                 } else {
-//                     startTimer(leftSec, display);   // 타이머 시작
-//                 }
-//             }
-//         }
-//     });
-// }
+function joinFormSubmit() {
+    if(joinFormChk()) {
+        const name = $('#name').val();
+        const id = $('#id').val();
+        const pw = $('#pw').val();
+        const phone = $('#phone').val();
+        const email = $('#email').val();
+        const postCode = $('#postalCode').val();
+        const addr = $('#address').val();
+        const detailAddr = $('#detailAddress').val();
+        const gender = $('input[type=radio]:checked').length == 0 ? 'N' : $('input[type=radio]:checked').val();
+
+        const sendForm = { 'name' : name
+            , 'id' : id
+            , 'pw' : pw
+            , 'phone' : phone
+            , 'email' : email
+            , 'postCode' : postCode
+            , 'addr' : addr
+            , 'detailAddr' : detailAddr
+            , 'gender' : gender};
+
+        $.ajax({
+            type: "post",
+            url: "join",
+            traditional: true,
+            contentType: "application/json",
+            data: JSON.stringify(sendForm),
+            dataType: "json",
+            success: (res) => {
+                if(res.joinRes) {
+                    location.replace("./");
+                } else {
+                    alert("회원가입 실패");
+                }
+            }
+        });
+    }
+
+}
 
 $(document).ready( () => {
 
