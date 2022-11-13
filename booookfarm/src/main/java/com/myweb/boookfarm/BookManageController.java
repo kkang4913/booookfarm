@@ -37,6 +37,7 @@ public class BookManageController {
 	public String detailView(@RequestParam("bookcode") String bookCode, Model model) {
 		BookDetailDTO data = service.getData(bookCode);
 		model.addAttribute("book_code", bookCode);
+		BookDetailDTO data = service.getData();
 		model.addAttribute("book_info", data);
 		return "detail/detail";
 	}
@@ -87,6 +88,7 @@ public class BookManageController {
 			json.put("bookImgPath", bookList.getBookImgPath());
 			data_arr.add(json);
 		}
+		
 		list_data.put("dataList", data_arr);
 		return list_data.toString();
 	}
@@ -94,7 +96,7 @@ public class BookManageController {
 	//장바구니 기능 부분
 	@RequestMapping(value = "/basket", method = RequestMethod.GET)
 	public String basketView(Model model) {
-			
+
 		return "basket/basket";
 	}
 	
@@ -147,7 +149,7 @@ public class BookManageController {
 		list_data.put("dataList", data_arr);
 		return list_data.toString();
 	}
-	
+
 	@PostMapping(value = "/basket-remove-list" ,produces="application/json; charset=utf-8")
 	@ResponseBody
 	public String basketRemoveList(@RequestBody String bookCode) {
@@ -165,7 +167,7 @@ public class BookManageController {
 			return json.toString();
 		}
 	}
-	
+
 	@PostMapping(value = "/basket-remove-selection" ,produces="application/json; charset=utf-8")
 	@ResponseBody
 	public String basketRemoveSelection(@RequestBody Map<String, Object> id_bookcode_data)throws Exception {
@@ -181,7 +183,7 @@ public class BookManageController {
 			return json.toString();
 		}
 	}
-	
+
 	@PostMapping(value ="/locker-add-list" , produces="application/json; charset=utf-8")
 	@ResponseBody
 	public String lockerAddList(@RequestBody Map<String, String> parm) {
@@ -204,14 +206,14 @@ public class BookManageController {
 			return json.toString();
 		}
 	}
-	
+
 	//보관함 부분
 	@RequestMapping(value = "/locker", method = RequestMethod.GET)
 	public String lockerView(Locale locale, Model model) {
 		
 		return "basket/locker";
 	}
-	
+
 	//여기서부터 구현
 	@PostMapping(value = "/locker-info",produces="application/json; charset=utf-8")
 	@ResponseBody
@@ -240,7 +242,7 @@ public class BookManageController {
 		list_data.put("dataList", data_arr);
 		return list_data.toString();
 	}
-	
+
 	@PostMapping(value = "/locker-remove-list" ,produces="application/json; charset=utf-8")
 	@ResponseBody
 	public String lockerRemoveList(@RequestBody String bookCode) {
@@ -258,7 +260,7 @@ public class BookManageController {
 			return json.toString();
 		}
 	}
-	
+
 	@PostMapping(value = "/locker-remove-selection" ,produces="application/json; charset=utf-8")
 	@ResponseBody
 	public String lockerRemoveSelection(@RequestBody Map<String, Object> id_bookcode_data)throws Exception {
@@ -274,7 +276,7 @@ public class BookManageController {
 			return json.toString();
 		}
 	}
-	
+
 	//결제페이지 부분
 	@RequestMapping(value = "/payment", method = RequestMethod.GET)
 	public String payment(Locale locale, Model model) {

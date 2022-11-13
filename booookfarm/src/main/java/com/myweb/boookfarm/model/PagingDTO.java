@@ -1,4 +1,4 @@
-package com.myweb.boookfarm.member.model;
+package com.myweb.boookfarm.model;
 
 import java.util.ArrayList;
 import java.util.List;

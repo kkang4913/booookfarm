@@ -11,7 +11,7 @@ public class BookDetailDTO {
 	private String bookAuthor;
 	private String bookInfo;
 	private int bookPrice;
-	private int bookDiscount;
+	private int bookDiscount; 
 	private String isbn;
 	private String bookCategory;
 	private int stock;

@@ -108,13 +108,13 @@
 	<!-- 보관함 기능 -->
 	<select id="selectLockerData" parameterType="map" resultType="bookLockerDTO">
 		SELECT LOCKER_CODE
-			 , MEMBER_ID 
-			 , BOOK_CODE 
-			 , QUANTITY 
+			 , MEMBER_ID
+			 , BOOK_CODE
+			 , QUANTITY
 			 , DELIVERY_FEE
 		FROM LOCKER
 		WHERE MEMBER_ID = #{memberId}
-		AND BOOK_CODE = #{bookCode}	 
+		AND BOOK_CODE = #{bookCode}
 	</select>
 	<select id="selectAllLockerData"  resultType="bookDetailDTO" parameterType="bookLockerDTO">
 		SELECT b.BOOK_CODE AS bookCode
@@ -133,14 +133,14 @@
 			 , b.CREATE_DATE AS createDate
 		FROM BOOK b
 		JOIN LOCKER l
-		  ON b.BOOK_CODE = l.BOOK_CODE 
+		  ON b.BOOK_CODE = l.BOOK_CODE
 		WHERE l.MEMBER_ID = 'user01'
 	</select>
 	<insert id="insertLockerData" parameterType="bookLockerDTO">
-		INSERT INTO LOCKER(LOCKER_CODE 
-			 , MEMBER_ID 
-			 , BOOK_CODE 
-			 , QUANTITY 
+		INSERT INTO LOCKER(LOCKER_CODE
+			 , MEMBER_ID
+			 , BOOK_CODE
+			 , QUANTITY
 			 , DELIVERY_FEE)
 		VALUES(SQU_LOCKER.NEXTVAL
 			 , #{memberId}

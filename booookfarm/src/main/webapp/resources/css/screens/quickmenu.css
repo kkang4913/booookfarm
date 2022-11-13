@@ -16,7 +16,7 @@
 
 .quickmenu{
 	position: absolute;
-	top: 25rem;
+	top: 15rem;
 	right: calc(50% - 72rem);
     z-index: 20;
 	

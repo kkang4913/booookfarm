@@ -21,8 +21,8 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.myweb.boookfarm.detail.model.BookDetailDTO;
-import com.myweb.boookfarm.member.model.PagingDTO;
 import com.myweb.boookfarm.model.BookDTO;
+import com.myweb.boookfarm.model.PagingDTO;
 import com.myweb.boookfarm.service.BookfarmService;
 
 import oracle.jdbc.proxy.annotation.Post;
@@ -41,9 +41,13 @@ public class HomeController {
 	@GetMapping(value = "/list",produces="application/json; charset=utf-8")
 	@ResponseBody
 	public String bookList(@RequestParam(defaultValue = "1", required = false) int page //현재페이지
-			,@RequestParam("page_count")int pagecount) {
+			,@RequestParam("page_count")int pagecount
+			,@RequestParam("page_sort")String listSort
+			,@RequestParam("search_data")String searchBook
+			,@RequestParam("search_sort")String searchType
+			,@RequestParam("category_select")String categoryId) {
 		//등록된 모든 책 리스트
-		Map res_data = service.getAll(page, pagecount);
+		Map res_data = service.getAll(page, pagecount,listSort,searchBook,searchType,categoryId);
 		List datas = (List) res_data.get("datas"); // 가져온 데이터 리스트
 		PagingDTO pager = (PagingDTO) res_data.get("page_data"); // 가져온 페이징 객체
 		JSONArray data_arr = new JSONArray(); // 가져온 데이터 리스트를 넣는 배열
