@@ -47,7 +47,7 @@
 		<div class="basket-list-container">
 			<div class="basket-list-layout">
 				<div class="total-delete-btn">
-					<button class="total-delete-button" type="button">선택상품 삭제</button>
+					<button class="total-delete-button" type="button" onclick="basket_select_remove()">선택상품 삭제</button>
 				</div>
 				<div class="book-list-sort">	
 					<div class="book-list">
@@ -55,7 +55,7 @@
 							<table class="sort-test">
 								<thead>
 									<tr class="element-name-table">
-										<th class="total-checkbox"><input name="bookCheck" class="total-checkbox" type="checkbox" onclick="selectAll(this)"></th>
+										<th class="total-checkbox"><input id="cbx_checkAll" class="total-checkbox" type="checkbox" onclick="selectAll(this)"></th>
 										<th class="list-element-select">전체</th>
 										<th class="list-element-info">상품정보</th>
 										<th class="list-element-price">판매가</th>
@@ -71,49 +71,9 @@
 							</table>	
 						</div>
 					</div>
-					<div id="test1" class="basket-order-container">
-						<div id="test2" class="basket-order-layout">
-							<div class="box-title">
-								주문 금액
-							</div>
-							<div class="box-content">
-								<div class="box-row">
-									<div class="row--title">
-										총 상품금액
-									</div>
-									<div class="row--data">
-										2,000원
-									</div>
-								</div>
-								<div class="box-row">
-									<div class="row--title">
-										배송비
-									</div>
-									<div class="row--data">
-										3,000원
-									</div>
-								</div>
-								<div class="box-row">
-									<div class="row--title">
-										도서산간료
-									</div>
-									<div class="row--data">
-										0원
-									</div>
-								</div>
-								<div class="divided"></div>	
-								<div class="box-row as">
-									<div class="row--title">
-										총 결제금액
-									</div>
-									<div class="row--amount">
-										5,000원
-									</div>
-								</div>
-							</div>
-							<div>
-								<button class="order-box-button" type="button" onclick="order()">주문하기</button>
-							</div>
+					<div class="basket-order-container">
+						<div id="b_order" class="basket-order-layout">
+							
 						</div>
 					</div>
 				</div>	
@@ -125,18 +85,16 @@
 <%@include file="/WEB-INF/views/module/footer.jsp" %>
 </body>
 <script type="text/javascript">
-let d_stock = '';
-let d_amount = '';
 function get_basket_list(){
 	$.ajax({
-		url:"./basket_info",
+		url:"./basket-info",
 		type: "GET",
 		dataType: "json",
 		success: function(data){
 			let _html='';
 			for(var i=0; i < data.dataList.length; i++){
 				_html += '<tr class="element-table">';
-				_html += '<td class="checkbox"><input name="bookCheck" class="checkbox" type="checkbox"></td>';
+				_html += '<td class="checkbox"><input id="book_select_'+i+'" name="bookCheck" class="checkbox click_chk" type="checkbox" value="'+data.dataList[i].bookCode+'"></td>';
 				_html += '<td class="accurate-select"></td>';
 				_html += '<td class="accurate-info">';
 				_html += '<div class="accurate-info-layout">';
@@ -147,7 +105,7 @@ function get_basket_list(){
 				_html += '</div>';
 				_html += '<div class="info-name">';
 				_html += '<div class="basket-book-name">';
-				_html += ''+data.dataList[i].bookTitle+'/'+data.dataList[i].bookAuthor+'';
+				_html += '<a href="/boookfarm/detail?bookcode='+data.dataList[i].bookCode+'">'+data.dataList[i].bookTitle+'/'+data.dataList[i].bookAuthor+'</a>';
 				_html += '</div>';
 				_html += '</div>';
 				_html += '</div>';
@@ -156,12 +114,12 @@ function get_basket_list(){
 				_html += '<div class="accurate-price-layout">';
 				_html += '<div class="origin-price-won">';
 				_html += '<div class="basket-book-price">';
-				_html += ''+data.dataList[i].bookPrice+'원';
+				_html += ''+(data.dataList[i].bookPrice).toString().replace(/\B(?=(\d{3})+(?!\d))/g,",")+'원';
 				_html += '</div>';
 				_html += '</div>';
 				_html += '<div class="discount-price-won">';
-				_html += '<div d-amount class="basket-book-price">';
-				_html += ''+data.dataList[i].bookPrice - (data.dataList[i].bookPrice * (data.dataList[i].bookDiscount*0.01))+'원';
+				_html += '<div id="d_amount_'+i+'" class="basket-book-price">';
+				_html += (Math.floor((data.dataList[i].bookPrice - (data.dataList[i].bookPrice * (data.dataList[i].bookDiscount*0.01)))/10)*10).toString().replace(/\B(?=(\d{3})+(?!\d))/g,",")+'원';
 				_html += '</div>';
 				_html += '</div>';
 				_html += '</div>';
@@ -170,17 +128,20 @@ function get_basket_list(){
 				_html += '<div class="accurate-quantity-layout">';
 				_html += '<div class="quantity-num">';
 				_html += '<div class="basket-book-minus">';
-				_html += '<img class="minus-btn" src="${path}/resources/img/icon/24-px-grey-7-remove.png" onclick="get_detail_stock(\'minus\',\''+i+'\')">';
+				_html += '<img class="minus-btn" src="${path}/resources/img/icon/24-px-grey-7-remove.png" onclick="get_basket_stock(\'minus\',\''+i+'\')">';
 				_html += '</div>';
 				_html += '</div>';
 				_html += '<div class="quantity-num">';
 				_html += '<div class="basket-book-quantity">';
-				_html += '<input id="d-stock_'+i+'" class="detail-stock" name="stockValue" type="text" value="1" disabled="disabled">';
+				_html += '<input id="d_stock_'+i+'" class="detail-stock" name="stockValue" type="text" value="1" disabled="disabled">';
+				_html += '<input id="max_stock_'+i+'" class="detail-stock" type="hidden" value="'+data.dataList[i].stock+'" disabled="disabled">';
+				_html += '<input id="amount_'+i+'" class="detail-amount" type="hidden" value="'+(data.dataList[i].bookPrice - (data.dataList[i].bookPrice * (data.dataList[i].bookDiscount*0.01)))+'" disabled="disabled">';
+				_html += '<input id="bookcode_'+i+'" class="detail-bookcood" type="hidden" value="'+data.dataList[i].bookCode+'" disabled="disabled">';
 				_html += '</div>';
 				_html += '</div>';
 				_html += '<div class="quantity-num">';
 				_html += '<div class="basket-book-plus">';
-				_html += '<img class="plus-btn" src="${path}/resources/img/icon/24-px-grey-7-add.png" onclick="get_detail_stock(\'plus\',\''+i+'\')">';
+				_html += '<img class="plus-btn" src="${path}/resources/img/icon/24-px-grey-7-add.png" onclick="get_basket_stock(\'plus\',\''+i+'\')">';
 				_html += '</div>';
 				_html += '</div>';
 				_html += '</div>';
@@ -206,26 +167,64 @@ function get_basket_list(){
 				_html += '<td class="delete-select">';
 				_html += '<div class="delete-select-layout">';
 				_html += '<div class="delete-btn">';
-				_html += '<button class="delete-button">삭제</button>';
+				_html += '<button id="remove_'+i+'" class="delete-button" onclick="basket_list_remove(\''+i+'\')">삭제</button>';
 				_html += '</div>';
 				_html += '<div class="storage-btn">';
-				_html += '<button class="storage-button">보관함</button>';
+				_html += '<button id="locker_add_'+i+'" class="storage-button" onclick="add_locker_list(\''+i+'\')">보관함</button>';
 				_html += '</div>';
 				_html += '</div>';
 				_html += '</td>';
 				_html += '</tr>';
-			d_stock = data.dataList[i].stock;
-			d_amount = data.dataList[i].bookPrice - (data.dataList[i].bookPrice * (data.dataList[i].bookDiscount*0.01));
 			}
 			$('#basket_list').html(_html);
+			
+			let _html2 = '<div class="box-title">주문 금액</div>';
+				_html2 +='<div class="box-content">';
+				_html2 +='<div class="box-row">';
+				_html2 +='<div class="row--title">총 상품금액</div>';
+				_html2 +='<div id="total_book_price" class="row--data">0원</div>';
+				_html2 +='</div>';
+				_html2 +='<div class="box-row">';
+				_html2 +='<div class="row--title">배송비</div>';
+				_html2 +='<div class="row--data">3,000원</div>';
+				_html2 +='</div>';
+				_html2 +='<div class="box-row">';
+				_html2 +='<div class="row--title">도서산간료</div>';
+				_html2 +='<div class="row--data">0원</div>';
+				_html2 +='</div>';
+				_html2 +='<div class="divided"></div>';
+				_html2 +='<div class="box-row as">';
+				_html2 +='<div class="row--title">총 결제금액</div>';
+				_html2 +='<div id="total_pay" class="row--amount">3,000원</div>';
+				_html2 +='</div>';
+				_html2 +='</div>';
+				_html2 +='<div>';
+				_html2 +='<button id="order_btn" class="order-box-button" type="button" onclick="order()">주문하기</button>';
+				_html2 +='</div>';
+			$('#b_order').html(_html2);	
 		}
 	});	
 }
-
-function get_detail_stock(type, id){
-	let value = 'd-stock_'+id;
-	console.log(value);
-	const resultElement = document.getElementById(value);
+//선택상품 가격 자동 합산
+function order_box_info(){
+	let sum = 0;
+	let total = 0;
+	let delivry = 3000;
+	$('input[name=bookCheck]:checked').each(function(){
+		let arr = $(this).attr("id").split("_");
+		let idx = arr[2];
+		const d_amount = $('#amount_'+idx).val();
+		const d_stock = $('#d_stock_'+idx).val();
+		let pay = d_amount * d_stock;
+		sum += Math.floor(pay/10)*10;
+	});
+	$('#total_book_price').html(sum.toString().replace(/\B(?=(\d{3})+(?!\d))/g,",")+'원');
+	$('#total_pay').html((sum + delivry).toString().replace(/\B(?=(\d{3})+(?!\d))/g,",")+ '원');
+}
+//장바구니 리스트 수량 적용
+function get_basket_stock(type, idx){
+	const d_stock = document.getElementById('max_stock_' +idx).value;
+	let resultElement = document.getElementById('d_stock_'+idx);
 	let stock = resultElement.value;
 	if(type === "plus") {
 		stock = parseInt(stock) >= d_stock ? d_stock : parseInt(stock) + 1;
@@ -233,50 +232,154 @@ function get_detail_stock(type, id){
 		stock = parseInt(stock) <= 1 ? 1 : parseInt(stock) - 1;
 	}
 	resultElement.value = stock;
-	get_detail_amount();
+	get_basket_amount(idx);
+	order_box_info();
 }
-
-function get_detail_amount(){
-	const resultAmount = document.getElementById('d-amount');
-	const resultStock = document.getElementById('d-stock');
-	let amount = resultAmount.html();
-	let stock = resultStock.value;
-	amount = d_amount * parseInt(stock);
-	resultAmount.html(amount);
+//장바구니 리스트 수량에 따른 가격 적용 
+function get_basket_amount(idx){
+	const d_amount = document.getElementById('amount_'+idx).value;
+	let stock = document.getElementById('d_stock_'+idx).value;
+	const resultAmount = document.getElementById('d_amount_'+idx);
+	let amount = d_amount * parseInt(stock);
+	resultAmount.innerHTML = (Math.floor(amount/10)*10).toString().replace(/\B(?=(\d{3})+(?!\d))/g,",")+'원';
 }
-
+//삭제버튼 클릭 이벤트
+function basket_list_remove(idx){
+	const d_bookcode = document.getElementById('bookcode_'+idx).value;
+	if(confirm("삭제 하시겠습니까?") == false) {
+		return;
+	}
+	$.ajax({
+		url:"./basket-remove-list",
+		type: "POST",
+		data: d_bookcode,
+		dataType: "json",
+		contentType: "application/json; charset=UTF-8",
+		success: function(result){
+			if(result.code == 'success'){
+				alert("삭제가 완료되었습니다.");
+				get_basket_list();
+			}else{
+				alert("삭제가 실패되었습니다.");
+			}
+		}
+	});
+}
+//선택상품 삭제 이벤트
+function basket_select_remove(){
+	//눌렀을때 input checkbox의 속성이 checked면 삭제 
+    let select_list = [];
+	$('input[name=bookCheck]:checked').each(function(){
+		 select_list.push($(this).val());
+	});
+	let user_select = {"bookCode": select_list};
+	if(confirm("삭제 하시겠습니까?") == false) {
+		return;
+	}
+	$.ajax({
+		url: "./basket-remove-selection",
+		type: "POST",
+		data: JSON.stringify(user_select),
+		dataType: "json",
+		contentType: "application/json; charset=UTF-8",
+		success: function(result){
+			if(result.code == 'success'){
+				alert("삭제가 완료되었습니다.");
+				get_basket_list();
+			}else{
+				alert("삭제가 실패되었습니다.");
+			}
+		}
+	});
+}
+//보관함버튼 데이터 추가 함수
+function add_locker_list(idx){
+	const d_bookcode = $('#bookcode_'+idx).val();
+	const d_stock = $('#max_stock_' +idx).val();
+	form={
+			bookCode: d_bookcode,
+			stock: d_stock
+	};
+	if(confirm("보관함에 추가 하시겠습니까?") == false) {
+		return;
+	}
+	$.ajax({
+		url:"./locker-add-list",
+		type:"POST",
+		data: JSON.stringify(form),
+		dataType: "json",
+		contentType: "application/json; charset=UTF-8",
+		success: function(result){
+			if(result.code == 'success'){
+				alert("추가되었습니다.");
+				get_basket_list();
+			}else{
+				alert("이미 추가된 상품입니다.");
+			}
+		}
+	});
+}
 //보관함 아이콘 클릭 이벤트
 $('.to-locker-icon').on('click', function(){
 	location.href="/boookfarm/locker"
 })
-//체크박스 전체선택 함수
-function selectAll(selectAll) {
-	const checkboxes = document.getElementsByName('bookCheck');
-	checkboxes.forEach((checkbox) => {
-		checkbox.checked = selectAll.checked;
-	})
-}
-//주문하기 버튼 클릭 이벤트
+
 function order() {
-	location.href="/boookfarm/payment";
+	// 최종선택 수량과 선택한 책 북코드 보내면 될듯
+	const final_quantity = '';
+	const bookCode = '';
+	$('input[name=bookCheck]:checked').each(function(){
+		let arr = $(this).attr("id").split("_");
+		let idx = arr[2];
+		final_quantity = $('#d_stock'+idx).val();
+		console.log(final_quantity);
+		bookCode= $('#book_select_'+idx).val();
+		console.log(bookCode);
+	});
+	//담아보낼 리스트
+	var order_info = {
+			
+	};
+	// 결제페이지 리스트 보낼 ajax
+	$.ajax({
+		
+	//location.href="/boookfarm/payment";
+	});
+	
 }
 
+//주문하기 버튼 클릭 이벤트
+$('#order_btn').on('click', function(){
+	order();
+});
+//이동 위젯
 function get_order_box(){	
-  var orderBox = parseInt($("#test2").css("top"));
+  var order_box = parseInt($("#b_order").css("top"));
   $(window).scroll(function() {
-	  var orderPosition = $(window).scrollTop();
-	  $("#test2").stop().animate({"top":orderPosition+orderBox-100+"px"},1000);
+	  var order_position = $(window).scrollTop();
+	  $("#b_order").stop().animate({"top":order_position+order_box-100+"px"},1000);
   });
 }
 
 $(document).ready(function(){
-  var currentPosition = parseInt($(".quickmenu").css("top"));
+  var current_position = parseInt($(".quickmenu").css("top"));
   $(window).scroll(function() {
     var position = $(window).scrollTop();
-    $(".quickmenu").stop().animate({"top":position+currentPosition+"px"},500);
+    $(".quickmenu").stop().animate({"top":position+current_position+"px"},500);
   });
   get_order_box();
   get_basket_list();
+  
+  $('#basket_list').on('click', '.click_chk', function() {
+	 order_box_info();  
+  });
+  
+  $('#cbx_checkAll').click(function(){
+  	if($('#cbx_checkAll').is(":checked"))
+	   $("input[name=bookCheck]").prop("checked", true); 
+ 	else $("input[name=bookCheck]").prop("checked", false);
+  	order_box_info();
+  });
 }); 
 
 </script>

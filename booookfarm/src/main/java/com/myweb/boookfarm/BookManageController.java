@@ -1,6 +1,7 @@
 package com.myweb.boookfarm;
 
 import java.text.SimpleDateFormat;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
@@ -24,6 +25,7 @@ import org.springframework.web.multipart.MultipartFile;
 import com.myweb.boookfarm.basket.model.BookBasketDTO;
 import com.myweb.boookfarm.bookmanage.service.BookManageService;
 import com.myweb.boookfarm.detail.model.BookDetailDTO;
+import com.myweb.boookfarm.locker.model.BookLockerDTO;
 
 @Controller
 public class BookManageController {
@@ -32,9 +34,9 @@ public class BookManageController {
 	private BookManageService service;
 	
 	@GetMapping(value="/detail", produces="application/json; charset=utf-8")
-	public String detail_view(@RequestParam("bookcode") String bookCode, Model model) {
+	public String detailView(@RequestParam("bookcode") String bookCode, Model model) {
+		BookDetailDTO data = service.getData(bookCode);
 		model.addAttribute("book_code", bookCode);
-		BookDetailDTO data = service.getData();
 		model.addAttribute("book_info", data);
 		return "detail/detail";
 	}
@@ -42,7 +44,7 @@ public class BookManageController {
 	@GetMapping(value = "/view",produces="application/json; charset=utf-8")
 	@ResponseBody
 	public String detail(@RequestParam("bookCode") String bookCode) {
-		BookDetailDTO data = service.getData();
+		BookDetailDTO data = service.getData(bookCode);
 		JSONObject json = new JSONObject();
 			json.put("bookCode", data.getBookCode());
 			json.put("bookTitle", data.getBookTitle());
@@ -62,9 +64,9 @@ public class BookManageController {
 		return json.toString();
 	}
 	
-	@GetMapping(value = "/detailList",produces="application/json; charset=utf-8")
+	@GetMapping(value = "/detail-list",produces="application/json; charset=utf-8")
 	@ResponseBody
-	public String detail_list(@RequestParam("bookCode") String bookCode) {
+	public String detailList() {
 		List<BookDetailDTO> dataList = service.getDatas();
 		JSONArray data_arr = new JSONArray();
 		JSONObject list_data = new JSONObject();
@@ -85,29 +87,32 @@ public class BookManageController {
 			json.put("bookImgPath", bookList.getBookImgPath());
 			data_arr.add(json);
 		}
-		
 		list_data.put("dataList", data_arr);
 		return list_data.toString();
 	}
 	
+	//장바구니 기능 부분
 	@RequestMapping(value = "/basket", method = RequestMethod.GET)
-	public String basketView(Locale locale, Model model) {
-	
+	public String basketView(Model model) {
+			
 		return "basket/basket";
 	}
 	
-	@PostMapping(value = "/basket_info",produces="application/json; charset=utf-8")
+	@PostMapping(value = "/basket-info",produces="application/json; charset=utf-8")
 	@ResponseBody
-	public String basket_add_list (@RequestBody BookDetailDTO parm) throws Exception {
+	public String basketAddList (@RequestBody BookDetailDTO parm) throws Exception {
 		JSONObject json = new JSONObject();
-		BookBasketDTO bookBasketData = service.getBasketData(parm.getBookCode()); //북코드로 책정보가 장바구니에 존재하는지 확인
+		Map id_bookcode_data = new HashMap();
+		id_bookcode_data.put("memberId", "user01");
+		id_bookcode_data.put("bookCode", parm.getBookCode());
+		BookBasketDTO bookBasketData = service.getBasketData(id_bookcode_data); //북코드로 책정보가 장바구니에 존재하는지 확인
 		BookBasketDTO basket_add_data = new BookBasketDTO();
-		basket_add_data.setMemberId("khs96523"); // 로그인 데이타에서 받아와야함
+		basket_add_data.setMemberId("user01"); // 로그인 데이타에서 받아와야함
 		basket_add_data.setBookCode(parm.getBookCode());
 		basket_add_data.setQuantity(parm.getStock()); 
 		basket_add_data.setDeliveryFee(3000); // 배달비는 3천원 고정 산간지역은 추후 추가
 		if(bookBasketData == null) {//장바구니에 존재하지 않는 책정보면 INSERT작업
-			boolean detail_book_data = service.add_book_data(basket_add_data);
+			boolean add_result = service.bookAddData(basket_add_data);
 			json.put("code", "success");
 			return json.toString();
 		}else {
@@ -116,10 +121,10 @@ public class BookManageController {
 		}
 	}
 	
-	@GetMapping(value = "/basket_info",produces="application/json; charset=utf-8")
+	@GetMapping(value = "/basket-info",produces="application/json; charset=utf-8")
 	@ResponseBody
-	public String basket_select_list()  {
-		List<BookDetailDTO> Basket_all_book_Data = service.getBasketAllData("khs96523");// 로그인 아이디에 맞는 모든 장바구니 리스트
+	public String basketSelectList()  {
+		List<BookDetailDTO> Basket_all_book_Data = service.getBasketAllData("user01");// 로그인 아이디에 맞는 모든 장바구니 리스트
 		JSONArray data_arr = new JSONArray();
 		JSONObject list_data = new JSONObject();
 		for(BookDetailDTO bookList : (List<BookDetailDTO>) Basket_all_book_Data) {
@@ -140,16 +145,137 @@ public class BookManageController {
 			data_arr.add(json);
 		}
 		list_data.put("dataList", data_arr);
-		
-		
 		return list_data.toString();
 	}
+	
+	@PostMapping(value = "/basket-remove-list" ,produces="application/json; charset=utf-8")
+	@ResponseBody
+	public String basketRemoveList(@RequestBody String bookCode) {
+		//임시 유저id 데이터
+		Map id_bookcode_data = new HashMap();
+		id_bookcode_data.put("memberId", "user01");
+		id_bookcode_data.put("bookCode", bookCode);
+		JSONObject json = new JSONObject();
+		boolean remove_result = service.basketRemoveData(id_bookcode_data);
+		if(remove_result == true) {
+			json.put("code", "success");
+			return json.toString();
+		}else {
+			json.put("code", "fail");
+			return json.toString();
+		}
+	}
+	
+	@PostMapping(value = "/basket-remove-selection" ,produces="application/json; charset=utf-8")
+	@ResponseBody
+	public String basketRemoveSelection(@RequestBody Map<String, Object> id_bookcode_data)throws Exception {
+		//임시 유저id 데이터
+		id_bookcode_data.put("memberId", "user01");
+		JSONObject json = new JSONObject();
+		boolean remove_result = service.basketRemoveSelectData(id_bookcode_data);
+		if(remove_result == true) {
+			json.put("code", "success");
+			return json.toString();
+		}else {
+			json.put("code", "fail");
+			return json.toString();
+		}
+	}
+	
+	@PostMapping(value ="/locker-add-list" , produces="application/json; charset=utf-8")
+	@ResponseBody
+	public String lockerAddList(@RequestBody Map<String, String> parm) {
+		Map id_bookcode_data = new HashMap();
+		JSONObject json = new JSONObject();
+		id_bookcode_data.put("memberId", "user01");
+		id_bookcode_data.put("bookCode", parm.get("bookCode"));
+		BookLockerDTO bookLockerData = service.getLockerData(id_bookcode_data);
+		BookLockerDTO locker_add_data = new BookLockerDTO();
+		locker_add_data.setMemberId("user01");
+		locker_add_data.setBookCode(parm.get("bookCode"));
+		locker_add_data.setQuantity(Integer.parseInt(parm.get("stock")));
+		locker_add_data.setDeliveryFee(3000);
+		if(bookLockerData == null) {
+			boolean add_result = service.lockerAddData(locker_add_data);
+			json.put("code", "success");
+			return json.toString();
+		}else{
+			json.put("code", "fail");
+			return json.toString();
+		}
+	}
+	
+	//보관함 부분
 	@RequestMapping(value = "/locker", method = RequestMethod.GET)
-	public String locker(Locale locale, Model model) {
+	public String lockerView(Locale locale, Model model) {
 		
 		return "basket/locker";
 	}
-
+	
+	//여기서부터 구현
+	@PostMapping(value = "/locker-info",produces="application/json; charset=utf-8")
+	@ResponseBody
+	public String lockerSelectList()  {
+		String memberId = "user01";
+		List<BookDetailDTO> user_locker_data = service.getAllLockerData(memberId);
+		JSONArray data_arr = new JSONArray();
+		JSONObject list_data = new JSONObject();
+		for(BookDetailDTO bookList : (List<BookDetailDTO>) user_locker_data) {
+			JSONObject json = new JSONObject();
+			json.put("bookCode", bookList.getBookCode());
+			json.put("bookTitle", bookList.getBookTitle());
+			json.put("bookAuthor", bookList.getBookAuthor());
+			json.put("bookInfo", bookList.getBookInfo());
+			json.put("bookPrice", bookList.getBookPrice());
+			json.put("bookDiscount", bookList.getBookDiscount());
+			json.put("isbn", bookList.getIsbn());
+			json.put("bookCategory", bookList.getBookCategory());
+			json.put("stock", bookList.getStock());
+			json.put("publisher", bookList.getPublisher());
+			json.put("bookCondition", bookList.getBookCondition());
+			json.put("bookConditionInfo", bookList.getBookConditionInfo());
+			json.put("bookImgPath", bookList.getBookImgPath());
+			data_arr.add(json);
+		}
+		list_data.put("dataList", data_arr);
+		return list_data.toString();
+	}
+	
+	@PostMapping(value = "/locker-remove-list" ,produces="application/json; charset=utf-8")
+	@ResponseBody
+	public String lockerRemoveList(@RequestBody String bookCode) {
+		//임시 유저id 데이터
+		Map id_bookcode_data = new HashMap();
+		id_bookcode_data.put("memberId", "user01");
+		id_bookcode_data.put("bookCode", bookCode);
+		JSONObject json = new JSONObject();
+		boolean remove_result = service.lockerRemoveData(id_bookcode_data);
+		if(remove_result == true) {
+			json.put("code", "success");
+			return json.toString();
+		}else {
+			json.put("code", "fail");
+			return json.toString();
+		}
+	}
+	
+	@PostMapping(value = "/locker-remove-selection" ,produces="application/json; charset=utf-8")
+	@ResponseBody
+	public String lockerRemoveSelection(@RequestBody Map<String, Object> id_bookcode_data)throws Exception {
+		//임시 유저id 데이터
+		id_bookcode_data.put("memberId", "user01");
+		JSONObject json = new JSONObject();
+		boolean remove_result = service.lockerRemoveSelectData(id_bookcode_data);
+		if(remove_result == true) {
+			json.put("code", "success");
+			return json.toString();
+		}else {
+			json.put("code", "fail");
+			return json.toString();
+		}
+	}
+	
+	//결제페이지 부분
 	@RequestMapping(value = "/payment", method = RequestMethod.GET)
 	public String payment(Locale locale, Model model) {
 	

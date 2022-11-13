@@ -6,7 +6,7 @@
     <li class="element"><a href="join">회원가입</a></li>
     <li class="element">1:1문의</li>
     <li class="element">마이페이지</li>
-    <li class="element">장바구니</li>
+    <li class="element"><a href="basket">장바구니</a></li>
   </ul>
 </nav>
 		<header class="st-hd">

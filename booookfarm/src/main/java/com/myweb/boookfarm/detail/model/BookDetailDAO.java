@@ -16,9 +16,9 @@ public class BookDetailDAO {
 	private String mapper = "bookManageMapper.%s";
 	
 	
-	public BookDetailDTO getData() {
+	public BookDetailDTO getData(String bookCode) {
 		String mapperId = String.format(mapper, "selectData");
-		BookDetailDTO data = session.selectOne(mapperId);
+		BookDetailDTO data = session.selectOne(mapperId, bookCode);
 		return data;
 	}
 	

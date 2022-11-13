@@ -142,7 +142,7 @@ function get_detail_page() {
 				_html += '<span>상품등록일 '+res.createDate+'</span>';
 				_html += '</div>';
 			$('#m_info').html(_html);
-			
+			let _pay= Math.floor((res.bookPrice - (res.bookPrice * (res.bookDiscount*0.01)))/10)*10;
 			let _html2 = '';
 				_html2 += '<div class="book-img">';
 				_html2 += '<img class="book--img" src="'+res.bookImgPath+'">';
@@ -168,13 +168,13 @@ function get_detail_page() {
 				_html2 += '<div class="row-title">판매가</div>';
 				_html2 += '<div class="basic-data">';
 				_html2 += '<div class="price-info">';
-				_html2 += ''+res.bookPrice - (res.bookPrice * (res.bookDiscount*0.01)) +'원';
+				_html2 += ''+_pay.toString().replace(/\B(?=(\d{3})+(?!\d))/g,",")+'원';
 				_html2 += '</div>';
 				_html2 += '<div class="sale-percent">';
 				_html2 += ''+res.bookDiscount+'%';
 				_html2 += '</div>';
 				_html2 += '<div class="common-direction">';
-				_html2 += 'down';
+				_html2 += '<div class="down-arrow">➔</div>';
 				_html2 += '</div>';
 				_html2 += '</div>';
 				_html2 += '</div>';
@@ -182,7 +182,7 @@ function get_detail_page() {
 				_html2 += '<div class="row-title">정가</div>';
 				_html2 += '<div class="basic-data">';
 				_html2 += '<div class="origin-price">';
-				_html2 += ''+res.bookPrice+'원';
+				_html2 += ''+res.bookPrice.toString().replace(/\B(?=(\d{3})+(?!\d))/g,",")+'원';
 				_html2 += '</div>';
 				_html2 += '</div>';
 				_html2 += '</div>';
@@ -190,7 +190,7 @@ function get_detail_page() {
 				_html2 += '<div class="row-title">배송비</div>';
 				_html2 += '<div class="basic-data">';
 				_html2 += '<div class="delivery-fee">';
-				_html2 += '3000원';
+				_html2 += '3,000원';
 				_html2 += '</div>';
 				_html2 += '</div>';
 				_html2 += '</div>';
@@ -245,7 +245,7 @@ function get_detail_page() {
 
 function get_detail_list(){
 	$.ajax({
-		url: "./detailList?bookCode="+ $('#book_code').val(),
+		url: "./detail-list?bookCode="+ $('#book_code').val(),
 		type: "GET",
 		dataType: "json",
 		success: function(data){
@@ -290,7 +290,7 @@ function get_detail_amount(){
 	let amount = resultAmount.value;
 	let stock = resultStock.value;
 	amount = (${book_info.bookPrice} - (${book_info.bookPrice} * (${book_info.bookDiscount}*0.01))) * parseInt(stock);
-	resultAmount.value = amount;
+	resultAmount.value = (Math.floor(amount/10)*10).toString().replace(/\B(?=(\d{3})+(?!\d))/g,",");
 }
 //디테일 페이지에서 장바구니 버튼클릭시 데이터 전달 코드
 /*FormData는 ajax로 이미지 파일을 업로드할 때 사용 */
@@ -313,7 +313,7 @@ function add_cart() {
 	}
 	console.log(form);
 	$.ajax({
-		url: "./basket_info",
+		url: "./basket-info",
 		type:"POST",
 		data: JSON.stringify(form),
 		dataType: "json",
@@ -321,7 +321,6 @@ function add_cart() {
 		success: function(data){
 			if(data.code == 'success'){
 				alert("장바구니에 추가되었습니다.");
-				location.href="/boookfarm/basket";
 			}else if(data.code == 'fail'){
 				alert("이미 담겨진 상품입니다.");
 			}
@@ -332,9 +331,6 @@ function add_cart() {
 $('.basket-btn').on('click', function(e) {
 	add_cart();
 });
-
-
-
 
 $('.purchase-btn').on('click', function(){
 	location.href="/boookfarm/payment"
@@ -349,7 +345,7 @@ $(document).ready(function(){
   
   get_detail_page();
   get_detail_list();
-	get_detail_amount();
+  get_detail_amount();
 });
 
 </script>

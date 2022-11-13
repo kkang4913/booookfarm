@@ -3,6 +3,7 @@
   "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
 <mapper namespace="bookManageMapper">
+	<!-- 책 정보 페이지 기능 -->
 	<select id="selectData"  resultType="bookDetailDTO">
 		SELECT BOOK_CODE AS bookCode
 			 , BOOK_TITLE AS bookTitle
@@ -19,7 +20,7 @@
 			 , BOOK_IMG_PATH AS bookImgPath
 			 , CREATE_DATE AS createDate
 		FROM BOOK
-		WHERE BOOK_CODE = '2201a2b2c2'
+		WHERE BOOK_CODE = #{bookCode}
 	</select>
 	<select id="selectSort"  resultType="bookDetailDTO">
 		SELECT RNUM
@@ -48,6 +49,17 @@
 		WHERE <![CDATA[ ROWNUM <= 6]]>
 		AND <![CDATA[ ROWNUM >= 1]]>
 	</select>
+	<!-- 장바구니 기능 -->
+	<select id="selectBasketData"  parameterType="map" resultType="bookBasketDTO">
+		SELECT BASKET_CODE AS basketCode
+			 , MEMBER_ID AS memberId
+			 , BOOK_CODE AS bookCode
+			 , QUANTITY AS quantity
+			 , DELIVERY_FEE AS deluveryFee
+		FROM BASKET
+		WHERE BOOK_CODE = #{bookCode}
+		AND MEMBER_ID = #{memberId}
+	</select>
 	<select id="selectAllBasketData"  resultType="bookDetailDTO" parameterType="bookBasketDTO">
 		SELECT b.BOOK_CODE AS bookCode
 			 , b.BOOK_TITLE AS bookTitle
@@ -66,16 +78,7 @@
 		FROM BOOK b
 		JOIN BASKET bb
 		  ON b.BOOK_CODE = bb.BOOK_CODE 
-		WHERE bb.MEMBER_ID = 'khs96523'
-	</select>
-	<select id="selectBasketData"  resultType="bookBasketDTO">
-		SELECT BASKET_CODE AS basketCode
-			 , MEMBER_ID AS memberId
-			 , BOOK_CODE AS bookCode
-			 , QUANTITY AS quantity
-			 , DELIVERY_FEE AS deluveryFee
-		FROM BASKET
-		WHERE BOOK_CODE = #{bookCode}
+		WHERE bb.MEMBER_ID = 'user01'
 	</select>
 	<insert id="insertBasketData" parameterType="bookBasketDTO">
 		INSERT INTO BASKET(BASKET_CODE 
@@ -89,5 +92,73 @@
 			 , #{quantity}
 			 , #{deliveryFee})
 	</insert>
-	
+	<delete id="removeBasketData" parameterType="map">
+		DELETE FROM BASKET
+		WHERE MEMBER_ID = #{memberId}
+		AND BOOK_CODE = #{bookCode}
+	</delete>
+	<delete id="removeBasketCheckData" parameterType="map">
+		DELETE FROM BASKET
+		WHERE MEMBER_ID = #{memberId}
+		AND BOOK_CODE IN
+		<foreach collection="bookCode" item="item" index="index" open="(" separator="," close=")" >
+		 #{item}
+		</foreach>
+	</delete>
+	<!-- 보관함 기능 -->
+	<select id="selectLockerData" parameterType="map" resultType="bookLockerDTO">
+		SELECT LOCKER_CODE
+			 , MEMBER_ID 
+			 , BOOK_CODE 
+			 , QUANTITY 
+			 , DELIVERY_FEE
+		FROM LOCKER
+		WHERE MEMBER_ID = #{memberId}
+		AND BOOK_CODE = #{bookCode}	 
+	</select>
+	<select id="selectAllLockerData"  resultType="bookDetailDTO" parameterType="bookLockerDTO">
+		SELECT b.BOOK_CODE AS bookCode
+			 , b.BOOK_TITLE AS bookTitle
+			 , b.BOOK_AUTHOR AS bookAuthor
+			 , b.BOOK_INFO AS bookInfo
+			 , b.BOOK_PRICE AS bookPrice
+			 , b.BOOK_DISCOUNT AS bookDiscount
+			 , b.ISBN AS isbn
+			 , b.BOOK_CATEGORY AS bookCategory
+			 , b.STOCK AS stock
+			 , b.PUBLISHER AS publisher
+			 , b.BOOK_CONDITION AS bookCondition
+			 , b.BOOK_CONDITION_INFO AS bookConditionInfo
+			 , b.BOOK_IMG_PATH AS bookImgPath
+			 , b.CREATE_DATE AS createDate
+		FROM BOOK b
+		JOIN LOCKER l
+		  ON b.BOOK_CODE = l.BOOK_CODE 
+		WHERE l.MEMBER_ID = 'user01'
+	</select>
+	<insert id="insertLockerData" parameterType="bookLockerDTO">
+		INSERT INTO LOCKER(LOCKER_CODE 
+			 , MEMBER_ID 
+			 , BOOK_CODE 
+			 , QUANTITY 
+			 , DELIVERY_FEE)
+		VALUES(SQU_LOCKER.NEXTVAL
+			 , #{memberId}
+			 , #{bookCode}
+			 , #{quantity}
+			 , #{deliveryFee})
+	</insert>
+	<delete id="removeLockerData" parameterType="map">
+		DELETE FROM LOCKER
+		WHERE MEMBER_ID = #{memberId}
+		AND BOOK_CODE = #{bookCode}
+	</delete>
+	<delete id="removeLockerCheckData" parameterType="map">
+		DELETE FROM LOCKER
+		WHERE MEMBER_ID = #{memberId}
+		AND BOOK_CODE IN
+		<foreach collection="bookCode" item="item" index="index" open="(" separator="," close=")" >
+		 #{item}
+		</foreach>
+	</delete>
 </mapper>  

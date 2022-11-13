@@ -8,6 +8,7 @@
 	<typeAliases>
 	    <typeAlias type="com.myweb.boookfarm.detail.model.BookDetailDTO" alias="bookDetailDTO"/>
 	    <typeAlias type="com.myweb.boookfarm.basket.model.BookBasketDTO" alias="bookBasketDTO"/>
+	    <typeAlias type="com.myweb.boookfarm.locker.model.BookLockerDTO" alias="bookLockerDTO"/>
 	    <typeAlias type="com.myweb.boookfarm.model.BookDTO" alias="bookDTO"/>
 		<typeAlias type="com.myweb.boookfarm.member.model.MemberDTO" alias="memberDTO"/>
 	</typeAliases>

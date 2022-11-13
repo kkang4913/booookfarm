@@ -1,6 +1,7 @@
 package com.myweb.boookfarm.bookmanage.service;
 
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -9,6 +10,8 @@ import com.myweb.boookfarm.basket.model.BookBasketDAO;
 import com.myweb.boookfarm.basket.model.BookBasketDTO;
 import com.myweb.boookfarm.detail.model.BookDetailDAO;
 import com.myweb.boookfarm.detail.model.BookDetailDTO;
+import com.myweb.boookfarm.locker.model.BookLockerDAO;
+import com.myweb.boookfarm.locker.model.BookLockerDTO;
 
 @Service
 public class BookManageService {
@@ -19,9 +22,12 @@ public class BookManageService {
 	@Autowired
 	private BookBasketDAO basketDao;
 	
+	@Autowired
+	private BookLockerDAO lockerDao;
+	
 	// bookTable 관련
-	public BookDetailDTO getData() {
-		BookDetailDTO data = dao.getData();
+	public BookDetailDTO getData(String bookCode) {
+		BookDetailDTO data = dao.getData(bookCode);
 		return data;
 	}
 	
@@ -30,19 +36,53 @@ public class BookManageService {
 		return datas;
 	}
 	// basketTable 관련
-	public BookBasketDTO getBasketData(String bookCode) {
-		BookBasketDTO basketData = basketDao.getBasketData(bookCode);
+	public BookBasketDTO getBasketData(Map id_bookcode_data) {
+		BookBasketDTO basketData = basketDao.getBasketData(id_bookcode_data);
 		return basketData;
 	}
 
-	public boolean add_book_data(BookBasketDTO basket_add_data) {
-		boolean detail_book_data = basketDao.add_book_data(basket_add_data);
-		return detail_book_data;
+	public boolean bookAddData(BookBasketDTO basket_add_data) {
+		boolean add_result = basketDao.bookAddData(basket_add_data);
+		return add_result;
 	}
 
 	public List<BookDetailDTO> getBasketAllData(String memberId) {
 		List<BookDetailDTO> BasketAllData = basketDao.getBasketAllData(memberId);
-		System.out.println("확인"+BasketAllData);
 		return BasketAllData;
+	}
+	
+	public boolean basketRemoveData(Map id_bookcode_data) {
+		boolean remove_result = basketDao.basketRemoveData(id_bookcode_data);
+		return remove_result;
+	}
+
+	public boolean basketRemoveSelectData(Map id_bookcode_data) {
+		boolean remove_result = basketDao.basketRemoveSelectData(id_bookcode_data);
+		return remove_result;
+	}
+	// lockerTable 관련
+	public BookLockerDTO getLockerData(Map id_bookcode_data) {
+		BookLockerDTO bookLockerData = lockerDao.getLockerData(id_bookcode_data);
+		return bookLockerData;
+	}
+
+	public boolean lockerAddData(BookLockerDTO locker_add_data) {
+		boolean add_result = lockerDao.lockerAddData(locker_add_data);
+		return add_result;
+	}
+
+	public List<BookDetailDTO> getAllLockerData(String memberId) {
+		List<BookDetailDTO> userLockerData = lockerDao.getAllLockerData(memberId);
+		return userLockerData;
+	}
+
+	public boolean lockerRemoveData(Map id_bookcode_data) {
+		boolean remove_result = lockerDao.lockerRemoveData(id_bookcode_data);
+		return remove_result;
+	}
+
+	public boolean lockerRemoveSelectData(Map<String, Object> id_bookcode_data) {
+		boolean remove_result = lockerDao.lockerRemoveSelectData(id_bookcode_data);
+		return remove_result;
 	}
 }
