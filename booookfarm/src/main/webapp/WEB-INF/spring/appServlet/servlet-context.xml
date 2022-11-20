@@ -56,5 +56,7 @@
 		<beans:property name="maxUploadSizePerFile" value="5242880"></beans:property>
 		<beans:property name="maxInMemorySize" value="15728640"></beans:property>
 	</beans:bean>
-	
+
+	<!-- NaverLoginBO Class에 대한 Bean설정 추가 -->
+	<beans:bean id="naverLoginBO" class="com.myweb.boookfarm.naver.NaverLoginBO" />
 </beans:beans>
