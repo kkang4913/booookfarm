@@ -52,23 +52,25 @@
 				<div class="book-list-sort">	
 					<div class="book-list">
 						<div class="title-table">
-							<table class="sort-test">
-								<thead>
-									<tr class="element-name-table">
-										<th class="total-checkbox"><input id="cbx_checkAll" class="total-checkbox" type="checkbox" onclick="selectAll(this)"></th>
-										<th class="list-element-select">전체</th>
-										<th class="list-element-info">상품정보</th>
-										<th class="list-element-price">판매가</th>
-										<th class="list-element-quantity">수량</th>
-										<th class="list-element-seller">판매자</th>
-										<th class="list-element-delivery">배송비</th>
-										<th class="list-element-delete">선택</th>
-									</tr>
-								</thead>
-								<tbody id="basket_list" class="table-body">
-								
-								</tbody>
-							</table>	
+							<form id="form1" name="form1" method="POST" action="./payment">
+								<table class="sort-test">
+									<thead>
+										<tr class="element-name-table">
+											<th class="total-checkbox"><input id="cbx_checkAll" class="total-checkbox" type="checkbox" ></th>
+											<th class="list-element-select">전체</th>
+											<th class="list-element-info">상품정보</th>
+											<th class="list-element-price">판매가</th>
+											<th class="list-element-quantity">수량</th>
+											<th class="list-element-seller">판매자</th>
+											<th class="list-element-delivery">배송비</th>
+											<th class="list-element-delete">선택</th>
+										</tr>
+									</thead>
+									<tbody id="basket_list" class="table-body">
+									
+									</tbody>
+								</table>
+							</form>	
 						</div>
 					</div>
 					<div class="basket-order-container">
@@ -94,7 +96,7 @@ function get_basket_list(){
 			let _html='';
 			for(var i=0; i < data.dataList.length; i++){
 				_html += '<tr class="element-table">';
-				_html += '<td class="checkbox"><input id="book_select_'+i+'" name="bookCheck" class="checkbox click_chk" type="checkbox" value="'+data.dataList[i].bookCode+'"></td>';
+				_html += '<td class="checkbox"><input id="book_select_'+i+'" name="bookCheck[]" class="checkbox click_chk" type="checkbox" value="'+data.dataList[i].bookCode+'"></td>';
 				_html += '<td class="accurate-select"></td>';
 				_html += '<td class="accurate-info">';
 				_html += '<div class="accurate-info-layout">';
@@ -133,7 +135,7 @@ function get_basket_list(){
 				_html += '</div>';
 				_html += '<div class="quantity-num">';
 				_html += '<div class="basket-book-quantity">';
-				_html += '<input id="d_stock_'+i+'" class="detail-stock" name="stockValue" type="text" value="1" disabled="disabled">';
+				_html += '<input id="d_stock_'+i+'" class="detail-stock" name="stockCheck[]" type="text" value= "1" disabled="disabled">';
 				_html += '<input id="max_stock_'+i+'" class="detail-stock" type="hidden" value="'+data.dataList[i].stock+'" disabled="disabled">';
 				_html += '<input id="amount_'+i+'" class="detail-amount" type="hidden" value="'+(data.dataList[i].bookPrice - (data.dataList[i].bookPrice * (data.dataList[i].bookDiscount*0.01)))+'" disabled="disabled">';
 				_html += '<input id="bookcode_'+i+'" class="detail-bookcood" type="hidden" value="'+data.dataList[i].bookCode+'" disabled="disabled">';
@@ -167,10 +169,10 @@ function get_basket_list(){
 				_html += '<td class="delete-select">';
 				_html += '<div class="delete-select-layout">';
 				_html += '<div class="delete-btn">';
-				_html += '<button id="remove_'+i+'" class="delete-button" onclick="basket_list_remove(\''+i+'\')">삭제</button>';
+				_html += '<button id="remove_'+i+'" type="button" class="delete-button" onclick="basket_list_remove(\''+i+'\')">삭제</button>';
 				_html += '</div>';
 				_html += '<div class="storage-btn">';
-				_html += '<button id="locker_add_'+i+'" class="storage-button" onclick="add_locker_list(\''+i+'\')">보관함</button>';
+				_html += '<button id="locker_add_'+i+'" type="button" class="storage-button" onclick="add_locker_list(\''+i+'\')">보관함</button>';
 				_html += '</div>';
 				_html += '</div>';
 				_html += '</td>';
@@ -210,7 +212,7 @@ function order_box_info(){
 	let sum = 0;
 	let total = 0;
 	let delivry = 3000;
-	$('input[name=bookCheck]:checked').each(function(){
+	$("input[name='bookCheck[]']:checked").each(function(){
 		let arr = $(this).attr("id").split("_");
 		let idx = arr[2];
 		const d_amount = $('#amount_'+idx).val();
@@ -269,7 +271,7 @@ function basket_list_remove(idx){
 function basket_select_remove(){
 	//눌렀을때 input checkbox의 속성이 checked면 삭제 
     let select_list = [];
-	$('input[name=bookCheck]:checked').each(function(){
+	$("input[name='bookCheck[]']:checked").each(function(){
 		 select_list.push($(this).val());
 	});
 	let user_select = {"bookCode": select_list};
@@ -325,27 +327,8 @@ $('.to-locker-icon').on('click', function(){
 })
 
 function order() {
-	// 최종선택 수량과 선택한 책 북코드 보내면 될듯
-	const final_quantity = '';
-	const bookCode = '';
-	$('input[name=bookCheck]:checked').each(function(){
-		let arr = $(this).attr("id").split("_");
-		let idx = arr[2];
-		final_quantity = $('#d_stock'+idx).val();
-		console.log(final_quantity);
-		bookCode= $('#book_select_'+idx).val();
-		console.log(bookCode);
-	});
-	//담아보낼 리스트
-	var order_info = {
-			
-	};
-	// 결제페이지 리스트 보낼 ajax
-	$.ajax({
-		
-	//location.href="/boookfarm/payment";
-	});
-	
+	$('.detail-stock').removeAttr('disabled');
+	$('#form1').submit();
 }
 
 //주문하기 버튼 클릭 이벤트
@@ -375,9 +358,11 @@ $(document).ready(function(){
   });
   
   $('#cbx_checkAll').click(function(){
-  	if($('#cbx_checkAll').is(":checked"))
-	   $("input[name=bookCheck]").prop("checked", true); 
- 	else $("input[name=bookCheck]").prop("checked", false);
+  	if ($('#cbx_checkAll').is(":checked")) {
+  		$("input[name='bookCheck[]']").prop("checked", true);
+  	} else {
+  		$("input[name='bookCheck[]']").prop("checked", false);
+  	}
   	order_box_info();
   });
 }); 

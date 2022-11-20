@@ -1,5 +1,6 @@
 package com.myweb.boookfarm.bookmanage.service;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -12,6 +13,9 @@ import com.myweb.boookfarm.detail.model.BookDetailDAO;
 import com.myweb.boookfarm.detail.model.BookDetailDTO;
 import com.myweb.boookfarm.locker.model.BookLockerDAO;
 import com.myweb.boookfarm.locker.model.BookLockerDTO;
+import com.myweb.boookfarm.member.model.MemberDAO;
+import com.myweb.boookfarm.member.model.MemberDTO;
+import com.myweb.boookfarm.payment.model.PaymentDAO;
 
 @Service
 public class BookManageService {
@@ -24,6 +28,9 @@ public class BookManageService {
 	
 	@Autowired
 	private BookLockerDAO lockerDao;
+	
+	@Autowired
+	private MemberDAO memDao;
 	
 	// bookTable 관련
 	public BookDetailDTO getData(String bookCode) {
@@ -85,4 +92,16 @@ public class BookManageService {
 		boolean remove_result = lockerDao.lockerRemoveSelectData(id_bookcode_data);
 		return remove_result;
 	}
+	// paymentTable관련
+
+	public List<BookDetailDTO> orderBookDatas(HashMap<String, Object> bookCode) {
+		List<BookDetailDTO> bookDatas = dao.orderBookDatas(bookCode);
+		return bookDatas;
+	}
+
+	public MemberDTO getUserData(String memId) {
+		MemberDTO userData = memDao.getMemData(memId);
+		return userData;
+	}
+
 }

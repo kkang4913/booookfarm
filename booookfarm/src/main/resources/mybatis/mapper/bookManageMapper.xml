@@ -78,7 +78,7 @@
 		FROM BOOK b
 		JOIN BASKET bb
 		  ON b.BOOK_CODE = bb.BOOK_CODE 
-		WHERE bb.MEMBER_ID = 'user01'
+		WHERE bb.MEMBER_ID = #{memberId}
 	</select>
 	<insert id="insertBasketData" parameterType="bookBasketDTO">
 		INSERT INTO BASKET(BASKET_CODE 
@@ -134,7 +134,7 @@
 		FROM BOOK b
 		JOIN LOCKER l
 		  ON b.BOOK_CODE = l.BOOK_CODE
-		WHERE l.MEMBER_ID = 'user01'
+		WHERE l.MEMBER_ID = #{memberId}
 	</select>
 	<insert id="insertLockerData" parameterType="bookLockerDTO">
 		INSERT INTO LOCKER(LOCKER_CODE
@@ -161,4 +161,27 @@
 		 #{item}
 		</foreach>
 	</delete>
+	<!-- 결제페이지 부분 -->
+	<select id="selectOrderBookData"  parameterType="map" resultType="bookDetailDTO">
+		SELECT BOOK_CODE AS bookCode
+			 , BOOK_TITLE AS bookTitle
+			 , BOOK_AUTHOR AS bookAuthor
+			 , BOOK_INFO AS bookInfo
+			 , BOOK_PRICE AS bookPrice
+			 , BOOK_DISCOUNT AS bookDiscount
+			 , ISBN AS isbn
+			 , BOOK_CATEGORY AS bookCategory
+			 , STOCK AS stock
+			 , PUBLISHER AS publisher
+			 , BOOK_CONDITION AS bookCondition
+			 , BOOK_CONDITION_INFO AS bookConditionInfo
+			 , BOOK_IMG_PATH AS bookImgPath
+			 , CREATE_DATE AS createDate
+		FROM BOOK
+		WHERE BOOK_CODE IN
+		<foreach collection="bookCode" item="item" index="index" open="(" separator="," close=")">
+		#{item}
+		</foreach>
+	</select>
+	
 </mapper>  

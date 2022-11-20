@@ -1,6 +1,8 @@
 package com.myweb.boookfarm.detail.model;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.apache.ibatis.session.SqlSession;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,6 +28,12 @@ public class BookDetailDAO {
 		String mapperId = String.format(mapper, "selectSort");
 		List<BookDetailDTO> datas = session.selectList(mapperId);
 		return datas;
+	}
+
+	public List<BookDetailDTO> orderBookDatas(HashMap<String, Object> bookCode) {
+		String mapperId = String.format(mapper, "selectOrderBookData");
+		List<BookDetailDTO> orderBookData = session.selectList(mapperId, bookCode);
+		return orderBookData;
 	}
 
 }
