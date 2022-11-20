@@ -14,7 +14,7 @@
 </head>
 <body>
 <%@include file="/WEB-INF/views/module/header.jsp" %>
-<!-- 왼쪽 사이드 퀵메뉴(최근 본 목록) css: quick -->
+<!-- <!-- 왼쪽 사이드 퀵메뉴(최근 본 목록) css: quick
 <div class="quickmenu">
   <div class="quickmenu-title">
   	<div>최근 본 상품</div>
@@ -22,7 +22,7 @@
   			<div></div>
   		</div>
   </div>
-</div>
+</div> --> -->
 <main class="st-ma">
 	<div class="main-container">
 		<div class="basket-container">
@@ -294,6 +294,7 @@ function basket_select_remove(){
 }
 //보관함버튼 데이터 추가 함수
 function add_locker_list(idx){
+
 	const d_bookcode = $('#bookcode_'+idx).val();
 	const d_stock = $('#max_stock_' +idx).val();
 	form={
@@ -306,7 +307,7 @@ function add_locker_list(idx){
 	$.ajax({
 		url:"./locker-add-list",
 		type:"POST",
-		data: JSON.stringify(form),
+		data: JSON.stringify(form.bookCode),
 		dataType: "json",
 		contentType: "application/json; charset=UTF-8",
 		success: function(result){

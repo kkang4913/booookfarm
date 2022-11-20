@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+		<header class="st-hd h-sticky">
 <nav class="navigation-container hn-sticky">
   <ul class="navigation-element">
 		<c:choose>
@@ -16,7 +17,6 @@
     <li class="element"><a href="basket">장바구니</a></li>
   </ul>
 </nav>
-		<header class="st-hd h-sticky">
 				<div class="head-container hc-sticky">
 					<div class="mainlogo-img">
 						<a class="mainlogo" onclick="location.href='/boookfarm'">
@@ -44,24 +44,28 @@
 				</div>
 				</div>
 	<!-- 오른쪽 사이드 퀵메뉴(최근 본 목록) css: quick -->
-	<div class="quickmenu">
-	  <div class="quickmenu-title">
-	  	<div>최근 본 상품</div>
-	  		<div class="quickmenu-contianer">
-	  				<div class="boookcard-view-box">
-	  					<a class="bookcard-view-a">
-	  						<img class="bookcard-view-img" src="${path}/resources/img/card-img.png">
-	  						<div class="bookcard-cancel"></div>
-		  					<div class="bookcard-view-info">
-		  						<button class="bookcard-view-btn">
-		  							<img src="${path}/resources/img/icon/x_icon_white.png" style="width: 1rem; height: 1.2rem;">
-		  						</button>
-		  						<div class="boook-view-title">이미지를 넣는 법에대해 알아보는 책입니다요</div>
-		  						<div class="boook-view-price">30,000원</div>
-		  					</div>
- 					   </a>
- 					</div>
-  			</div>
-	 	</div>
-	</div>
+		<c:choose>
+			<c:when test="${not empty sessionScope.loginData}">
+				<div class="quickmenu">
+				  <div class="quickmenu-title">
+				  	<div>최근 본 상품</div>
+				  		<div class="quickmenu-contianer">
+				  				<div class="boookcard-view-box">
+				  					<a class="bookcard-view-a">
+				  						<img class="bookcard-view-img" src="${path}/resources/img/card-img.png">
+				  						<div class="bookcard-cancel"></div>
+					  					<div class="bookcard-view-info">
+					  						<button class="bookcard-view-btn">
+					  							<img src="${path}/resources/img/icon/x_icon_white.png" style="width: 1rem; height: 1.2rem;">
+					  						</button>
+					  						<div class="boook-view-title">이미지를 넣는 법에대해 알아보는 책입니다요</div>
+					  						<div class="boook-view-price">30,000원</div>
+					  					</div>
+			 					   </a>
+			 					</div>
+			  			</div>
+				 	</div>
+				</div>
+			</c:when>
+		</c:choose>
 		</header>

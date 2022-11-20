@@ -16,9 +16,9 @@ public class BookBasketDAO {
 	
 	private String mapper = "bookManageMapper.%s";
 	//장바구니에 존재하는 책인지 확인
-	public BookBasketDTO getBasketData(Map id_bookcode_data) {
+	public BookBasketDTO getBasketData(Map m_id_bookcode_data) {
 		String mapperId = String.format(mapper, "selectBasketData");
-		BookBasketDTO basketData = session.selectOne(mapperId, id_bookcode_data);
+		BookBasketDTO basketData = session.selectOne(mapperId, m_id_bookcode_data);
 		return basketData;
 	}
 	//장바구니에 존재하지 않는 책 추가 작업

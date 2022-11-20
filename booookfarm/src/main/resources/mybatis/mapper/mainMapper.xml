@@ -3,30 +3,24 @@
   "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
 <mapper namespace="bookTestMapper">
-<!-- 	<select id="selectAll"  resultType="bookDTO">
-		SELECT RNUM
-			 , bookCode, bookTitle, bookAuthor
-			 , bookPrice, bookDiscount
-			 , isbn, bookCategory
-			 , publisher, bookCondition
-			 , bookImgPath , createDate
-		FROM	 
-		(SELECT ROWNUM AS RNUM, BOOK_CODE AS bookCode
+ 	<select id="selectData"  resultType="bookDTO">
+			SELECT BOOK_CODE AS bookCode
 			 , BOOK_TITLE AS bookTitle
 			 , BOOK_AUTHOR AS bookAuthor
+			 , BOOK_INFO AS bookInfo
 			 , BOOK_PRICE AS bookPrice
 			 , BOOK_DISCOUNT AS bookDiscount
 			 , ISBN AS isbn
 			 , BOOK_CATEGORY AS bookCategory
+			 , STOCK AS stock 
 			 , PUBLISHER AS publisher
 			 , BOOK_CONDITION AS bookCondition
+			 , BOOK_CONDITION_INFO AS bookConditionInfo
 			 , BOOK_IMG_PATH AS bookImgPath
 			 , TO_CHAR(CREATE_DATE,'YYYY.MM.DD') AS createDate
 		FROM BOOK
-		<include refid="sort"></include>)
-       WHERE <![CDATA[ RNUM <= #{num_end}]]>
-		AND <![CDATA[RNUM >= #{num_start}]]>
-	</select> -->
+		WHERE BOOK_CODE = #{bookcode}
+	</select> 
 	<select id="selectAll"  resultType="bookDTO">
 		SELECT RN.*
 		FROM
@@ -35,12 +29,14 @@
 		(SELECT BOOK_CODE AS bookCode
 			 , BOOK_TITLE AS bookTitle
 			 , BOOK_AUTHOR AS bookAuthor
+			 , BOOK_INFO AS bookInfo
 			 , BOOK_PRICE AS bookPrice
 			 , BOOK_DISCOUNT AS bookDiscount
 			 , ISBN AS isbn
 			 , BOOK_CATEGORY AS bookCategory
 			 , PUBLISHER AS publisher
 			 , BOOK_CONDITION AS bookCondition
+			 , BOOK_CONDITION_INFO AS bookConditionInfo
 			 , BOOK_IMG_PATH AS bookImgPath
 			 , TO_CHAR(CREATE_DATE,'YYYY.MM.DD') AS createDate
 			 FROM BOOK
@@ -60,6 +56,36 @@
 	 <include refid="category"></include>
 	
 	</select>
+	
+
+	
+ 	<select id="selectBookList"  resultType="String">
+		SELECT
+			BOOK_CODE
+		FROM BASKET
+			WHERE 1 = 1
+				AND MEMBER_ID = #{memberId}
+				AND BOOK_CODE = #{bookCode}
+	</select>
+	<insert id="insertBook">
+		INSERT
+			INTO
+			USER01.BASKET
+		(BASKET_CODE,
+			MEMBER_ID,
+			BOOK_CODE,
+			QUANTITY,
+			DELIVERY_FEE)
+		VALUES(
+		SQU_BASKET.NEXTVAL,
+		#{memberId},
+		#{bookCode},
+		1,
+		1)
+	</insert> 
+	
+	
+	
 	<sql id="sort">
 		<if test="sort_Type =='sortData'">
 			ORDER BY CREATE_DATE DESC

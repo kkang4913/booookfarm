@@ -269,7 +269,22 @@
 	background-color: var(--white);
 	border: 1.5px solid #9D9D9D;
 	font-weight: bolder;
-	color: #202020;
+	color: #616161;
+}
+
+.select-basket{
+	padding: 1.2rem 0rem;
+	border-top: 1px solid var(--grey);
+}
+.select-basket-btn{
+	width: 11rem;
+	height: 4rem;	
+	background-color: var(--white);
+	border: 1.5px solid #9D9D9D;
+	font-weight: bolder;
+	color: #616161;
+	position: relative;
+	left: 68.5rem;
 }
 .book-buy-btn{
 	width: 14rem;
@@ -286,6 +301,12 @@
 	border-color: #1854A9;
 }
 .bottom>button:hover{
+	color:black;
+	cursor: pointer;
+	border-color: #202020;
+}
+.select-basket>button:hover{
+	color:black;
 	cursor: pointer;
 	border-color: #202020;
 }
@@ -356,7 +377,7 @@
 	margin: 0 8.7rem 0 0;
 }
 .mainlogo>img{
-	width: 20rem;
+	width: 17rem;
 	cursor: pointer;
 }
 ul {
@@ -425,7 +446,8 @@ background-color: rgba(35, 122, 246, 0.1);
 
 .h-sticky{
 	position: sticky;
-    top: -1px;
+	top: 0;
+	height: 20rem;
     margin-bottom: 4.8rem;
     background-color: white;
     z-index: 25;
@@ -434,9 +456,55 @@ background-color: rgba(35, 122, 246, 0.1);
 	margin: -0.6rem auto;
 }
 .hn-sticky{
-	height: 4rem;
+	height: 3.5rem;
 }
 .form-box{
 	display: flex;
 }
+
+#teet {
+  position: fixed;
+  top: 1.2rem;
+  right: 0rem;
+  text-align: center;
+  z-index: 99999;
+}
+
+
+
+#teet .toastWrap {
+  display: none;
+  background-color: rgba(225, 79, 79, 0.9);
+  box-shadow: 0 2px 3px #999;
+  border-radius: 0.6rem;
+  text-align: center;
+  margin: 1rem;
+  padding: 1rem 2rem;
+  width: 21.6rem;
+}
+
+.toast {
+	min-width: 21.6rem;
+    min-height: 2.4rem;
+    text-align: center;
+    line-height: 2.4rem;
+    color: white;
+    font-size: 1.4rem;
+    font-weight: normal;
+}
+
+#teen b {
+  display: block;
+  position: absolute;
+  top: 3px;
+  right: 4px;
+  width: 12px;
+  height: 12px;
+  font: normal 12px/1 Arial, sans-serif;
+  text-align: right;
+  cursor: pointer;
+  text-shadow: #FFF 0 1px 0;
+}
+
+
 

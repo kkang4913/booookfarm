@@ -1,6 +1,8 @@
 package com.myweb.boookfarm.model;
 
 
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -19,9 +21,9 @@ public class BookDAO {
 	
 	private String mapper = "bookTestMapper.%s";
 
-	public List<BookDTO> getData() {
-		String mapperId = String.format(mapper, "selectAll");
-		List<BookDTO> datas = session.selectList(mapperId);
+	public BookDTO getData(String BCode) {
+		String mapperId = String.format(mapper, "selectData");
+		BookDTO datas = session.selectOne(mapperId,BCode);
 		return datas;
 	}
 
@@ -37,6 +39,27 @@ public class BookDAO {
 		return datas;
 	}
 
+	public String selectBookBasketList(List<String> bookCode, String memberId) {
+		
+		
+		 String result = "";
+		 
+		  String mapperId = String.format(mapper, "selectBookList"); String mapperId1 =
+		  String.format(mapper, "insertBook");
+		  
+		  for(String m : bookCode) {
+		  
+		  Map<String, Object> map = new HashMap<String, Object>();
+		  
+		  map.put("memberId", memberId); map.put("bookCode", m);
+		  
+		 String param = session.selectOne(mapperId, map);
+		  
+		  if(param == null) { session.insert(mapperId1, map); result = "true"; }else {
+		  result = "false"; } }
+	
+		return "true";
 
+	}
 
 }

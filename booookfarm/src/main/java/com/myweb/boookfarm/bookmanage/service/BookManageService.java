@@ -36,8 +36,8 @@ public class BookManageService {
 		return datas;
 	}
 	// basketTable 관련
-	public BookBasketDTO getBasketData(Map id_bookcode_data) {
-		BookBasketDTO basketData = basketDao.getBasketData(id_bookcode_data);
+	public BookBasketDTO getBasketData(Map m_id_bookcode_data) {
+		BookBasketDTO basketData = basketDao.getBasketData(m_id_bookcode_data);
 		return basketData;
 	}
 

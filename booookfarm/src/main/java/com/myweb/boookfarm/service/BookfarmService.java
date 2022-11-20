@@ -1,8 +1,11 @@
 package com.myweb.boookfarm.service;
 
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.Map.Entry;
+import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -17,8 +20,8 @@ public class BookfarmService {
 	@Autowired
 	private BookDAO dao;
 
-	public List<BookDTO> getData() {
-		List<BookDTO> datas = dao.getData();
+	public BookDTO getData(String BCode) {
+		BookDTO datas = dao.getData(BCode);
 		return datas;
 	}
 
@@ -45,6 +48,17 @@ public class BookfarmService {
 		res_data.put("page_data", pager);
 		return res_data;
 	}
-	
+
+
+	public String selectBookBasketList(List<String> bookCode, String memberId) {
+		String result = dao.selectBookBasketList(bookCode, memberId);
+		System.out.println("서비스" +result );
+		return result ;
+	}
+
+
+
+
+
 	
 }

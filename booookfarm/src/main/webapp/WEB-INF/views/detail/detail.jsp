@@ -15,14 +15,14 @@
 <body>
 <%@include file="/WEB-INF/views/module/header.jsp" %>
 <!-- 왼쪽 사이드 퀵메뉴(최근 본 목록) css: quick -->
-<div class="quickmenu">
+<!-- <div class="quickmenu">
   <div class="quickmenu-title">
   	<div>최근 본 상품</div>
   		<div class="quickmenu-contianer">
   			<div></div>
   		</div>
   </div>
-</div>
+</div> -->
 <main class="st-ma">
 	<div class="main-container">
 	<div class="book-info-container">
@@ -337,11 +337,6 @@ $('.purchase-btn').on('click', function(){
 });
 
 $(document).ready(function(){
-  var currentPosition = parseInt($(".quickmenu").css("top"));
-  $(window).scroll(function() {
-    var position = $(window).scrollTop();
-    $(".quickmenu").stop().animate({"top":position+currentPosition-100+"px"},500);
-  });
   
   get_detail_page();
   get_detail_list();

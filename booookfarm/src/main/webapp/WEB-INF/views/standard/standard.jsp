@@ -26,7 +26,9 @@
 				 </div>
 		</div>
 			<div class="row-8">
-			 <div class="book-list-container">
+			 <div class="book-list-container"></div>
+			 <div class="select-basket">
+			 </div>
 				<div class="chkbox-container">
 					<div class="chbox-container-layout">
 				 		<input class="book-chkbox" id="chkbox-input" type="checkbox" onclick="selectAll(this);">
@@ -66,6 +68,13 @@
 					</ul>
 		</main>
 <%@ include file="/WEB-INF/views/module/footer.jsp" %>
+<div id="teet" >
+<!-- 	<div  class="trigger-body">
+		<div class="trigger-message">
+			로그인 후 이용해주세요.
+		</div>
+	</div> -->
+</div>
 </body>
 <script type="text/javascript">
 $(function(){
@@ -137,6 +146,9 @@ let sort_data = '';     //
 let m_price = 0;		//
 let result_price = 0;	//
 
+
+let loginchk = "로그인 후 이용해주세요.";
+let fixed = "고정";
 // 메인 페이지 리스트를 불러오는 함수 
 function main_page_list(page) {
 
@@ -155,13 +167,12 @@ function main_page_list(page) {
 			let _page = '';
 			for (var i=0 ; i < res.datas.length ; i++) {
 				result_price = res.datas[i].bookPrice - (res.datas[i].bookPrice * (res.datas[i].bookDiscount*0.01));
-				console.log("할인이 적용 된 판매가격 = " + result_price);
 				
 				book_html += '<div class="bookcard-container">';
 				book_html += '<ol>';
 				book_html += '<li class="bookcard-flex">';
 				book_html += '<div>';
-				book_html += '<input class="bookcard-chkbox-card" id="chkbox-input" type="checkbox">';
+				book_html += '<input name="select_book" class="bookcard-chkbox-card" id="chkbox-input" type="checkbox" value="'+res.datas[i].bookCode+'">';
 				book_html += '<label class="bookcard-chkbox-input" for="chkbox-input">';
 				book_html += '<span>상품선택</span>';
 				book_html += '</label>';
@@ -211,14 +222,21 @@ function main_page_list(page) {
 				book_html += '</div>';
 				book_html += '<div class="book-basket-buy">';
 				book_html += '<div class="book-buy-layout top">';
-				book_html += '<button class="book-buy-btn"  type="button">';
-				book_html += '<span>바로구매</span>';
-				book_html += '</button>';
+				book_html += '<c:if test="${not empty sessionScope.loginData}">'
+				book_html += '<button onclick="toast(loginchk)" id="buy_active" class="book-buy-btn" type="button"><span>바로구매</span></button>';
+				book_html += '</c:if>'
+				book_html += '<c:if test="${empty sessionScope.loginData}">'
+				book_html += '<button onclick="toast(loginchk)" id="buy_active" class="book-buy-btn" type="button"><span>바로구매</span></button>';
+				book_html += '</c:if>'
 				book_html += '</div>';
 				book_html += '<div class="book-basket-layout bottom">';
-				book_html += '<button class="book-basket-btn" type="button">';
-				book_html += '<span>장바구니</span>';
-				book_html += '</button>';
+				book_html += '<div class="book__info"><input id="bCode" type="hidden" value="'+res.datas[i].bookCode+'"></div>';
+				book_html += '<c:if test="${not empty sessionScope.loginData}">'
+				book_html += '<button onclick="add_basket('+res.datas[i].bookCode+');"class="book-basket-btn" type="button"><span>장바구니</span></button>';
+				book_html += '</c:if>'
+				book_html += '<c:if test="${empty sessionScope.loginData}">'
+				book_html += '<button onclick="toast(loginchk)"class="book-basket-btn" type="button"><span>장바구니</span></button>';
+				book_html += '</c:if>'
 				book_html += '</div>';
 				book_html += '</div>';
 				book_html += '</div>';
@@ -258,6 +276,7 @@ function main_page_list(page) {
 				$('#n_btn').removeClass('disnone');
 			}
 			$('#page_list').html(_page);
+			
 		},
 
 	})
@@ -457,6 +476,60 @@ $('#input_search_data').on('keydown', function(e) {
 		main_page_list(1);
 	}
 });
+function add_basket(code) {
+	let bookCode  = [];
+	$('input[name=select_book]:checked').each(function(){
+		bookCode.push($(this).val());
+	});
+	
+	
+	$.ajax({
+		url : "./basket-main-info",
+		type : "POST",
+		data: {
+			bookCode :bookCode
+			},
+		contentType : "application/x-www-form-urlencoded; charset=UTF-8",
+		success: function(data){
+			if(data.code == 'success'){
+				alert("장바구니에 추가되었습니다.");
+			}/* else if(data.code == 'fail'){
+				alert("이미 담겨진 상품입니다.");
+			} */
+		}
+	});
+}
+
+function fillWidth(elem, timer, limit) {
+	if (!timer) { timer = 3000; }	
+	if (!limit) { limit = 100; }
+	var width = 1;
+	var id = setInterval(frame, timer / 100);
+		function frame() {
+		if (width >= limit) {
+			clearInterval(id);
+		} else {
+		}
+	}
+};
+
+function toast(msg, timer) {
+	if (!timer) { timer = 3000; }
+	var $elem = $("<div class='toastWrap'><span class='toast'>" + msg + "<b></b></span></div>");
+	$("#teet").append($elem); //top = prepend, bottom = append
+	$elem.slideToggle(100, function() {
+		$('.timerWrap', this).first().outerWidth($elem.find('.toast').first().outerWidth() - 10);
+		if (!isNaN(timer)) {
+			fillWidth($elem.find('.timer').first()[0], timer);
+			setTimeout(function() {
+				$elem.fadeOut(function() {
+					$(this).remove();
+				});
+			}, timer);			
+		}
+	});
+}
+
 
 function selectAll(selectAll)  {
 	  const checkboxes 
@@ -467,8 +540,8 @@ function selectAll(selectAll)  {
 	  });
 	}
 
+
 </script>
-<!-- Channel Plugin Scripts -->
 <script>
   (function() {
     var w = window;
@@ -509,5 +582,4 @@ function selectAll(selectAll)  {
     "pluginKey": "0c188261-acbc-4429-ad63-d6ea32ca05c0", //please fill with your plugin key
   });
 </script>
-<!-- End Channel Plugin -->
 </html>

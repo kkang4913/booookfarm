@@ -1,13 +1,17 @@
 package com.myweb.boookfarm;
 
 import java.text.DateFormat;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
+import org.json.simple.parser.JSONParser;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,23 +19,28 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import com.myweb.boookfarm.detail.model.BookDetailDTO;
+import com.myweb.boookfarm.basket.model.BookBasketDTO;
+import com.myweb.boookfarm.bookmanage.service.BookManageService;
 import com.myweb.boookfarm.model.BookDTO;
 import com.myweb.boookfarm.model.PagingDTO;
 import com.myweb.boookfarm.service.BookfarmService;
 
-import oracle.jdbc.proxy.annotation.Post;
 
 @Controller
 public class HomeController {
 	
 	@Autowired
 	private BookfarmService service;
+	
+	@Autowired
+	private BookManageService ManageService;
+
 	
 	@RequestMapping(value = "/", method = RequestMethod.GET)
 	public String home(Locale locale, Model model) {
@@ -40,7 +49,8 @@ public class HomeController {
 	
 	@GetMapping(value = "/list",produces="application/json; charset=utf-8")
 	@ResponseBody
-	public String bookList(@RequestParam(defaultValue = "1", required = false) int page //현재페이지
+	public String bookList( Model model,
+			@RequestParam(defaultValue = "1", required = false) int page //현재페이지
 			,@RequestParam("page_count")int pagecount
 			,@RequestParam("page_sort")String listSort
 			,@RequestParam("search_data")String searchBook
@@ -64,7 +74,9 @@ public class HomeController {
 			json.put("bookCategory", bfarm.getBookCategory());
 			json.put("publisher", bfarm.getPublisher());
 			json.put("bookCondition", bfarm.getBookCondition());
+			json.put("bookConditionInfo", bfarm.getBookConditionInfo());
 			json.put("bookImgPath", bfarm.getBookImgPath());
+			json.put("bookInfo", bfarm.getBookInfo());
 			json.put("createDate", bfarm.getCreateDate());
 			data_arr.add(json);
 		}
@@ -76,6 +88,49 @@ public class HomeController {
 		page_obj.put("is_ppage", pager.isPrevPage());
 		rtn_data.put("datas", data_arr);
 		rtn_data.put("pager", page_obj);
+		model.addAttribute("book__infos",data_arr);
+		
 		return rtn_data.toJSONString();
 	}
+
+	
+	@PostMapping(value = "/basket-main-infoo",produces="application/json; charset=utf-8")
+	@ResponseBody
+	public String basketAddList (@RequestBody BookDTO BCode) throws Exception {
+		JSONObject json = new JSONObject();
+		BookDTO datas = service.getData(BCode.getBookCode());
+		Map m_id_bookcode_data = new HashMap();
+		m_id_bookcode_data.put("memberId", "user01");
+		m_id_bookcode_data.put("bookCode", datas.getBookCode());
+		BookBasketDTO MbookBasketData = ManageService.getBasketData(m_id_bookcode_data); //북코드로 책정보가 장바구니에 존재하는지 확인
+		BookBasketDTO Mbasket_add_data = new BookBasketDTO();
+		Mbasket_add_data.setMemberId("user01"); // 로그인 데이타에서 받아와야함
+		Mbasket_add_data.setBookCode(datas.getBookCode());
+		Mbasket_add_data.setQuantity(datas.getStock()); 
+		Mbasket_add_data.setDeliveryFee(3000); // 배달비는 3천원 고정 산간지역은 추후 추가
+		if(MbookBasketData == null) {//장바구니에 존재하지 않는 책정보면 INSERT작업
+			boolean add_result = ManageService.bookAddData(Mbasket_add_data);
+			json.put("code", "success");
+			return json.toString();
+		}else {
+			json.put("code", "fail");
+			return json.toString();
+		}
+	}
+	
+	@PostMapping(value = "/basket-main-info",produces="application/json; charset=utf-8")
+	@ResponseBody
+	public String basketAddList (@RequestParam(required = false, value="bookCode[]") List<String> bookCode) throws Exception {
+		
+		String result = service.selectBookBasketList(bookCode, "user01");
+		JSONObject json = new JSONObject();
+		if (result.equals("true")) {
+			json.put("code", "success");
+		}else {
+			
+		}
+		return json.toString();
+		
+	}
+	
 }
