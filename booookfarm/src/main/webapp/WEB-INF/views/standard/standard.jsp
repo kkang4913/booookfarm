@@ -66,6 +66,8 @@
 							</button>
 						</li>
 					</ul>
+			</div>
+		</div>
 		</main>
 <%@ include file="/WEB-INF/views/module/footer.jsp" %>
 <div id="teet" >
