@@ -331,7 +331,7 @@ function add_cart() {
 $('.basket-btn').on('click', function(e) {
 	add_cart();
 });
-
+//바로구매 버튼 이벤트
 $('.purchase-btn').on('click', function(){
 	location.href="/boookfarm/payment"
 });
