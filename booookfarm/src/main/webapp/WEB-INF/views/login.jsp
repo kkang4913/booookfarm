@@ -42,7 +42,7 @@
         </div>
         <button class="login-form__btn btn--rec btn--blue" type="button" onclick="loginFormSubmit();">로그인</button>
       </form>
-      <button class="login-form__btn btn--rec btn--green" type="button"><img src="${path}/resources/img/logos/naver-logo.png" /><span>네이버 아이디로 로그인</span></button>
+      <button id="naverLogin" class="login-form__btn btn--rec btn--green" type="button" onclick="location.href='${urlNaver}'"><img src="${path}/resources/img/logos/naver-logo.png" /><span>네이버 아이디로 로그인</span></button>
       <button class="login-form__btn btn--rec btn--yellow" type="button"><img src="${path}/resources/img/logos/kakao-logo.png" /><span>카카오 아이디로 로그인</span></button>
       <div class="login-row">
         <span><a href="join">회원가입</a></span>
