@@ -38,8 +38,6 @@ public class MemberController {
     public String getLoginView(Model model, HttpSession session) {
         /* 네아로 인증 URL을 생성하기 위하여 naverLoginBO클래스의 getAuthorizationUrl메소드 호출 */
         String naverAuthUrl = naverLoginBO.getAuthorizationUrl(session);
-        /* 인증요청문 확인 */
-        System.out.println("네이버:" + naverAuthUrl);
         /* 객체 바인딩 */
         model.addAttribute("urlNaver", naverAuthUrl);
 
@@ -75,37 +73,32 @@ public class MemberController {
     }
 
     //네이버 로그인 성공시 callback호출 메소드
-    @RequestMapping(value = "/callbackNaver.do", method = { RequestMethod.GET, RequestMethod.POST })
-    public String callbackNaver(Model model, @RequestParam String code, @RequestParam String state, HttpSession session)
+    @RequestMapping(value = "/callbackNaver", method = { RequestMethod.GET, RequestMethod.POST })
+    public String callbackNaver(HttpSession session
+                              , @RequestParam String code
+                              , @RequestParam String state)
             throws Exception {
-        System.out.println("로그인 성공 callbackNaver");
         OAuth2AccessToken oauthToken;
         oauthToken = naverLoginBO.getAccessToken(session, code, state);
         //로그인 사용자 정보를 읽어온다.
         apiResult = naverLoginBO.getUserProfile(oauthToken);
 
         JSONParser jsonParser = new JSONParser();
-        JSONObject jsonObj;
+        JSONObject naverLoginData;
 
-        jsonObj = (JSONObject) jsonParser.parse(apiResult);
-        JSONObject response_obj = (JSONObject) jsonObj.get("response");
-        // 프로필 조회
-        String email = (String) response_obj.get("email");
-        String name = (String) response_obj.get("name");
+        naverLoginData = (JSONObject) jsonParser.parse(apiResult);
         // 세션에 사용자 정보 등록
-        // session.setAttribute("islogin_r", "Y");
-        session.setAttribute("signIn", apiResult);
-        session.setAttribute("email", email);
-        session.setAttribute("name", name);
+        session.setAttribute("naverLoginData", naverLoginData);
 
         /* 네이버 로그인 성공 페이지 View 호출 */
-        return "redirect:/";
+        return "redirect:/loginSuccess.do";
     }
 
     // 소셜 로그인 성공 페이지
     @RequestMapping("/loginSuccess.do")
     public String loginSuccess() {
-        return "standard/standard";
+        System.out.println("성공페이지");
+        return "redirect:/join";
     }
 
     @GetMapping(value = "/logout")
@@ -140,8 +133,9 @@ public class MemberController {
         newMem.setAddr(param.get("addr"));
         newMem.setDetailAddr(param.get("detailAddr"));
         newMem.setMileage("0");
-        newMem.setSocialType("com");
+        newMem.setSocialType(param.get("joinType"));
         newMem.setMemPos("com");
+        System.out.println(newMem);
         JSONObject jsonObject = new JSONObject();
         boolean result = memServ.addMemData(newMem);
         jsonObject.put("joinRes", result);

@@ -2,12 +2,12 @@
  *  회원가입 페이지 스크립트
  *  @todo alert->modal
  */
-let joinColorTemp = "";
+let joinType = "com";
 let certificationNumber = "";
 let cNumTimer = null;
 let cNumTimerIsRun = false;
 let chkTimeOver = false;
-let idDubChk = false;
+let isIdDupChk = false;
 let isName = false;
 let isId = false;
 let isPw = false;
@@ -19,6 +19,40 @@ let isDetailAddr = false;
 let isUseInfoTerms = false;
 let isOfferInfoTerms = false;
 let isServiceTerms = false;
+
+$(document).ready( () => {
+    /**
+     *  최초 naver 로그인 시 추가 정보 입력 요청 후
+     *  DB에 추가 하기 위한 Form 수정 작업
+     */
+    if(sessionStorage.getItem("naverLoginData") != null) {
+        const naverLoginData = JSON.parse(sessionStorage.getItem("naverLoginData"));
+        const phone = naverLoginData.mobile.replace(/-/g, '');
+
+        sessionStorage.removeItem("naverLoginData");
+        $('.join-title').text('추가 정보 입력');
+        joinType = "naver";
+        $('#name').val(naverLoginData.name)
+                  .closest('.join-form-line').addClass('hidden');
+        isName = true;
+        $('#id').val(naverLoginData.id)
+                .closest('.join-form-line').addClass('hidden');
+        isId = true;
+        isIdDupChk = true;
+        $('#pw').val(Math.random().toString(36).substring(2, 12))
+                .closest('.join-form-line').addClass('hidden');
+        isPw = true;
+        $('#chkPw').closest('.join-form-line').addClass('hidden');
+        isPwChk = true;
+        $('#phone').val(phone)
+                   .closest('.join-form-line').addClass('hidden');
+        $('#chkPhone').closest('.join-form-line').addClass('hidden');
+        isCNum = true;
+        $('#email').val(naverLoginData.email)
+                   .closest('.join-form-line').addClass('hidden');
+        isEmail = true;
+    }
+});
 
 /** 패스워드 입력 내용 보기 기능 */
 $('#showPw').on("click", () => {
@@ -442,7 +476,7 @@ function idDupChk() {
         alert("아이디를 확인해주세요.");
         return;
     }
-    if(idDubChk) {
+    if(isIdDupChk) {
         alert('사용 가능한 아이디입니다.');
         return ;
     }
@@ -465,7 +499,7 @@ function idDupChk() {
             } else {
                 alert('사용 가능한 아이디입니다.');
                 $('#id').prop('readonly', true);
-                idDubChk = true;
+                isIdDupChk = true;
                 isId = true;
             }
         }
@@ -658,7 +692,7 @@ function joinFormChk() {
         $('#name').focus();
         return false;
     }
-    if(!idDubChk) {
+    if(!isIdDupChk) {
         alert("아이디 중복 여부를 확인해주세요.");
         $('#id').focus();
         return false;
@@ -726,7 +760,8 @@ function joinFormSubmit() {
             , 'postCode' : postCode
             , 'addr' : addr
             , 'detailAddr' : detailAddr
-            , 'gender' : gender};
+            , 'gender' : gender
+            , 'joinType' : joinType };
 
         $.ajax({
             type: "post",
@@ -747,6 +782,3 @@ function joinFormSubmit() {
 
 }
 
-$(document).ready( () => {
-
-});

@@ -482,7 +482,19 @@
   </div>
 </main>
 <%@include file="/WEB-INF/views/module/footer.jsp" %>
-
+<script>
+    $(document).ready( () => {
+        /**
+         *  네이버 로그인 API 데이터 저장
+         */
+        if(${not empty sessionScope.naverLoginData}) {
+            const naverLoginData = ${sessionScope.naverLoginData};
+            if(naverLoginData.resultcode === '00') {
+                sessionStorage.setItem("naverLoginData", JSON.stringify(naverLoginData.response));
+            }
+        }
+    });
+</script>
 <script src="${path}/resources/js/join.js"></script>
 
 </body>
