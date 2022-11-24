@@ -531,17 +531,22 @@ function sendSMS() {
             if(res.phoneDupChk) {   // 이미 등록된 핸드폰일 경우
                 alert("중복입니다.");
             } else {    // 등록된 정보가 없을 경우
-                $('#phone').prop('readonly', true);    // 핸드폰 입력 부분 비활성화
-                certificationNumber = res.cNum; // 인증번호 저장
-                let display = $('#cNumTimer');  // 타이머 출력할 span
-                let leftSec = 300;  // 제한시간 5분 설정
+                if(res.result == "sendSuccess"){    // 인증 메시지 발송 성공 시
+                    alert("인증번호가 전송되었습니다.");
+                    $('#phone').prop('readonly', true);    // 핸드폰 입력 부분 비활성화
+                    certificationNumber = res.cNum; // 인증번호 저장
+                    let display = $('#cNumTimer');  // 타이머 출력할 span
+                    let leftSec = 300;  // 제한시간 5분 설정
 
-                if(cNumTimerIsRun){ // 이미 타이머가 작동중일 경우
-                    clearInterval(cNumTimer);   // 타이머 중지
-                    display.html("");   // 타이머 span 비우기
-                    startTimer(leftSec, display);   // 타이머 다시 시작
+                    if(cNumTimerIsRun){ // 이미 타이머가 작동중일 경우
+                        clearInterval(cNumTimer);   // 타이머 중지
+                        display.html("");   // 타이머 span 비우기
+                        startTimer(leftSec, display);   // 타이머 다시 시작
+                    } else {
+                        startTimer(leftSec, display);   // 타이머 시작
+                    }
                 } else {
-                    startTimer(leftSec, display);   // 타이머 시작
+                    alert("인증번호 전송에 실패하였습니다.");
                 }
             }
         }

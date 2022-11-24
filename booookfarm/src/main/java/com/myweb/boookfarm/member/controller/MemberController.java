@@ -174,10 +174,22 @@ public class MemberController {
             return jsonObject.toJSONString();
         }
         Sens sens = new Sens();
-//        String cNum = sens.callSendSMS(phoneNum);  // 인증번호 발송과 함께 난수 인증번호 저장
-        String cNum = "12345";
 
+//        boolean sendResult = sens.callSendSMS(phoneNum).equals("sendFail");
+//        if(sendResult) {
+//            jsonObject.put("result", "sendFail");
+//            return jsonObject.toJSONString();
+//        } else {
+//            String cNum = sens.callSendSMS(phoneNum);  // 인증번호 발송과 함께 난수 인증번호 저장
+//            jsonObject.put("result", "sendSuccess");
+//            jsonObject.put("cNum", cNum);   // 클라이언트로 보낼 인증번호 JSON 객체 생성
+//
+//            return jsonObject.toJSONString();
+//        }
+        String cNum = "12345";
+        jsonObject.put("result", "sendSuccess");
         jsonObject.put("cNum", cNum);   // 클라이언트로 보낼 인증번호 JSON 객체 생성
+
         return jsonObject.toJSONString();
     }
 

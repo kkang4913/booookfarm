@@ -61,7 +61,7 @@ public class Sens {
      * @param pNum 수신 받을 핸드폰 번호
      * @param cNum 발신할 난수 인증번호 5자리
      */
-    private void sendSMS(String pNum, String cNum) {
+    private Boolean sendSMS(String pNum, String cNum) {
         String hostNameUrl = "https://sens.apigw.ntruss.com";            // 호스트 URL
         String requestUrl = "/sms/v2/services/";                        // 요청 URL
         String requestUrlType = "/messages";                            // 요청 URL
@@ -72,6 +72,7 @@ public class Sens {
         String timestamp = Long.toString(System.currentTimeMillis());    // current timestamp (epoch)
         requestUrl += serviceId + requestUrlType;
         String apiUrl = hostNameUrl + requestUrl;   // 요청할 최종 URL
+        boolean result = false;
 
         // JSON 을 활용한 body data 생성
         JSONObject bodyJson = new JSONObject();
@@ -120,6 +121,7 @@ public class Sens {
             System.out.println("responseCode" + " " + responseCode);
             if (responseCode == 202) { // 정상 호출
                 br = new BufferedReader(new InputStreamReader(con.getInputStream()));
+                result = true;
             } else { // 에러 발생
                 br = new BufferedReader(new InputStreamReader(con.getErrorStream()));
             }
@@ -136,6 +138,7 @@ public class Sens {
         } catch (Exception e) {
             System.out.println(e);
         }
+        return result;
     }
 
     /**
@@ -149,8 +152,11 @@ public class Sens {
         for(int i = 0; i < 5; i++) {    // 난수 인증번호 5자리 생성
             cNum += random.nextInt(10);
         }
-        sendSMS(pNum, cNum);
+        boolean sendResult = sendSMS(pNum, cNum);
+        if(sendResult){
+            return cNum;
+        }
 
-        return cNum;
+        return "sendFail";
     }
 }

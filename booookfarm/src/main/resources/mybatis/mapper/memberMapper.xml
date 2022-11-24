@@ -41,8 +41,8 @@
           FROM MEMBERS
          WHERE MEMBER_ID = #{id}
     </select>
-    <select id="selectMemPhone" resultType="string">
-        SELECT PHONE
+    <select id="chkPhoneDup" resultType="_int">
+        SELECT COUNT(PHONE)
           FROM MEMBERS
          WHERE PHONE = #{phone}
     </select>

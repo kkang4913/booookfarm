@@ -47,13 +47,13 @@ public class MemberDAO {
 	/**
 	 *  DB에서 phone과 일치하는 phone을 찾는 메서드
 	 * @param phone DB에서 찾을 phone
-	 * @return DB에서 찾은 phone 반환
+	 * @return DB에 phone이 없으면 0 반환 있을 경우 갯수 반환
 	 */
-	public String getMemPhone(String phone) {
-		String mapperId = String.format(mapper, "selectMemPhone");
-		String memPhone = session.selectOne(mapperId, phone);
+	public int chkPhoneDup(String phone) {
+		String mapperId = String.format(mapper, "chkPhoneDup");
+		int result = session.selectOne(mapperId, phone);
 
-		return memPhone;
+		return result;
 	}
 
 	/**

@@ -44,13 +44,13 @@ public class MemberService {
 	}
 
 	/**
-	 *  DAO에 phone과 일치하는 phone을 요청하는 메서드
-	 * @param phone DB에서 찾을 phone
-	 * @return DAO에서 받은 phone 반환
+	 *  phone 중복 체크 메서드
+	 * @param phone 중복 체크할 phone
+	 * @return 중복이면 true 아니면 false 반환
 	 */
-	public String getMemPhone(String phone) {
-		String data = dao.getMemPhone(phone);
-		return data;
+	public Boolean chkPhoneDup(String phone) {
+		int result = dao.chkPhoneDup(phone);
+		return result == 0 ? false : true;
 	}
 
 	/**
@@ -65,19 +65,6 @@ public class MemberService {
 		}
 		return result;
 	}
-
-	/**
-	 *  phone 중복 체크 메서드
-	 * @param phone 중복 체크할 phone
-	 * @return 중복이면 true 아니면 false 반환
-	 */
-    public boolean chkPhoneDup(String phone) {
-		boolean result = false;
-		if(getMemPhone(phone) != null) {
-			result = getMemPhone(phone).equals(phone) ? true : false;
-		}
-		return result;
-    }
 
 	/**
 	 *  회원가입 요청 메서드
