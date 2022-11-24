@@ -19,16 +19,17 @@ let isDetailAddr = false;
 let isUseInfoTerms = false;
 let isOfferInfoTerms = false;
 let isServiceTerms = false;
+let naverLoginData;
 
 $(document).ready( () => {
     /**
      *  최초 naver 로그인 시 추가 정보 입력 요청 후
      *  DB에 추가 하기 위한 Form 수정 작업
      */
-    if(sessionStorage.getItem("naverLoginData") != null) {  // naver 로그인 데이터 있는지 확인
-        const naverLoginData = JSON.parse(sessionStorage.getItem("naverLoginData"));    // session storage에서 로그인 데이터 가져오기
+    if(naverLoginData != null) {  // naver 로그인 데이터 있는지 확인
+        // const naverLoginData = JSON.parse(sessionStorage.getItem("naverLoginData"));    // session storage에서 로그인 데이터 가져오기
         const phone = naverLoginData.mobile.replace(/-/g, '');  // 핸드폰 번호에서 '-' 제거
-        sessionStorage.removeItem("naverLoginData");    // session storage에서 naver 로그인 데이터 삭제
+        // sessionStorage.removeItem("naverLoginData");    // session storage에서 naver 로그인 데이터 삭제
 
         $('.join-title').text('추가 정보 입력');
         joinType = "naver";
@@ -779,6 +780,16 @@ function joinFormSubmit() {
             }
         });
     }
+}
 
+/**
+ * 네이버에서 받아온 유저 정보를 저장하는 함수
+ * @param naverData
+ */
+function saveNaverData(naverData) {
+    if(naverData != null && naverData != '') {
+        if(naverData.resultcode === '00')
+            naverLoginData = naverData.response;
+    }
 }
 

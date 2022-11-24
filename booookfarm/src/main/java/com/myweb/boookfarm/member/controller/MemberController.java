@@ -103,8 +103,6 @@ public class MemberController {
         } else {    // 네이버 로그인으로 가입한 정보가 있을 때
             httpSession.setAttribute("loginData", memData);
         }
-        // 세션에 사용자 정보 등록
-        httpSession.setAttribute("naverLoginData", naverLoginData);
 
         return "redirect:/naverLoginSuccess";
     }

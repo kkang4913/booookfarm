@@ -488,13 +488,10 @@
          *  네이버 로그인 API 데이터 저장
          */
         if(${not empty sessionScope.naverLoginData}) {  // 네이버 로그인 데이터가 있으면
-            const naverLoginData = ${sessionScope.naverLoginData};
-            if(naverLoginData.resultcode === '00') {  // 네이버 로그인이 성공 했을 때
-                sessionStorage.setItem("naverLoginData", JSON.stringify(naverLoginData.response));  // session storage에 로그인 데이터 저장 저장
-                <%
-                  session.removeAttribute("naverLoginData");  // 사용한 로그인 데이터 삭제
-                %>
-            }
+            saveNaverData(${sessionScope.naverLoginData});
+            <%
+               session.removeAttribute("naverLoginData");  // 사용한 로그인 데이터 삭제
+            %>
         }
     });
 </script>
