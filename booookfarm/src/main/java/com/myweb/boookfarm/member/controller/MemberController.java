@@ -35,9 +35,9 @@ public class MemberController {
      * @return 로그인 페이지 반환
      */
     @GetMapping(value = "/login")
-    public String getLoginView(Model model, HttpSession session) {
+    public String getLoginView(Model model, HttpSession httpSession) {
         /* 네아로 인증 URL을 생성하기 위하여 naverLoginBO클래스의 getAuthorizationUrl메소드 호출 */
-        String naverAuthUrl = naverLoginBO.getAuthorizationUrl(session);
+        String naverAuthUrl = naverLoginBO.getAuthorizationUrl(httpSession);
         /* 객체 바인딩 */
         model.addAttribute("urlNaver", naverAuthUrl);
 
@@ -72,14 +72,21 @@ public class MemberController {
         return jsonObject.toJSONString();
     }
 
-    //네이버 로그인 성공시 callback호출 메소드
+    /**
+     *  네이버 로그인 성공시 callback호출 메소드
+     * @param httpSession
+     * @param code
+     * @param state
+     * @return 네이버 로그인 성공 메서드 호출
+     * @throws Exception
+     */
     @RequestMapping(value = "/callbackNaver", method = { RequestMethod.GET, RequestMethod.POST })
-    public String callbackNaver(HttpSession session
+    public String callbackNaver(HttpSession httpSession
                               , @RequestParam String code
                               , @RequestParam String state)
             throws Exception {
         OAuth2AccessToken oauthToken;
-        oauthToken = naverLoginBO.getAccessToken(session, code, state);
+        oauthToken = naverLoginBO.getAccessToken(httpSession, code, state);
         //로그인 사용자 정보를 읽어온다.
         apiResult = naverLoginBO.getUserProfile(oauthToken);
 
@@ -87,18 +94,27 @@ public class MemberController {
         JSONObject naverLoginData;
 
         naverLoginData = (JSONObject) jsonParser.parse(apiResult);
-        // 세션에 사용자 정보 등록
-        session.setAttribute("naverLoginData", naverLoginData);
+        JSONObject response_obj = (JSONObject) naverLoginData.get("response");
+        String naverId = (String) response_obj.get("id");
+        MemberDTO memData = memServ.getMemData(naverId);
 
-        /* 네이버 로그인 성공 페이지 View 호출 */
-        return "redirect:/loginSuccess.do";
+        if(memData == null) {   // 네이버 로그인으로 가입한 정보가 없으면
+            httpSession.setAttribute("naverLoginData", naverLoginData);
+        } else {    // 네이버 로그인으로 가입한 정보가 있을 때
+            httpSession.setAttribute("loginData", memData);
+        }
+        // 세션에 사용자 정보 등록
+        httpSession.setAttribute("naverLoginData", naverLoginData);
+
+        return "redirect:/naverLoginSuccess";
     }
 
     // 소셜 로그인 성공 페이지
-    @RequestMapping("/loginSuccess.do")
-    public String loginSuccess() {
-        System.out.println("성공페이지");
-        return "redirect:/join";
+    @RequestMapping("/naverLoginSuccess")
+    public String loginSuccess(HttpSession httpSession) {
+        if(httpSession.getAttribute("loginData") == null)
+            return "redirect:/join";
+        return "redirect:/";
     }
 
     @GetMapping(value = "/logout")
