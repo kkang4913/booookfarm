@@ -32,6 +32,9 @@ public class BookManageService {
 	@Autowired
 	private MemberDAO memDao;
 	
+	@Autowired
+	private PaymentDAO paymentDao;
+	
 	// bookTable 관련
 	public BookDetailDTO getData(String bookCode) {
 		BookDetailDTO data = dao.getData(bookCode);
@@ -102,6 +105,11 @@ public class BookManageService {
 	public MemberDTO getUserData(String memId) {
 		MemberDTO userData = memDao.getMemData(memId);
 		return userData;
+	}
+
+	public boolean addMileage(Map mileageData) {
+		boolean add_result = paymentDao.addMileage(mileageData); 
+		return add_result;
 	}
 
 }

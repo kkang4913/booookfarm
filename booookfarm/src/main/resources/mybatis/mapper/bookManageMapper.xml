@@ -183,5 +183,10 @@
 		#{item}
 		</foreach>
 	</select>
+	<update id="updateMileage" parameterType="map" >
+		UPDATE MEMBERS
+		SET MILEAGE = #{mileage}
+		WHERE MEMBER_ID = #{memberId}
+	</update>
 	
 </mapper>  

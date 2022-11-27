@@ -22,7 +22,7 @@
   			<div></div>
   		</div>
   </div>
-</div> --> -->
+</div> --> 
 <main class="st-ma">
 	<div class="main-container">
 		<div class="basket-container">
@@ -326,9 +326,19 @@ function add_locker_list(idx){
 $('.to-locker-icon').on('click', function(){
 	location.href="/boookfarm/locker"
 })
-
+//주문하기 버튼 클릭시 데이터 이동함수
 function order() {
-	$('.detail-stock').removeAttr('disabled');
+	let chk = false;
+	$('.detail-stock').attr('disabled', true);
+	$("input[name='bookCheck[]']:checked").each(function () {
+		var idx = $(this).attr('id').substr(-1, 1);
+		$('#d_stock_' + idx).attr('disabled', false);
+		chk = true;
+	});
+	if(chk == false){
+		alert("구매할 상품을 선택하세요.");
+		return;
+	}
 	$('#form1').submit();
 }
 
@@ -351,8 +361,6 @@ $(document).ready(function(){
     var position = $(window).scrollTop();
     $(".quickmenu").stop().animate({"top":position+current_position+"px"},500);
   });
-  get_order_box();
-  get_basket_list();
   
   $('#basket_list').on('click', '.click_chk', function() {
 	 order_box_info();  
@@ -366,6 +374,19 @@ $(document).ready(function(){
   	}
   	order_box_info();
   });
+          	
+  $("#basket_list").on('click', "input[name='bookCheck[]']",function(){	
+    console.log(123);
+	var _total = $("input[name='bookCheck[]']").length;
+	var _checked = $("input[name='bookCheck[]']:checked").length;
+	if(_total != _checked) { 
+		$("#cbx_checkAll").prop("checked", false);
+	}else{
+		$("#cbx_checkAll").prop("checked", true);
+	}
+  });	
+  get_order_box();
+  get_basket_list();
 }); 
 
 </script>

@@ -15,4 +15,10 @@ public class PaymentDAO {
 	
 	private String mapper = "bookManageMapper.%s";
 
+	public boolean addMileage(Map mileageData) {
+		String mapperId = String.format(mapper, "updateMileage");
+		int add_result = session.update(mapperId,mileageData);
+		return add_result >= 1 ? true : false;
+	}
+
 }

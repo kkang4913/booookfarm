@@ -11,10 +11,13 @@
 <title>주문서작성/결제</title>
 <link rel="stylesheet" href="${path}/resources/css/styles.css">
 <script type="text/javascript" src="${path}/resources/js/jquery-3.6.0.min.js"></script>
+<script type="text/javascript" src="https://code.jquery.com/jquery-1.12.4.min.js"></script>
+<script type="text/javascript" src="https://service.iamport.kr/js/iamport.payment-1.1.2.js"></script>
 </head>
 <body>
 <%@include file="/WEB-INF/views/module/header.jsp" %>
 <!-- 왼쪽 사이드 퀵메뉴(최근 본 목록) css: quick -->
+<!--  
 <div class="quickmenu">
   <div class="quickmenu-title">
   	<div>최근 본 상품</div>
@@ -23,6 +26,7 @@
   		</div>
   </div>
 </div>
+-->
 <main class="st-ma">
 	<div class="main-container">
 	<div class="basket-container">
@@ -117,7 +121,7 @@
 									<div class="row--title">
 										포인트 사용
 									</div>
-									<div class="row--data">
+									<div id="use__mileage"class="row--data">
 										0원
 									</div>
 								</div>
@@ -127,12 +131,12 @@
 										총 결제금액
 									</div>
 									<div id="total_price" class="row--amount">
-										5,000원
+										0
 									</div>
 								</div>
 							</div>
 							<div>
-								<button class="order-box-button" type="button">결제하기</button>
+								<button id="order_button" class="order-box-button" type="button">결제하기</button>
 							</div>
 						</div>
 					</div>
@@ -176,46 +180,46 @@
 					<div class="payment-input-container">
 						<div class="order-info-title">받으시는 분</div>
 						<div class="input-area">
-							<input class="input-order-info info-border origin-info" type="text" value="${userData.memName}" disabled="disabled">
-							<input class="input-order-info info-border hidden-info" type="hidden" value="홍길동">
+							<input name="memName" class="input-order-info info-border origin-info" type="text" value="${userData.memName}" disabled="disabled">
+							<input name="memName" class="input-order-info info-border hidden-info" type="hidden" value="홍길동">
 						</div>
 					</div>
 					<div class="payment-input-container">
 						<div class="order-info-title">연락처</div>
 						<div class="input-area">
-							<input class="input-order-info info-border origin-info" type="text" value="${userData.phone}" disabled="disabled">
-							<input class="input-order-info info-border hidden-info" type="hidden" value="010-0000-0000">
+							<input name="phone" class="input-order-info info-border origin-info" type="text" value="${userData.phone}" disabled="disabled">
+							<input name="phone" class="input-order-info info-border hidden-info" type="hidden" value="010-0000-0000">
 						</div>
 					</div>
 					<div class="payment-input-container">
 						<div class="order-info-title">이메일</div>
 						<div class="input-area">
-							<input class="input-order-info info-border origin-info" type="text" value="${userData.email}" disabled="disabled">
-							<input class="input-order-info info-border hidden-info" type="hidden" value="honggildong@naver.com">
+							<input name="email" class="input-order-info info-border origin-info" type="text" value="${userData.email}" disabled="disabled">
+							<input name="email" class="input-order-info info-border hidden-info" type="hidden" value="honggildong@naver.com">
 						</div>
 					</div>
 					<div class="payment-input-container">
 						<div class="order-info-title">주소</div>
 						<div class="input-area">
-							<input id="postalCode" class="input-order-info-address info-border origin-info" type="text" value="${userData.postCode}" disabled="disabled">
-							<input id="postalCode"  class="input-order-info-address info-border hidden-info" type="hidden" value="우편번호">
+							<input id="postalCode" name="postalCode" class="input-order-info-address info-border origin-info" type="text" value="${userData.postCode}" disabled="disabled">
+							<input id="postalCode2" name="postalCode" class="input-order-info-address info-border hidden-info" type="hidden" value="우편번호">
 						</div>
 						<div class="address-button-frame">
-							<button id="address_button" class="address-btn" type="button" onclick="daumPostcode()">우편번호 검색</button>
+							<input id="address_button" class="address-btn" type="button" onclick="daumPostcode()" value="우편번호 검색" disabled="disabled">
 						</div>
 					</div>
 					<div class="payment-input-container">
 						<div class="order-info-title"></div>
 						<div class="input-area">
-							<input id="address" class="input-order-info info-border origin-info" type="text" value="${userData.addr}" disabled="disabled">
-							<input id="address" class="input-order-info info-border hidden-info" type="hidden" value="기본 주소">
+							<input id="address" name="address" class="input-order-info info-border origin-info" type="text" value="${userData.addr}" disabled="disabled">
+							<input id="address2" name="address" class="input-order-info info-border hidden-info" type="hidden" value="기본 주소">
 						</div>
 					</div>	
 					<div class="payment-input-container">
 						<div class="order-info-title"></div>
 						<div class="input-area">
-							<input id="detailAddress" class="input-order-info info-border origin-info" type="text" value="${userData.detailAddr}" disabled="disabled">
-							<input id="detailAddress" class="input-order-info info-border new-address hidden-info" type="hidden" value="상세 주소">
+							<input id="detailAddress" name="detailAddress" class="input-order-info info-border origin-info" type="text" value="${userData.detailAddr}" disabled="disabled">
+							<input id="detailAddress2" name="detailAddress" class="input-order-info info-border new-address hidden-info" type="hidden" value="상세 주소">
 						</div>
 					</div>
 				</div>
@@ -226,13 +230,13 @@
 					<div class="payment-input-container">
 						<div class="order-info-title">E-Money 사용</div>
 						<div class="input-area">
-							<input class="input-order-info-emoney info-border" type="text"  value="0">
+							<input id="user_mileage" class="input-order-info-emoney info-border" type="number"  value="0" min="0" max="${userData.mileage}">
 						</div>
 						<div class="order-info-title-half">
 							<div class="possess-emoney">보유 E-Money ${userData.mileage} 원</div>
 						</div>
 						<div>
-							<button class="use-mileage"type="button">전액사용</button>
+							<button id="all_point" class="use-mileage"type="button">전액사용</button>
 						</div>
 					</div>
 					<div class="payment-input-container">
@@ -269,17 +273,21 @@
 		</form>
 	</div>
 	</div>
+	<button onclick="cancelPay()">환불하기</button>
 </main>
 <%@include file="/WEB-INF/views/module/footer.jsp" %>
 <script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
 </body>
+<script
+  src="https://code.jquery.com/jquery-3.3.1.min.js"
+  integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8="
+  crossorigin="anonymous"></script>
 <script type="text/javascript">
 
 function order_info(){
 	var bookData =${bookCode};
 	let _html = '';
 	for(var i = 0; i < bookData.dataList.length; i++){
-	console.log(bookData.dataList[i].sel_stock);
 	let price = Math.floor(((bookData.dataList[i].bookPrice - (bookData.dataList[i].bookPrice * (bookData.dataList[i].bookDiscount * 0.01)))*bookData.dataList[i].sel_stock)/10)*10;
 		_html += '<tr class="element-table">';
 		_html += '<td class="accurate-info">';
@@ -396,15 +404,154 @@ function daumPostcode() {
             }
 
             // 우편번호와 주소 정보+참고항목을 해당 필드에 넣는다.
-            document.getElementById('postalCode').value = data.zonecode;
-            document.getElementById("address").value = addr + extraAddr;
+            document.getElementById('postalCode2').value = data.zonecode;
+            document.getElementById("address2").value = addr + extraAddr;
             isAddr = true;
             // 커서를 상세주소 필드로 이동한다.
-            document.getElementById("detailAddress").focus();
+            document.getElementById("detailAddress2").focus();
         }
     }).open();
 }
-
+//결제기능
+$("#order_button").click(function () {
+	let _sum = 0;
+	let h_price = 0;
+	let use_mileage = $('#user_mileage').val();
+	let _bookData = ${bookCode};
+	let _bookCode = '';
+	let _selStock = '';
+	let _bookTitle = '';
+	for(let i = 0; i < _bookData.dataList.length; i++){
+		_bookCode += _bookData.dataList[i].bookCode +",";
+		_selStock += _bookData.dataList[i].sel_stock +",";
+		_bookTitle += _bookData.dataList[i].bookTitle +",";
+	}
+	$("input[name='order_price']").each(function(){
+		 let arr = $(this).attr("id").split("_");
+		 let idx = arr[2];
+		 let amount = $('#d_price_'+idx).val();
+		 _sum += parseInt(amount);
+	 });
+	h_price = (_sum + 3000) - use_mileage; // amount에 넣으면됨.
+	
+	var IMP = window.IMP; // 생략가능
+	IMP.init('imp31788281');  // 가맹점 식별 코드
+	IMP.request_pay({
+	    pg : 'html5_inicis.INIpayTest', // 결제방식
+	    pay_method : 'card',	// 결제 수단
+	    merchant_uid: 'merchant_'+new Date().getTime(),
+        name: "북팜 중고책",
+        amount: 100,
+        buyer_email: $("input[name='email']").val(),
+        buyer_name: $("input[name='memName']").val(),
+        buyer_tel: $("input[name='phone']").val(),
+        buyer_addr: $("input[name='address']").val(),
+        buyer_postcode: $("input[name='postalCode']").val()
+	}, function(rsp) {
+		if ( rsp.success ) { // 성공시
+			// 주문정보 테이블에 구매 정보가 저장되는 로직
+			var msg = '결제가 완료되었습니다.';
+			msg += '고유ID : ' + rsp.imp_uid;
+			msg += '상점 거래ID : ' + rsp.merchant_uid;
+			msg += '결제 금액 : ' + rsp.paid_amount;
+			msg += '카드 승인번호 : ' + rsp.apply_num;
+			const form ={
+							orderNum: 'merchant_'+new Date().getTime(),
+							bookCode: _bookCode,
+							bookTitle: _bookTitle,
+							quantity: _selStock,
+							useMileage: $('#user_mileage').val(),
+							mileage: Math.floor((${userData.mileage}+(h_price * 0.01)-$('#user_mileage').val())/10)*10,
+							price: h_price,
+							memId:'${userData.memId}',
+							postcode: $("input[name='postalCode']").val(),
+							addr: $("input[name='address']").val(),
+							detailAddr: $("input[name='detailAddress']").val(),
+							phone: ${userData.phone},
+						}
+			$.ajax({
+				url:'./order-info',
+				type:"POST",
+				dataType:"json",
+				contentType: "application/json; charset=UTF-8",
+				data: JSON.stringify(form),
+				success: function(result){
+										
+				}
+			});
+		} else { // 실패시
+			var msg = '결제에 실패하였습니다.';
+			msg += '에러내용 : ' + rsp.error_msg;
+		}
+		alert(msg);
+	});
+});
+//결제비용보다 클때 가격보다 크게 쓸수없다//내가 가진값보다 크게쓸수없다
+$('#user_mileage').on('keyup', function(key){
+	let _sum = 0;
+	let h_price = 0;
+	$("input[name='order_price']").each(function(){
+		 let arr = $(this).attr("id").split("_");
+		 let idx = arr[2];
+		 let amount = $('#d_price_'+idx).val();
+		 _sum += parseInt(amount);
+	});
+	h_price = _sum + 3000; 
+	if($('#user_mileage').val() > ${userData.mileage}){
+		$('#user_mileage').val("0");
+		alert("보유 마일리지를 초과했습니다.");
+	}else if($('#user_mileage').val() > h_price){
+		$('#user_mileage').val("0");
+		alert("총 결제금액을 넘길 수 없습니다.");
+	}	
+	if(key.keyCode==13){
+		$('#use__mileage').html($('#user_mileage').val()+'원');
+		$('#total_price').html((h_price-$('#user_mileage').val()).toString().replace(/\B(?=(\d{3})+(?!\d))/g,",")+'원');
+	}
+	$('#user_mileage').focusout(function(){
+		$('#use__mileage').html($('#user_mileage').val()+'원');
+		$('#total_price').html((h_price-$('#user_mileage').val()).toString().replace(/\B(?=(\d{3})+(?!\d))/g,",")+'원');
+	});
+})
+//마일리지 전액사용 버튼 이벤트
+$('#all_point').on('click', function(){
+	let _sum = 0;
+	let h_price = 0;
+	$("input[name='order_price']").each(function(){
+		 let arr = $(this).attr("id").split("_");
+		 let idx = arr[2];
+		 let amount = $('#d_price_'+idx).val();
+		 _sum += parseInt(amount);
+	});
+	h_price = _sum + 3000;
+	if(h_price-${userData.mileage} > 0){
+		$('#user_mileage').val(${userData.mileage});
+		$('#use__mileage').html(${userData.mileage}+'원');
+		$('#total_price').html((h_price-$('#user_mileage').val()).toString().replace(/\B(?=(\d{3})+(?!\d))/g,",")+'원');
+	}else{
+		$('#user_mileage').val("0");
+		alert("총 결제금액을 넘길 수 없습니다.");
+	}
+});
+//환불 기능
+/*
+function cancelPay() {
+    jQuery.ajax({
+      "url": "{환불요청을 받을 서비스 URL}", // 예: http://www.myservice.com/payments/cancel
+      "type": "POST",
+      "contentType": "application/json",
+      "data": JSON.stringify({
+        "merchant_uid": "{결제건의 주문번호}", // 예: ORD20180131-0000011
+        "cancel_request_amount": 2000, // 환불금액
+        "reason": "테스트 결제 환불" // 환불사유
+        "refund_holder": "홍길동", // [가상계좌 환불시 필수입력] 환불 수령계좌 예금주
+        "refund_bank": "88" // [가상계좌 환불시 필수입력] 환불 수령계좌 은행코드(예: KG이니시스의 경우 신한은행은 88번)
+        "refund_account": "56211105948400" // [가상계좌 환불시 필수입력] 환불 수령계좌 번호
+      }),
+      "dataType": "json"
+    });
+  }
+*/
 <!--결제 박스 -->
 function order_box(){
      let orderBox = parseInt($("#test2").css("top"));
@@ -431,6 +578,7 @@ function address_btn2(){
 			let items = of_hidden.item(j);
 			items.setAttribute("type", "text");
 		}
+		$('#address_button').attr('disabled', false);
 	});
 }
 
@@ -441,6 +589,7 @@ function address_btn3(){
 			let item = o_hidden.item(i);
 			item.setAttribute("type", "text");
 		}
+		$('#address_button').attr('disabled', true);
 	});
 }
 
@@ -470,11 +619,6 @@ function payment_method2(){
 
 <!--최근 본 상품 -->
 $(document).ready(function(){
-	  var currentPosition = parseInt($(".quickmenu").css("top"));
-	  $(window).scroll(function() {
-	    var position = $(window).scrollTop();
-	    $(".quickmenu").stop().animate({"top":position+currentPosition+"px"},500);
-	  });
 	  order_info();
 	  order_box();
 	  address_btn();
