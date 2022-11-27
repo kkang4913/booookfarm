@@ -14,7 +14,7 @@
 </head>
 <body>
 <%@include file="/WEB-INF/views/module/header.jsp" %>
-<!-- <!-- 왼쪽 사이드 퀵메뉴(최근 본 목록) css: quick
+<!-- 왼쪽 사이드 퀵메뉴(최근 본 목록) css: quick
 <div class="quickmenu">
   <div class="quickmenu-title">
   	<div>최근 본 상품</div>
@@ -22,7 +22,7 @@
   			<div></div>
   		</div>
   </div>
-</div> --> -->
+</div> -->
 <main class="st-ma">
 	<div class="main-container">
 		<div class="basket-container">
