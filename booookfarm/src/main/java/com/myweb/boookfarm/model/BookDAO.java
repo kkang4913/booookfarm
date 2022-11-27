@@ -41,23 +41,31 @@ public class BookDAO {
 
 	public String selectBookBasketList(List<String> bookCode, String memberId) {
 		
-		
 		 String result = "";
 		 
-		  String mapperId = String.format(mapper, "selectBookList"); String mapperId1 =
-		  String.format(mapper, "insertBook");
+		  String mapperId = String.format(mapper, "selectBookList"); 
+		  String addMapperId =String.format(mapper, "insertBook");
+		  
+		  if (bookCode == null) {
+			return "false";
+		}
 		  
 		  for(String m : bookCode) {
 		  
 		  Map<String, Object> map = new HashMap<String, Object>();
 		  
-		  map.put("memberId", memberId); map.put("bookCode", m);
+		  map.put("bookCode", m);
+		  map.put("memberId", memberId); 
 		  
 		 String param = session.selectOne(mapperId, map);
 		  
-		  if(param == null) { session.insert(mapperId1, map); result = "true"; }else {
-		  result = "false"; } }
-	
+		  if(param == null) { 
+			  session.insert(addMapperId, map); 
+			  result = "true";
+			  }else {
+				  result = "false"; 
+				  } 
+		  }
 		return "true";
 
 	}

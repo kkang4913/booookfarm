@@ -26,8 +26,27 @@
 				 </div>
 		</div>
 			<div class="row-8">
-			 <div class="book-list-container"></div>
-			 <div class="select-basket">
+			 <div class="top-btn-container">
+				 <c:if test="${sessionScope.loginData.memId eq 'admin'}">
+					 <div class="add-book">
+					 	<button class="" type="button" onclick="location.href='book-add'"><span>도서등록</span></button>
+					 </div>
+				 </c:if>
+				 <c:if test="${sessionScope.loginData.memId ne 'admin'}">
+					 <div class="add-book">
+					 	<button class="" type="button"  style="visibility: hidden;" ><span>도서등록</span></button>
+					 </div>
+				 </c:if>
+				 <c:if test="${not empty sessionScope.loginData}">
+					 <div class="addAll-basket">
+					 	<button type="button" onclick="add_basket()"><span>장바구니</span></button>
+					 </div>
+				 </c:if>
+				 <c:if test="${empty sessionScope.loginData}">
+					 <div class="addAll-basket">
+					 	<button type="button" onclick="toast(loginchk)"><span>장바구니</span></button>
+					 </div>
+				 </c:if>
 			 </div>
 				<div class="chkbox-container">
 					<div class="chbox-container-layout">
@@ -181,7 +200,7 @@ function main_page_list(page) {
 				book_html += '</div>';
 				book_html += '<div>';
 				book_html += '</div>';
-				book_html += '<div onclick=location.href="detail?bookcode='+res.datas[i].bookCode+'"><div>';
+				book_html += '<div onclick="detailPage(\''+res.datas[i].bookCode+'\')"><div>'; 
 				book_html += '<a>';
 				book_html += '<span>';
 				book_html += '<img class="bookcard-img" src="${path}/resources/img/card-img.png">';
@@ -191,7 +210,7 @@ function main_page_list(page) {
 				book_html += '</div>';
 				book_html += '<div class="card-info-box">';
 				book_html += '<div class="book-view">';
-				book_html += '<a href=# onclick=location.href="detail?bookcode='+res.datas[i].bookCode+'">';
+				book_html += '<a href=# onclick=location.href="main-detail?bookcode='+res.datas[i].bookCode+'">';
 				book_html += '<span >'+res.datas[i].bookTitle+'</span>';
 				book_html += '</a>';
 				//조회수 기능 시작 안함 -> DB 추가 or 다른 기능 생각 중
@@ -234,7 +253,7 @@ function main_page_list(page) {
 				book_html += '<div class="book-basket-layout bottom">';
 				book_html += '<div class="book__info"><input id="bCode" type="hidden" value="'+res.datas[i].bookCode+'"></div>';
 				book_html += '<c:if test="${not empty sessionScope.loginData}">'
-				book_html += '<button onclick="add_basket('+res.datas[i].bookCode+');"class="book-basket-btn" type="button"><span>장바구니</span></button>';
+				book_html += '<button onclick="add_basket(\''+res.datas[i].bookCode+'\');"class="book-basket-btn" type="button"><span>장바구니</span></button>';
 				book_html += '</c:if>'
 				book_html += '<c:if test="${empty sessionScope.loginData}">'
 				book_html += '<button onclick="toast(loginchk)"class="book-basket-btn" type="button"><span>장바구니</span></button>';
@@ -478,12 +497,36 @@ $('#input_search_data').on('keydown', function(e) {
 		main_page_list(1);
 	}
 });
+
+	
+function detailPage(Pagecode) {
+
+	location.href="main-detail?bookcode="+Pagecode;
+}
+
+
 function add_basket(code) {
 	let bookCode  = [];
 	$('input[name=select_book]:checked').each(function(){
 		bookCode.push($(this).val());
 	});
 	
+	if (code == null) {
+		
+	}else{
+		bookCode.push(code);
+	}
+	
+	console.log(bookCode.length);
+
+	if (typeof code == "undefined") {
+		if (bookCode.length == 0) {
+			toast("상품을 선택해주세요");
+			
+		}
+	}
+	
+	console.log(bookCode);
 	
 	$.ajax({
 		url : "./basket-main-info",
@@ -495,9 +538,9 @@ function add_basket(code) {
 		success: function(data){
 			if(data.code == 'success'){
 				alert("장바구니에 추가되었습니다.");
-			}/* else if(data.code == 'fail'){
-				alert("이미 담겨진 상품입니다.");
-			} */
+			} else if(data.code == 'fail'){
+				alert("상품을 선택해주세요.");
+			}
 		}
 	});
 }

@@ -22,7 +22,7 @@
   			<div></div>
   		</div>
   </div>
-</div> --> -->
+</div> -->
 <main class="st-ma">
 	<div class="main-container">
 		<div class="basket-container">
@@ -346,11 +346,6 @@ function get_order_box(){
 }
 
 $(document).ready(function(){
-  var current_position = parseInt($(".quickmenu").css("top"));
-  $(window).scroll(function() {
-    var position = $(window).scrollTop();
-    $(".quickmenu").stop().animate({"top":position+current_position+"px"},500);
-  });
   get_order_box();
   get_basket_list();
   

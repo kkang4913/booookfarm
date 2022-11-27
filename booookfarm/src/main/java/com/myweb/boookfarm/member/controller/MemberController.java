@@ -11,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpSession;
 import java.util.Map;
@@ -156,7 +157,8 @@ public class MemberController {
      */
     @PostMapping(value = "/phoneChk")
     @ResponseBody
-    public String phoneChk(@RequestBody Map<String, String> param) {
+    public String phoneChk(@RequestBody Map<String, String> param
+    		,@RequestParam("uploadImage") MultipartFile file) {
         String phoneNum = param.get("pNum");
         JSONObject jsonObject = new JSONObject();
 

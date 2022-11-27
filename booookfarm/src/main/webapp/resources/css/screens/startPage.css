@@ -118,9 +118,6 @@
 	book 카드 css
 */
 
-.book-list-container{
-	margin-left: 3rem;
-}
 
 .bookcard-container{
 	margin-top: 2rem;
@@ -272,10 +269,49 @@
 	color: #616161;
 }
 
-.select-basket{
-	padding: 1.2rem 0rem;
+.top-btn-container{
+	display: flex;
 	border-top: 1px solid var(--grey);
+    padding: 2rem 0 2rem 0;
+	
 }
+
+.add-book{
+    position: relative;
+    left: 57rem;
+}
+.add-book >button{
+	width: 11rem;
+	height: 4rem;
+	background-color: rgb(35,122,246);
+	border-style: none;
+	color: var(--white);
+	font-weight: bolder;
+}
+.add-book>button:hover{
+	cursor: pointer;
+	background-color: #1854A9;
+	border-color: #1854A9;
+}
+
+.addAll-basket{
+    position: relative;
+    left: 60rem;
+}
+.addAll-basket >button{
+	width: 11rem;
+	height: 4rem;
+	background-color: var(--white);
+	border: 1.5px solid #9D9D9D;
+	font-weight: bolder;
+	color: #616161;
+}
+.addAll-basket >button:hover{
+	color:black;
+	cursor: pointer;
+	border-color: #202020;	
+}
+
 .select-basket-btn{
 	width: 11rem;
 	height: 4rem;	

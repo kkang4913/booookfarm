@@ -9,6 +9,9 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
+
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
@@ -24,9 +27,13 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.multipart.MultipartHttpServletRequest;
 
 import com.myweb.boookfarm.basket.model.BookBasketDTO;
 import com.myweb.boookfarm.bookmanage.service.BookManageService;
+import com.myweb.boookfarm.detail.model.BookDetailDTO;
+import com.myweb.boookfarm.member.model.MemberDTO;
 import com.myweb.boookfarm.model.BookDTO;
 import com.myweb.boookfarm.model.PagingDTO;
 import com.myweb.boookfarm.service.BookfarmService;
@@ -41,10 +48,19 @@ public class HomeController {
 	@Autowired
 	private BookManageService ManageService;
 
-	
 	@RequestMapping(value = "/", method = RequestMethod.GET)
 	public String home(Locale locale, Model model) {
 		return "standard/standard";
+	}
+	
+	@GetMapping(value="/main-detail", produces="application/json; charset=utf-8")
+	public String detailView(@RequestParam("bookcode") String bookCode, Model model
+			 ) {
+		BookDetailDTO data = ManageService.getData(bookCode);
+		
+		model.addAttribute("book_code", bookCode);
+		model.addAttribute("book_info", data);
+		return "detail/detail";
 	}
 	
 	@GetMapping(value = "/list",produces="application/json; charset=utf-8")
@@ -90,6 +106,8 @@ public class HomeController {
 		rtn_data.put("pager", page_obj);
 		model.addAttribute("book__infos",data_arr);
 		
+		
+		
 		return rtn_data.toJSONString();
 	}
 
@@ -120,9 +138,11 @@ public class HomeController {
 	
 	@PostMapping(value = "/basket-main-info",produces="application/json; charset=utf-8")
 	@ResponseBody
-	public String basketAddList (@RequestParam(required = false, value="bookCode[]") List<String> bookCode) throws Exception {
+	public String basketAddList (@RequestParam(required = false, value="bookCode[]") List<String> bookCode,
+			HttpSession httpSession) throws Exception {
 		
-		String result = service.selectBookBasketList(bookCode, "user01");
+		MemberDTO mData = (MemberDTO) httpSession.getAttribute("loginData");
+		String result = service.selectBookBasketList(bookCode, mData.getMemId());
 		JSONObject json = new JSONObject();
 		if (result.equals("true")) {
 			json.put("code", "success");
@@ -132,5 +152,32 @@ public class HomeController {
 		return json.toString();
 		
 	}
+	
+	@GetMapping
+	@RequestMapping(value = "/book-add")
+	public String bookAdd(Locale locale, Model model) {
+		return "/standard/add";
+	}
+	
+	
+	@PostMapping(value = "/addbook/ajax")
+	@ResponseBody
+    public String addBook(BookDTO addtest, HttpServletRequest req) throws Exception {
+		System.out.println("컨트롤러 실행");
+		
+		MultipartHttpServletRequest multi = (MultipartHttpServletRequest) req;
+        Iterator<String> iterator = multi.getFileNames();     
+        MultipartFile multipartFile = null;
+		while (iterator.hasNext()) {
+			multipartFile = multi.getFile(iterator.next());
+			System.out.println(multipartFile);
+            
+		}	
+        
+		  JSONObject jsonObject = new JSONObject(); 
+		 
+        return "";
+    }
+	
 	
 }

@@ -52,7 +52,6 @@ public class BookfarmService {
 
 	public String selectBookBasketList(List<String> bookCode, String memberId) {
 		String result = dao.selectBookBasketList(bookCode, memberId);
-		System.out.println("서비스" +result );
 		return result ;
 	}
 
