@@ -482,7 +482,19 @@
   </div>
 </main>
 <%@include file="/WEB-INF/views/module/footer.jsp" %>
-
+<script>
+    $(document).ready( () => {
+        /**
+         *  네이버 로그인 API 데이터 저장
+         */
+        if(${not empty sessionScope.naverLoginData}) {  // 네이버 로그인 데이터가 있으면
+            saveNaverData(${sessionScope.naverLoginData});
+            <%
+               session.removeAttribute("naverLoginData");  // 사용한 로그인 데이터 삭제
+            %>
+        }
+    });
+</script>
 <script src="${path}/resources/js/join.js"></script>
 
 </body>

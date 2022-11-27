@@ -2,12 +2,12 @@
  *  회원가입 페이지 스크립트
  *  @todo alert->modal
  */
-let joinColorTemp = "";
+let joinType = "com";
 let certificationNumber = "";
 let cNumTimer = null;
 let cNumTimerIsRun = false;
 let chkTimeOver = false;
-let idDubChk = false;
+let isIdDupChk = false;
 let isName = false;
 let isId = false;
 let isPw = false;
@@ -19,6 +19,41 @@ let isDetailAddr = false;
 let isUseInfoTerms = false;
 let isOfferInfoTerms = false;
 let isServiceTerms = false;
+let naverLoginData;
+
+$(document).ready( () => {
+    /**
+     *  최초 naver 로그인 시 추가 정보 입력 요청 후
+     *  DB에 추가 하기 위한 Form 수정 작업
+     */
+    if(naverLoginData != null) {  // naver 로그인 데이터 있는지 확인
+        // const naverLoginData = JSON.parse(sessionStorage.getItem("naverLoginData"));    // session storage에서 로그인 데이터 가져오기
+        const phone = naverLoginData.mobile.replace(/-/g, '');  // 핸드폰 번호에서 '-' 제거
+        // sessionStorage.removeItem("naverLoginData");    // session storage에서 naver 로그인 데이터 삭제
+
+        $('.join-title').text('추가 정보 입력');
+        joinType = "naver";
+        $('#name').val(naverLoginData.name)
+                  .closest('.join-form-line').addClass('hidden');
+        isName = true;
+        $('#id').val(naverLoginData.id)
+                .closest('.join-form-line').addClass('hidden');
+        isId = true;
+        isIdDupChk = true;
+        $('#pw').val(Math.random().toString(36).substring(2, 12))
+                .closest('.join-form-line').addClass('hidden');
+        isPw = true;
+        $('#chkPw').closest('.join-form-line').addClass('hidden');
+        isPwChk = true;
+        $('#phone').val(phone)
+                   .closest('.join-form-line').addClass('hidden');
+        $('#chkPhone').closest('.join-form-line').addClass('hidden');
+        isCNum = true;
+        $('#email').val(naverLoginData.email)
+                   .closest('.join-form-line').addClass('hidden');
+        isEmail = true;
+    }
+});
 
 /** 패스워드 입력 내용 보기 기능 */
 $('#showPw').on("click", () => {
@@ -442,7 +477,7 @@ function idDupChk() {
         alert("아이디를 확인해주세요.");
         return;
     }
-    if(idDubChk) {
+    if(isIdDupChk) {
         alert('사용 가능한 아이디입니다.');
         return ;
     }
@@ -465,7 +500,7 @@ function idDupChk() {
             } else {
                 alert('사용 가능한 아이디입니다.');
                 $('#id').prop('readonly', true);
-                idDubChk = true;
+                isIdDupChk = true;
                 isId = true;
             }
         }
@@ -496,17 +531,22 @@ function sendSMS() {
             if(res.phoneDupChk) {   // 이미 등록된 핸드폰일 경우
                 alert("중복입니다.");
             } else {    // 등록된 정보가 없을 경우
-                $('#phone').prop('readonly', true);    // 핸드폰 입력 부분 비활성화
-                certificationNumber = res.cNum; // 인증번호 저장
-                let display = $('#cNumTimer');  // 타이머 출력할 span
-                let leftSec = 300;  // 제한시간 5분 설정
+                if(res.result == "sendSuccess"){    // 인증 메시지 발송 성공 시
+                    alert("인증번호가 전송되었습니다.");
+                    $('#phone').prop('readonly', true);    // 핸드폰 입력 부분 비활성화
+                    certificationNumber = res.cNum; // 인증번호 저장
+                    let display = $('#cNumTimer');  // 타이머 출력할 span
+                    let leftSec = 300;  // 제한시간 5분 설정
 
-                if(cNumTimerIsRun){ // 이미 타이머가 작동중일 경우
-                    clearInterval(cNumTimer);   // 타이머 중지
-                    display.html("");   // 타이머 span 비우기
-                    startTimer(leftSec, display);   // 타이머 다시 시작
+                    if(cNumTimerIsRun){ // 이미 타이머가 작동중일 경우
+                        clearInterval(cNumTimer);   // 타이머 중지
+                        display.html("");   // 타이머 span 비우기
+                        startTimer(leftSec, display);   // 타이머 다시 시작
+                    } else {
+                        startTimer(leftSec, display);   // 타이머 시작
+                    }
                 } else {
-                    startTimer(leftSec, display);   // 타이머 시작
+                    alert("인증번호 전송에 실패하였습니다.");
                 }
             }
         }
@@ -658,7 +698,7 @@ function joinFormChk() {
         $('#name').focus();
         return false;
     }
-    if(!idDubChk) {
+    if(!isIdDupChk) {
         alert("아이디 중복 여부를 확인해주세요.");
         $('#id').focus();
         return false;
@@ -726,7 +766,8 @@ function joinFormSubmit() {
             , 'postCode' : postCode
             , 'addr' : addr
             , 'detailAddr' : detailAddr
-            , 'gender' : gender};
+            , 'gender' : gender
+            , 'joinType' : joinType };
 
         $.ajax({
             type: "post",
@@ -744,9 +785,16 @@ function joinFormSubmit() {
             }
         });
     }
-
 }
 
-$(document).ready( () => {
+/**
+ * 네이버에서 받아온 유저 정보를 저장하는 함수
+ * @param naverData
+ */
+function saveNaverData(naverData) {
+    if(naverData != null && naverData != '') {
+        if(naverData.resultcode === '00')
+            naverLoginData = naverData.response;
+    }
+}
 
-});

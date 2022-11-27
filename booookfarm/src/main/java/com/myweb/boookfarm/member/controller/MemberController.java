@@ -36,11 +36,9 @@ public class MemberController {
      * @return 로그인 페이지 반환
      */
     @GetMapping(value = "/login")
-    public String getLoginView(Model model, HttpSession session) {
+    public String getLoginView(Model model, HttpSession httpSession) {
         /* 네아로 인증 URL을 생성하기 위하여 naverLoginBO클래스의 getAuthorizationUrl메소드 호출 */
-        String naverAuthUrl = naverLoginBO.getAuthorizationUrl(session);
-        /* 인증요청문 확인 */
-        System.out.println("네이버:" + naverAuthUrl);
+        String naverAuthUrl = naverLoginBO.getAuthorizationUrl(httpSession);
         /* 객체 바인딩 */
         model.addAttribute("urlNaver", naverAuthUrl);
 
@@ -75,38 +73,47 @@ public class MemberController {
         return jsonObject.toJSONString();
     }
 
-    //네이버 로그인 성공시 callback호출 메소드
-    @RequestMapping(value = "/callbackNaver.do", method = { RequestMethod.GET, RequestMethod.POST })
-    public String callbackNaver(Model model, @RequestParam String code, @RequestParam String state, HttpSession session)
+    /**
+     *  네이버 로그인 성공시 callback호출 메소드
+     * @param httpSession
+     * @param code
+     * @param state
+     * @return 네이버 로그인 성공 메서드 호출
+     * @throws Exception
+     */
+    @RequestMapping(value = "/callbackNaver", method = { RequestMethod.GET, RequestMethod.POST })
+    public String callbackNaver(HttpSession httpSession
+                              , @RequestParam String code
+                              , @RequestParam String state)
             throws Exception {
-        System.out.println("로그인 성공 callbackNaver");
         OAuth2AccessToken oauthToken;
-        oauthToken = naverLoginBO.getAccessToken(session, code, state);
+        oauthToken = naverLoginBO.getAccessToken(httpSession, code, state);
         //로그인 사용자 정보를 읽어온다.
         apiResult = naverLoginBO.getUserProfile(oauthToken);
 
         JSONParser jsonParser = new JSONParser();
-        JSONObject jsonObj;
+        JSONObject naverLoginData;
 
-        jsonObj = (JSONObject) jsonParser.parse(apiResult);
-        JSONObject response_obj = (JSONObject) jsonObj.get("response");
-        // 프로필 조회
-        String email = (String) response_obj.get("email");
-        String name = (String) response_obj.get("name");
-        // 세션에 사용자 정보 등록
-        // session.setAttribute("islogin_r", "Y");
-        session.setAttribute("signIn", apiResult);
-        session.setAttribute("email", email);
-        session.setAttribute("name", name);
+        naverLoginData = (JSONObject) jsonParser.parse(apiResult);
+        JSONObject response_obj = (JSONObject) naverLoginData.get("response");
+        String naverId = (String) response_obj.get("id");
+        MemberDTO memData = memServ.getMemData(naverId);
 
-        /* 네이버 로그인 성공 페이지 View 호출 */
-        return "redirect:/";
+        if(memData == null) {   // 네이버 로그인으로 가입한 정보가 없으면
+            httpSession.setAttribute("naverLoginData", naverLoginData);
+        } else {    // 네이버 로그인으로 가입한 정보가 있을 때
+            httpSession.setAttribute("loginData", memData);
+        }
+
+        return "redirect:/naverLoginSuccess";
     }
 
     // 소셜 로그인 성공 페이지
-    @RequestMapping("/loginSuccess.do")
-    public String loginSuccess() {
-        return "standard/standard";
+    @RequestMapping("/naverLoginSuccess")
+    public String loginSuccess(HttpSession httpSession) {
+        if(httpSession.getAttribute("loginData") == null)
+            return "redirect:/join";
+        return "redirect:/";
     }
 
     @GetMapping(value = "/logout")
@@ -141,8 +148,9 @@ public class MemberController {
         newMem.setAddr(param.get("addr"));
         newMem.setDetailAddr(param.get("detailAddr"));
         newMem.setMileage("0");
-        newMem.setSocialType("com");
+        newMem.setSocialType(param.get("joinType"));
         newMem.setMemPos("com");
+        System.out.println(newMem);
         JSONObject jsonObject = new JSONObject();
         boolean result = memServ.addMemData(newMem);
         jsonObject.put("joinRes", result);
@@ -168,10 +176,22 @@ public class MemberController {
             return jsonObject.toJSONString();
         }
         Sens sens = new Sens();
-//        String cNum = sens.callSendSMS(phoneNum);  // 인증번호 발송과 함께 난수 인증번호 저장
-        String cNum = "12345";
 
+//        boolean sendResult = sens.callSendSMS(phoneNum).equals("sendFail");
+//        if(sendResult) {
+//            jsonObject.put("result", "sendFail");
+//            return jsonObject.toJSONString();
+//        } else {
+//            String cNum = sens.callSendSMS(phoneNum);  // 인증번호 발송과 함께 난수 인증번호 저장
+//            jsonObject.put("result", "sendSuccess");
+//            jsonObject.put("cNum", cNum);   // 클라이언트로 보낼 인증번호 JSON 객체 생성
+//
+//            return jsonObject.toJSONString();
+//        }
+        String cNum = "12345";
+        jsonObject.put("result", "sendSuccess");
         jsonObject.put("cNum", cNum);   // 클라이언트로 보낼 인증번호 JSON 객체 생성
+
         return jsonObject.toJSONString();
     }
 
