@@ -337,7 +337,6 @@ $('.purchase-btn').on('click', function(){
 });
 
 $(document).ready(function(){
-  
   get_detail_page();
   get_detail_list();
   get_detail_amount();

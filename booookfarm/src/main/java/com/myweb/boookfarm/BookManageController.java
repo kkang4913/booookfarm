@@ -304,9 +304,7 @@ public class BookManageController {
 		MemberDTO memData = (MemberDTO) httpSession.getAttribute("loginData");
 		MemberDTO userData = service.getUserData(memData.getMemId());
 		String[] bookCheck = request.getParameterValues("bookCheck[]");
-		System.out.println(Arrays.toString(bookCheck));
 		String[] sctockCheck = request.getParameterValues("stockCheck[]");
-		System.out.println(Arrays.toString(sctockCheck));
 		List<Map<String, Object>> list = new ArrayList<>();
 		for(int i=0; i < bookCheck.length; i++) {
 			if(bookCheck[i].length() > 1) {
@@ -348,5 +346,28 @@ public class BookManageController {
 		model.addAttribute("bookCode", list_data);
 		model.addAttribute("userData", userData);
 		return "basket/payment";
+	}
+	
+	@RequestMapping(value = "/order-info", method = RequestMethod.POST)
+	@ResponseBody
+	public String orderData(@RequestBody Map<String, Object> parm) {
+		//결제 성공해서 데이터 받아오면 멤버 테이블에 마일리지 보내서 저장
+		//결제 정보 테이블에 데이터 보내서 저장
+		System.out.println(parm);
+		System.out.println(parm.get("memId"));
+		System.out.println(parm.get("orderNum"));
+		System.out.println(parm.get("mileage"));
+		System.out.println(parm.get("bookCode"));
+		System.out.println(parm.get("price"));
+		System.out.println(parm.get("useMileage")); // 사용 마일리지 값이 0이아니면 불러온 마일리지 값에 더해서 저장 0이아니면 적립더해준값에 추가로 사용값 빼주기
+		System.out.println(parm.get("addr"));
+		System.out.println(parm.get("postcode"));
+		System.out.println(parm.get("detailAddr"));
+		Map mileageData = new HashMap();
+		mileageData.put("mileage",parm.get("mileage"));
+		mileageData.put("memberId",parm.get("memId"));
+		boolean result = service.addMileage(mileageData);
+		
+		return "";
 	}
 }
