@@ -43,7 +43,7 @@
         <button class="login-form__btn btn--rec btn--blue" type="button" onclick="loginFormSubmit();">로그인</button>
       </form>
       <button id="naverLogin" class="login-form__btn btn--rec btn--green" type="button" onclick="location.href='${urlNaver}'"><img src="${path}/resources/img/logos/naver-logo.png" /><span>네이버 아이디로 로그인</span></button>
-      <button class="login-form__btn btn--rec btn--yellow" type="button"><img src="${path}/resources/img/logos/kakao-logo.png" /><span>카카오 아이디로 로그인</span></button>
+      <button class="login-form__btn btn--rec btn--yellow" type="button" onclick="kakaoLogin();"><img src="${path}/resources/img/logos/kakao-logo.png" /><span>카카오 아이디로 로그인</span></button>
       <div class="login-row">
         <span><a href="join">회원가입</a></span>
         <span><a href="find">아이디찾기</a></span>
@@ -54,6 +54,23 @@
 </main>
 <%@include file="/WEB-INF/views/module/footer.jsp" %>
 <script src="${path}/resources/js/login.js"></script>
+<script>
+    $(document).ready( ()=> {
+
+        var kakaoInfo = '${kakaoInfo}';
+
+        if(kakaoInfo != ""){
+            var data = JSON.parse(kakaoInfo);
+
+            alert("카카오로그인 성공 \n accessToken : " + data['accessToken']);
+            alert(
+                "user : \n" + "email : "
+                + data['email']
+                + "\n nickname : "
+                + data['nickname']);
+        }
+    });
+</script>
 
 </body>
 </html>

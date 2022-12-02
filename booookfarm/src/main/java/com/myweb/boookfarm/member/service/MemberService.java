@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Map;
 
 @Service
 public class MemberService {
@@ -45,11 +46,11 @@ public class MemberService {
 
 	/**
 	 *  phone 중복 체크 메서드
-	 * @param phone 중복 체크할 phone
+	 * @param phoneData 중복 체크할 phone
 	 * @return 중복이면 true 아니면 false 반환
 	 */
-	public Boolean chkPhoneDup(String phone) {
-		int result = dao.chkPhoneDup(phone);
+	public Boolean chkPhoneDup(Map<String, String> phoneData) {
+		int result = dao.chkPhoneDup(phoneData);
 		return result == 0 ? false : true;
 	}
 

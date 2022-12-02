@@ -120,6 +120,20 @@ function loginFormSubmit() {
     }
 }
 
+function kakaoLogin() {
+
+    $.ajax({
+        url: 'login/getKakaoAuthUrl',
+        type: 'get',
+        async: false,
+        dataType: 'text',
+        success: function (res) {
+            location.href = res;
+        }
+    });
+
+}
+
 $(document).ready( () => {
     if(savedUserId !== null) {
         $('#loginId').val(savedUserId);
