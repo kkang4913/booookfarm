@@ -24,9 +24,6 @@ import java.net.URL;
 import java.util.HashMap;
 import java.util.Map;
 
-/**
- * @todo
- */
 @Controller
 public class MemberController {
 

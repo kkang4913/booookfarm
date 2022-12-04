@@ -18,6 +18,24 @@
 		<div class="main-container">
 			<div class="add-container">
 				<div class="add-title">도서등록</div>
+					<div  class="top-button">
+						<button  class="addType_btn add-btn-grey grey">ISBN등록</button>
+						<button  class="addType_btn add-btn-grey grey click">직접등록</button>
+					</div>
+					<div class="isbn_search disnone">
+						<span>
+							ISBN:
+						</span>
+							<div class="input_area">
+								<div class="add-input">
+									<input class="" type="text" placeholder="-를 제외하고 입력해주세요.">
+								</div>
+							</div>
+						<div>
+							<button class="isbn_btn grey" type="button">검색</button>
+						</div>
+					</div>
+					
 				<div class="add-item-cover">
 					<form name="BAddform" class="form-add-container" method="post">
 						<div class="form-add-img" id="profImglist">
@@ -25,7 +43,7 @@
 								<mat-icon class="add-item-icon"></mat-icon>
 								<p class="add-book-title">대표 이미지 등록</p>
 								<input id="profImgInput" class="hidden" type="file"
-									name="uploadImg" value="이미지 선택" onchange="readURL(this)">
+									name="uploadImg" value="이미지 선택" onchange="readURL(this)" accept="image/jpeg, image/png">
 							</div>
 						</div>
 						<div class="add-form-select">
@@ -313,6 +331,22 @@
 <script type="text/javascript">
 
 
+var btn = $('.top-button>button');
+$('.addType_btn').click(function(e) {
+        Array.from(btn).forEach(
+             v => v.classList.remove('click')
+         )
+    $(e.target).addClass('click');
+	var isbn = document.querySelector('.isbn_search');
+	var isbn_btn = document.querySelector('.addType_btn');
+	const hasClass = isbn_btn.classList.contains("click");
+	
+	if (hasClass) {
+		$(isbn).removeClass("disnone");
+	}else{wq
+		$(isbn).addClass("disnone");
+	}
+});
 
 
 
@@ -381,7 +415,7 @@ function readURL(obj) {
         $('#profImglist').append(img);
         index ++;
         img_count++;
-		if (index == 4) {
+		if (index == 1) {
 			$('#profImg').addClass("disnone");
 		}
     }
@@ -393,7 +427,8 @@ function readURL(obj) {
 var formData = new FormData();
 function addFormSubmit() {
 	
-        const category  = $('.dropbtn_content').text();
+	    const bookcode =  addBookCode();
+	    const category  = $('.dropbtn_content').text();
         const title     = $('.title').val();
         const author    = $('.author').val();
         const discount  = $('.discount').val();
@@ -406,11 +441,8 @@ function addFormSubmit() {
         const conditionInfo = $('#checkResult').val();
     	const bookImgUpload = document.querySelector('#profImgInput');
   		const file = bookImgUpload.files[0];
-		
   		
-  		
-  		
-  		formData.append("bookCategory", category);
+  		formData.append("bookCode", bookcode);
   		formData.append("bookCategory", category);
   		formData.append("bookTitle", title);
   		formData.append("bookAuthor", author);
@@ -423,7 +455,7 @@ function addFormSubmit() {
   		formData.append("bookCondition", condition);
   		formData.append("bookConditionInfo", conditionInfo);
     	
-	    
+	    console.log(formData);
 	    
 	    $.ajax({
 			type : 'POST',
@@ -434,10 +466,12 @@ function addFormSubmit() {
 		    data: formData,
 			success : function(json){
 				alert("등록되었습니다.");
-				
+				location.href="/boookfarm/";				
 			},
 			error: function(xhr, status, error){
-				alert("가입에 실패했습니다."+error);
+				alert("등록에 실패했습니다."+error);
+				return false;
+				
 			}
 		});
 	    
@@ -450,19 +484,25 @@ function deleteImg() {
 	$("#profImgInput").val("");
     index --;
     img_count--;
-	if (index < 4) {
+	if (index ==0) {
 		$('#profImg').removeClass("disnone");
 	}
 }
 
 function addBookCode() {
-	const randomCode = '';
+	let randomCode = '';
+	let categoryCode = '';
+	let ClassCode = document.querySelector('.dropbtn_content').getAttribute( 'id' );
+	if (ClassCode < 10) {
+		categoryCode = 0 + ClassCode;
+	}
 	
-	let twoCode = toDay();
-	let siCode = sixCode(6);
-	console.log(twoCode+siCode);
+	let year = toDay();
+	let rand = sixCode(6);
 	
-	
+ 	randomCode = year+categoryCode+rand;
+ 	
+ 	return randomCode;
 }
 
 function toDay() {
@@ -502,6 +542,7 @@ $('.add-input>textarea').on('focus', e => {
     $(e.target).parent().addClass('bd-color--blue');
 });
 
+
 $('.add-input').hover( e => {
     $(e.target).addClass('bd-color--blue');
     $(window).scroll( () => {
@@ -527,7 +568,7 @@ const categoryname=['전체보기','건강,취미 스포츠/잡지,만화','여�
 	
 	//반복문 사이드바[배열의 크기]
 	for (var i = 1; i < categoryname.length; i++) {
-		_sidehtml +=  '<div class="" id='+[i]+' onclick="showMenu(this.innerText)">'+categoryname[i]+'</div>'
+		_sidehtml +=  '<div class="" id='+[i]+' onclick="showMenu(this)">'+categoryname[i]+'</div>'
 	}
 	//HTML 단 id="L-main-category-list" 위치에 반복한 _sidehtml .html 실행
 	$('#dropdown-content-list').html(_sidehtml);
@@ -554,7 +595,8 @@ const categoryname=['전체보기','건강,취미 스포츠/잡지,만화','여�
 	      var dropbtn = document.querySelector('.dropbtn');
 
 	      dropbtn_icon.innerText = '';
-	      dropbtn_content.innerText = value;
+	      dropbtn_content.innerText = value.innerText;
+	      document.querySelector('.dropbtn_content').id = value.id;
 	      dropbtn_content.style.color = '#252525';
 	      dropbtn.style.borderColor = '#3992a8';
 	    }

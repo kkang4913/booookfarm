@@ -56,6 +56,17 @@ public class BookfarmService {
 	}
 
 
+	public boolean addBook(BookDTO addtest) {
+		boolean result = dao.addBook(addtest);
+		return result;
+	}
+
+
+	public void increaseHitCount(String bookCode) {
+		dao.increaseHitCount(bookCode);
+	}
+
+
 
 
 

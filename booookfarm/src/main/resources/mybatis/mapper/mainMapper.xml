@@ -17,6 +17,7 @@
 			 , BOOK_CONDITION AS bookCondition
 			 , BOOK_CONDITION_INFO AS bookConditionInfo
 			 , BOOK_IMG_PATH AS bookImgPath
+			 , HIT_COUNT AS hitCount
 			 , TO_CHAR(CREATE_DATE,'YYYY.MM.DD') AS createDate
 		FROM BOOK
 		WHERE BOOK_CODE = #{bookcode}
@@ -38,6 +39,7 @@
 			 , BOOK_CONDITION AS bookCondition
 			 , BOOK_CONDITION_INFO AS bookConditionInfo
 			 , BOOK_IMG_PATH AS bookImgPath
+			 , HIT_COUNT AS hitCount
 			 , TO_CHAR(CREATE_DATE,'YYYY.MM.DD') AS createDate
 			 FROM BOOK
 			 WHERE 1=1
@@ -83,8 +85,45 @@
 		1,
 		1)
 	</insert> 
-	
-	
+	<insert id="addBookInfo" parameterType="bookDTO">
+		INSERT INTO BOOK( 
+		       BOOK_CODE 
+			 , BOOK_TITLE 
+			 , BOOK_AUTHOR 
+			 , BOOK_INFO 
+			 , BOOK_PRICE 
+			 , BOOK_DISCOUNT 
+			 , ISBN 
+			 , STOCK
+			 , BOOK_CATEGORY 
+			 , PUBLISHER 
+			 , BOOK_CONDITION 
+			 , BOOK_CONDITION_INFO 
+			 , BOOK_IMG_PATH 
+			 , HIT_COUNT
+			 , CREATE_DATE)
+		 VALUES(
+			   #{bookCode}
+			 , #{bookTitle}
+			 , #{bookAuthor}
+			 , #{bookInfo}
+			 , #{bookPrice}
+			 , #{bookDiscount}
+			 , #{isbn}
+			 , #{stock}
+			 , #{bookCategory}
+			 , #{publisher}
+			 , #{bookCondition}
+			 , #{bookConditionInfo}
+			 , #{bookImgPath}
+			 , #{hitCount}
+			 , SYSDATE
+		)
+	</insert>
+	<update id="increaseHitCount">
+	 	UPDATE BOOK SET HIT_COUNT = HIT_COUNT + 1
+		WHERE BOOK_CODE = #{bookCode}
+	</update>
 	
 	<sql id="sort">
 		<if test="sort_Type =='sortData'">

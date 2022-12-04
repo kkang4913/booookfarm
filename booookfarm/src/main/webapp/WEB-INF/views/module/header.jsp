@@ -5,10 +5,10 @@
   <ul class="navigation-element">
 		<c:choose>
 			<c:when test="${not empty sessionScope.loginData}">
-				<li class="element"><a href="logout">로그아웃</a></li>
+				<li class="element"><a href="#" onclick="logout()">로그아웃</a></li>
 			</c:when>
 			<c:otherwise>
-				<li class="element"><a href="login">로그인</a></li>
+				<li class="element"><a href="#" onclick="login()">로그인</a></li>
 			</c:otherwise>
 		</c:choose>
     <li class="element"><a href="join">회원가입</a></li>
@@ -49,23 +49,24 @@
 				<div class="quickmenu">
 				  <div class="quickmenu-title">
 				  	<div>최근 본 상품</div>
-				  		<div class="quickmenu-contianer">
-				  				<div class="boookcard-view-box">
-				  					<a class="bookcard-view-a">
-				  						<img class="bookcard-view-img" src="${path}/resources/img/card-img.png">
-				  						<div class="bookcard-cancel"></div>
-					  					<div class="bookcard-view-info">
-					  						<button class="bookcard-view-btn">
-					  							<img src="${path}/resources/img/icon/x_icon_white.png" style="width: 1rem; height: 1.2rem;">
-					  						</button>
-					  						<div class="boook-view-title">이미지를 넣는 법에대해 알아보는 책입니다요</div>
-					  						<div class="boook-view-price">30,000원</div>
-					  					</div>
-			 					   </a>
-			 					</div>
+				  		<div class="quickmenu-contianer" id="latelyViewItemList">
+			 			 </div> 		
+			 				<div id="itemListPaging_div" class="quickmenu_d_flex">
+			 					<button class="quickmenu_btn" onclick="latelyViewItemPageingPlusMinus('minus')">
+			 						<img src="${path}/resources/img/icon/prev.png">
+			 					</button>
+			 						<div id="latelyViewItemListPageing_div">
+			 							<strong id="nowLatelyViewItemPage_strong" ></strong>
+			 							/
+			 							<span id="totalLatelyViewItemPage_span"></span>
+			 						</div>
+			 					<button class="quickmenu_btn" onclick="latelyViewItemPageingPlusMinus()">
+									<img src="${path}/resources/img/icon/next.png">
+			 					</button>	
+			 				</div>
 			  			</div>
 				 	</div>
-				</div>
 			</c:when>
 		</c:choose>
 		</header>
+<script src="${path}/resources/js/quickmenu.js"></script>

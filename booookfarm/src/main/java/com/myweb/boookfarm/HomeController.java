@@ -1,5 +1,6 @@
 package com.myweb.boookfarm;
 
+import java.io.File;
 import java.text.DateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -8,6 +9,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
+import java.util.UUID;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
@@ -57,6 +59,7 @@ public class HomeController {
 	public String detailView(@RequestParam("bookcode") String bookCode, Model model
 			 ) {
 		BookDetailDTO data = ManageService.getData(bookCode);
+		service.increaseHitCount(bookCode);
 		
 		model.addAttribute("book_code", bookCode);
 		model.addAttribute("book_info", data);
@@ -93,6 +96,7 @@ public class HomeController {
 			json.put("bookConditionInfo", bfarm.getBookConditionInfo());
 			json.put("bookImgPath", bfarm.getBookImgPath());
 			json.put("bookInfo", bfarm.getBookInfo());
+			json.put("hitCount", bfarm.getHitCount());
 			json.put("createDate", bfarm.getCreateDate());
 			data_arr.add(json);
 		}
@@ -162,22 +166,37 @@ public class HomeController {
 	
 	@PostMapping(value = "/addbook/ajax")
 	@ResponseBody
-    public String addBook(BookDTO addtest, HttpServletRequest req) throws Exception {
-		System.out.println("컨트롤러 실행");
+    public String addBook(BookDTO addtest, HttpServletRequest req,HttpSession session) throws Exception {
+		
+		UUID uuid = UUID.randomUUID();
+		
 		
 		MultipartHttpServletRequest multi = (MultipartHttpServletRequest) req;
         Iterator<String> iterator = multi.getFileNames();     
         MultipartFile multipartFile = null;
 		while (iterator.hasNext()) {
 			multipartFile = multi.getFile(iterator.next());
-			System.out.println(multipartFile);
-            
 		}	
-        
-		  JSONObject jsonObject = new JSONObject(); 
-		 
-        return "";
-    }
+
+		String savedName = uuid.toString() + "_" + multipartFile.getOriginalFilename();
+		MemberDTO membersDTO = (MemberDTO)session.getAttribute("loginData");
+		
+	    String realPath= req.getServletContext().getRealPath("/resources/img/");
+	    addtest.setBookImgPath(req.getContextPath() + "/resources/img/" + savedName);
+		
+	    boolean res = service.addBook(addtest);
+		if(res) {
+			multipartFile.transferTo(new File(realPath + savedName));
+
+
+			JSONObject json = new JSONObject();
+			json.put("infoUrl", req.getContextPath() + "/resources/img/" + savedName);
+
+			return json.toJSONString();
+		} else {
+			return null;
+		}
+	}
 	
 	
 }

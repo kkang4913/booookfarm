@@ -231,6 +231,31 @@
     color: #e14f4f;
     margin-top: 1rem
 }
+.top-button{
+	text-align: center;
+	margin: 2.5rem;
+}
+.top-button>button{
+    font-size: 16px;
+    font-weight: bold;
+    min-height: 28px;
+    line-height: 28px;
+}
+.addType_btn{
+    width: 28.5rem;
+    height: 5rem;
+    border: 1px solid #616161;
+}
+.addType_btn:hover{
+    color: #237AF6;
+	cursor: pointer;
+	border-color: #237AF6;
+}
+.click{
+    color: #237AF6 !important;
+	cursor: pointer;
+	border-color: #237AF6;
+}
 
 .primary_btn:hover{
 	cursor: pointer;
@@ -255,7 +280,7 @@
     line-height: 28px;
 }
 .outline_btn{
-    width: 240px;
+    width: 24rem;
     height: 5rem;
     margin-right: 10px;
 }
@@ -266,7 +291,6 @@
 .add-btn-grey{
     background-color: transparent;
     color: #616161;
-    margin-right: 10px;
 }
 .primary_btn{
     width: 240px;
