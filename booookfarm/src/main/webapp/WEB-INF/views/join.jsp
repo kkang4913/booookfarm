@@ -467,7 +467,6 @@
             %>
         }
         if(${not empty sessionScope.kakaoLoginData}) {
-            alert("카카오 로그인 정보 : " + ${sessionScope.kakaoLoginData});
             saveKakaoData(${sessionScope.kakaoLoginData})
             <%
                session.removeAttribute("kakaoLoginData");  // 사용한 로그인 데이터 삭제

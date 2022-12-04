@@ -56,7 +56,7 @@ $(document).ready( () => {
      *  최초 kakao 로그인 시 추가 정보 입력 요청 후
      *  DB에 추가 하기 위한 Form 수정 작업
      */
-    if(kakaoLoginData != null) {  // naver 로그인 데이터 있는지 확인
+    if(kakaoLoginData != null) {  // kakao 로그인 데이터 있는지 확인
         $('.join-title').text('추가 정보 입력');
         joinType = "kakao";
         $('#name').val(kakaoLoginData.nickname)

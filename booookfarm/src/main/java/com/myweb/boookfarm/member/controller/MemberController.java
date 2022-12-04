@@ -24,6 +24,9 @@ import java.net.URL;
 import java.util.HashMap;
 import java.util.Map;
 
+/**
+ * @todo
+ */
 @Controller
 public class MemberController {
 
@@ -304,23 +307,39 @@ public class MemberController {
 
     @PostMapping(value = "/join")
     @ResponseBody
-    public String joinMem(@RequestBody Map<String, String> param) {
+    public String joinMem(@RequestBody Map<String, String> joinData
+                        , HttpSession httpSession) {
         MemberDTO newMem = new MemberDTO();
-        newMem.setMemName(param.get("name"));
-        newMem.setMemId(param.get("id"));
-        newMem.setMemPw(param.get("pw"));
-        newMem.setPhone(param.get("phone"));
-        newMem.setEmail(param.get("email"));
-        newMem.setPostCode(param.get("postCode"));
-        newMem.setAddr(param.get("addr"));
-        newMem.setDetailAddr(param.get("detailAddr"));
+        String name = joinData.get("name");
+        String id = joinData.get("id");
+        String pw = joinData.get("pw");
+        String phone = joinData.get("phone");
+        String email = joinData.get("email");
+        String postCode = joinData.get("postCode");
+        String addr = joinData.get("addr");
+        String detailAddr = joinData.get("detailAddr");
+        String joinType = joinData.get("joinType");
+
+        newMem.setMemName(name);
+        newMem.setMemId(id);
+        newMem.setMemPw(pw);
+        newMem.setPhone(phone);
+        newMem.setEmail(email);
+        newMem.setPostCode(postCode);
+        newMem.setAddr(addr);
+        newMem.setDetailAddr(detailAddr);
         newMem.setMileage("0");
-        newMem.setSocialType(param.get("joinType"));
+        newMem.setSocialType(joinType);
         newMem.setMemPos("com");
-        System.out.println(newMem);
+
         JSONObject jsonObject = new JSONObject();
         boolean result = memServ.addMemData(newMem);
         jsonObject.put("joinRes", result);
+
+        if(!joinType.equals("com")){    // 소셜 로그인 요청이면 세션에 로그인 정보 저장
+            MemberDTO memData = memServ.getMemData(id);
+            httpSession.setAttribute("loginData", memData);
+        }
 
         return jsonObject.toJSONString();
     }
