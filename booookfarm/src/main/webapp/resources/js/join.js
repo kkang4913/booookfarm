@@ -20,6 +20,7 @@ let isUseInfoTerms = false;
 let isOfferInfoTerms = false;
 let isServiceTerms = false;
 let naverLoginData;
+let kakaoLoginData;
 
 $(document).ready( () => {
     /**
@@ -27,9 +28,7 @@ $(document).ready( () => {
      *  DB에 추가 하기 위한 Form 수정 작업
      */
     if(naverLoginData != null) {  // naver 로그인 데이터 있는지 확인
-        // const naverLoginData = JSON.parse(sessionStorage.getItem("naverLoginData"));    // session storage에서 로그인 데이터 가져오기
         const phone = naverLoginData.mobile.replace(/-/g, '');  // 핸드폰 번호에서 '-' 제거
-        // sessionStorage.removeItem("naverLoginData");    // session storage에서 naver 로그인 데이터 삭제
 
         $('.join-title').text('추가 정보 입력');
         joinType = "naver";
@@ -51,6 +50,29 @@ $(document).ready( () => {
         isCNum = true;
         $('#email').val(naverLoginData.email)
                    .closest('.join-form-line').addClass('hidden');
+        isEmail = true;
+    }
+    /**
+     *  최초 kakao 로그인 시 추가 정보 입력 요청 후
+     *  DB에 추가 하기 위한 Form 수정 작업
+     */
+    if(kakaoLoginData != null) {  // kakao 로그인 데이터 있는지 확인
+        $('.join-title').text('추가 정보 입력');
+        joinType = "kakao";
+        $('#name').val(kakaoLoginData.nickname)
+            .closest('.join-form-line').addClass('hidden');
+        isName = true;
+        $('#id').val(kakaoLoginData.id)
+            .closest('.join-form-line').addClass('hidden');
+        isId = true;
+        isIdDupChk = true;
+        $('#pw').val(Math.random().toString(36).substring(2, 12))
+            .closest('.join-form-line').addClass('hidden');
+        isPw = true;
+        $('#chkPw').closest('.join-form-line').addClass('hidden');
+        isPwChk = true;
+        $('#email').val(kakaoLoginData.email)
+            .closest('.join-form-line').addClass('hidden');
         isEmail = true;
     }
 });
@@ -145,9 +167,6 @@ $('.join-form__input>input').on('focusout', e => {
     if($(e.target).attr('name') == 'detailAddress') {
         chkDetailAddress($(e.target), e.type);
     }
-    if($(e.target).attr('name') == 'refundAccount') {
-        chkRefundAccount($(e.target), e.type);
-    }
     if($(e.target).attr('name') == 'chkPhone') {
         chkChkPhone($(e.target), e.type);
     }
@@ -181,9 +200,6 @@ $('.join-form__input>input').on('change keydown keyup paste', e => {
     }
     if($(e.target).attr('name') == 'detailAddress') {
         chkDetailAddress($(e.target), e.type);
-    }
-    if($(e.target).attr('name') == 'refundAccount') {
-        chkRefundAccount($(e.target), e.type);
     }
     if($(e.target).attr('name') == 'chkPhone') {
         chkChkPhone($(e.target), e.type);
@@ -420,21 +436,6 @@ function chkDetailAddress(element, type) {
 }
 
 /**
- *  환불 계좌 내용 체크 함수
- * @param element input 값
- * @param type 이벤트 종류
- */
-function chkRefundAccount(element, type) {
-    let refundAccount = element.val();
-
-    if(refundAccount == '' || refundAccount == null) {      // 입력 내용 유무 체크
-        showErrMsg(element, '.null-err');
-    } else {
-        hideErrMsg(element, '.null-err', type);
-    }
-}
-
-/**
  * 오류 메시지 표시해주는 함수
  * @param element input element
  * @param className 표시할 오류 class명
@@ -518,7 +519,8 @@ function sendSMS() {
     }
 
     const pNum = $('#phone').val();
-    const sendPhone = { 'pNum' : pNum };
+    const sendPhone = { 'joinType' : joinType
+                      , 'pNum' : pNum };
 
     $.ajax({
         type: "post",
@@ -586,6 +588,10 @@ function startTimer(count, display) {
  */
 function chkCNum() {
     const cNum = $('#chkPhone').val();
+    if(certificationNumber === '' || certificationNumber === null) {
+       alert("인증번호를 요청해주세요.");
+       return;
+    }
 
     if(chkTimeOver) {
         alert("인증 시간이 만료되었습니다. 다시 요청해주세요.");
@@ -789,12 +795,22 @@ function joinFormSubmit() {
 
 /**
  * 네이버에서 받아온 유저 정보를 저장하는 함수
- * @param naverData
+ * @param naverData 네이버에서 받아온 유저 정보
  */
 function saveNaverData(naverData) {
     if(naverData != null && naverData != '') {
         if(naverData.resultcode === '00')
             naverLoginData = naverData.response;
+    }
+}
+
+/**
+ * 카카오에서 받아온 유저 정보를 저장하는 함수
+ * @param kakaoData 카카오에서 받아온 유저 정보
+ */
+function saveKakaoData(kakaoData) {
+    if(kakaoData != null && kakaoData != '') {
+        kakaoLoginData = kakaoData;
     }
 }
 

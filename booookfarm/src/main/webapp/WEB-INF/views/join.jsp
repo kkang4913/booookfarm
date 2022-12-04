@@ -176,33 +176,6 @@
         <div class="join-err-line hidden">
           <span class="join-err-msg null-err hidden">상세 주소를 입력해주세요.</span>
         </div>
-        <div class="join-form-line">
-          <div class="join-label-box">
-            <label>환불계좌</label>
-            <span class="dot--red"></span>
-          </div>
-          <div class="join-input-box">
-            <select class="join-form_bank">
-              <option value="" disabled selected>은행선택</option>
-              <option>카카오뱅크</option>
-            </select>
-            <div class="join-form__input">
-              <input type="text" placeholder="예금주">
-            </div>
-          </div>
-        </div>
-        <div class="join-form-line">
-          <div class="join-label-box">
-          </div>
-          <div class="join-input-box">
-            <div class="join-form__input">
-              <input type="text" placeholder="환불계좌" name="refundAccount">
-            </div>
-          </div>
-        </div>
-        <div class="join-err-line hidden">
-          <span class="join-err-msg null-err hidden">환불계좌를 입력해주세요.</span>
-        </div>
         <div class="join-terms-box">
           <div class="join-form-terms">
             <div>
@@ -491,6 +464,12 @@
             saveNaverData(${sessionScope.naverLoginData});
             <%
                session.removeAttribute("naverLoginData");  // 사용한 로그인 데이터 삭제
+            %>
+        }
+        if(${not empty sessionScope.kakaoLoginData}) {
+            saveKakaoData(${sessionScope.kakaoLoginData})
+            <%
+               session.removeAttribute("kakaoLoginData");  // 사용한 로그인 데이터 삭제
             %>
         }
     });

@@ -5,6 +5,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
+import java.util.Map;
 
 @Repository
 public class MemberDAO {
@@ -46,12 +47,12 @@ public class MemberDAO {
 
 	/**
 	 *  DB에서 phone과 일치하는 phone을 찾는 메서드
-	 * @param phone DB에서 찾을 phone
+	 * @param phoneData DB에서 찾을 phone
 	 * @return DB에 phone이 없으면 0 반환 있을 경우 갯수 반환
 	 */
-	public int chkPhoneDup(String phone) {
+	public int chkPhoneDup(Map<String, String> phoneData) {
 		String mapperId = String.format(mapper, "chkPhoneDup");
-		int result = session.selectOne(mapperId, phone);
+		int result = session.selectOne(mapperId, phoneData);
 
 		return result;
 	}
