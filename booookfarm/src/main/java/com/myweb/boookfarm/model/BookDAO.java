@@ -70,4 +70,19 @@ public class BookDAO {
 
 	}
 
+	public boolean addBook(BookDTO addtest) {
+		String mapperId = String.format(mapper, "addBookInfo");
+		int res = session.insert(mapperId,addtest);
+
+		if(res == 1) {
+			return true;
+		}
+		return false;
+	}
+
+	public void increaseHitCount(String bookCode) {
+		String mapperId = String.format(mapper, "increaseHitCount");
+		session.update(mapperId,bookCode);
+	}
+
 }

@@ -166,7 +166,7 @@ public class MemberController {
     @PostMapping(value = "/phoneChk")
     @ResponseBody
     public String phoneChk(@RequestBody Map<String, String> param
-    		,@RequestParam("uploadImage") MultipartFile file) {
+    		) {
         String phoneNum = param.get("pNum");
         JSONObject jsonObject = new JSONObject();
 

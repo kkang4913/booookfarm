@@ -99,6 +99,8 @@
 </body>
 <script type="text/javascript">
 $(function(){
+	var cookies = document.cookie.split(",").map(el => el.split("="));
+
 	//DOM(Document Object Model)을 불러온후 실행 
 	main_page_list(1);
 
@@ -200,10 +202,10 @@ function main_page_list(page) {
 				book_html += '</div>';
 				book_html += '<div>';
 				book_html += '</div>';
-				book_html += '<div onclick="detailPage(\''+res.datas[i].bookCode+'\')"><div>'; 
+				book_html += '<div class="bookCondition" book_condition='+res.datas[i].bookCondition+' onclick="moveItemViewPage(\''+res.datas[i].bookCode+'\',\''+res.datas[i].bookImgPath+'\',\''+res.datas[i].bookTitle+'\',\''+AmountCommas(res.datas[i].bookPrice - (res.datas[i].bookPrice * (res.datas[i].bookDiscount*0.01))) +'\')"><div>'; 
 				book_html += '<a>';
 				book_html += '<span>';
-				book_html += '<img class="bookcard-img" src="${path}/resources/img/card-img.png">';
+				book_html += '<img class="bookcard-img" src="'+res.datas[i].bookImgPath+'">';
 				book_html += '</span>';
 				book_html += '</a>';
 				book_html += '</div>';
@@ -214,7 +216,7 @@ function main_page_list(page) {
 				book_html += '<span >'+res.datas[i].bookTitle+'</span>';
 				book_html += '</a>';
 				//조회수 기능 시작 안함 -> DB 추가 or 다른 기능 생각 중
-				book_html += '<span class="book-view-cnt">조회수 :'+0+'</span>';
+				book_html += '<span class="book-view-cnt">조회수 :'+res.datas[i].hitCount+'</span>';
 				book_html += '</div>';
 				book_html += '<div class="book-info-author">';
 				book_html += '<span>';
@@ -302,179 +304,7 @@ function main_page_list(page) {
 
 	})
 }
-// 시작페이지
 
-/* let m_page = 1;
-function main_page_list(page,dataPerPage) {
-	m_page = page;
-	let _url = "./list?page="+ page + "&page_count=" + $('#select_page_cnt').val();
-	$.ajax({
-		url: _url,
-		type: "GET",
-		dataType: "json",
-		success: function(res) {
-			let book_html='';
-			let _page = '';
-			
-			m_page = Number(page);
-		    dataPerPage = Number(dataPerPage);
-			
-		    console.log("현재 페이지" + m_page);
-		    console.log("한 페이지에 나타낼 글 수" + dataPerPage);
-		    
-		    if(res.pages.Cnt < 5  ){
-		    	dataPerPage = res.pages.Cnt;
-		    }
-		    
-		    console.log(dataPerPage);
-			
-		    	for ( var i = (m_page - 1) * dataPerPage;
-		    			i < (m_page - 1) * dataPerPage + dataPerPage; i++) {
-					
-				book_html += '<div class="bookcard-container">';
-				book_html += '<ol>';
-				book_html += '<li class="bookcard-flex">';
-				book_html += '<div>';
-				book_html += '<input class="bookcard-chkbox-card" id="chkbox-input" type="checkbox">';
-				book_html += '<label class="bookcard-chkbox-input" for="chkbox-input">';
-				book_html += '<span>상품선택</span>';
-				book_html += '</label>';
-				book_html += '</div>';
-				book_html += '<div onclick=location.href="detail?bookcode='+res.datas[i].bookCode+'">';
-				book_html += '<div>';
-				book_html += '<a>';
-				book_html += '<span>';
-				book_html += '<img class="bookcard-img" src="${path}/resources/img/card-img.png">';
-				book_html += '</span>';
-				book_html += '</a>';
-				book_html += '</div>';
-				book_html += '</div>';
-				book_html += '<div class="card-info-box">';
-				book_html += '<div class="book-view">';
-				book_html += '<a href=#>';
-				book_html += '<span>'+res.datas[i].bookTitle+'</span>';
-				book_html += '</a>';
-				book_html += '<span class="book-view-cnt">조회수 :'+0+'</span>';
-				book_html += '</div>';
-				book_html += '<div class="book-info-author">';
-				book_html += '<span>';
-				book_html += '<a>저자 '+res.datas[i].bookAuthor+'&nbsp;|&nbsp;출판사 '+res.datas[i].publisher+'&nbsp;|&nbsp; 출간일 '+res.datas[i].createDate+'</a>';
-				book_html += '</span>';
-				book_html += '</div>';
-				book_html += '<div class="card-info-price">';
-				book_html += '<div class="card-price">정가: '+res.datas[i].bookPrice+'원</div>';
-				book_html += '<div class="card-sale-price">판매가: 15,000원</div>';
-				book_html += '<div class="sale">'+res.datas[i].bookDiscount+'%';
-				book_html += '<div class="down-arrow">➔</div>';
-				book_html += '</div>';
-				book_html += '</div>';
-				book_html += '</div>';
-				book_html += '<div class="book-basket-buy">';
-				book_html += '<div class="book-buy-layout top">';
-				book_html += '<button class="book-buy-btn"  type="button">';
-				book_html += '<span>바로구매</span>';
-				book_html += '</button>';
-				book_html += '</div>';
-				book_html += '<div class="book-basket-layout bottom">';
-				book_html += '<button class="book-basket-btn" type="button">';
-				book_html += '<span>장바구니</span>';
-				book_html += '</button>';
-				book_html += '</div>';
-				book_html += '</div>';
-				book_html += '</div>';
-				book_html += '</li>';
-				book_html += '</ol>';
-				book_html += '</div>';
-			}
-			$('#book-list').html(book_html);
-			
-
-			totalData = res.pages.Cnt; //총 데이터 수
-     		console.log("//총 데이터 수 = " + totalData);
-			paging(totalData, dataPerPage, pageCount, page);
-			
-			$("#select_page_cnt").change(function () {
-			    dataPerPage = $("#select_page_cnt").val();
-			    //전역 변수에 담긴 globalCurrent 값을 이용하여 페이지 이동없이 글 표시개수 변경 
-			    paging(totalData, dataPerPage, pageCount, globalCurrentPage);
-			    main_page_list(globalCurrentPage, dataPerPage);
-			 });
-		}
-	});
-}
-
-function paging(totalData, dataPerPage, pageCount, currentPage) {
-
-	  totalPage = Math.ceil(totalData / dataPerPage); //총 페이지 수
-	  console.log("총 페이지 수 = " + totalPage);
-	  
-	  
-	  if(totalPage<pageCount){
-	    pageCount=totalPage;
-	  }
-	  
-	  let pageGroup = Math.ceil(currentPage / pageCount); // 페이지 그룹
-	  console.log("페이지 그룹 = " + pageGroup);
-
-	  
-	  let last = pageGroup * pageCount; //화면에 보여질 마지막 페이지 번호
-	  console.log("화면에 보여질 마지막 페이지 번호 = " + last);
-
-	  if (last > totalPage) {
-	    last = totalPage;
-	  }
-
-	  let first = last - (pageCount - 1); //화면에 보여질 첫번째 페이지 번호
-	  console.log("화면에 보여질 첫번째 페이지 번호 = " + first);
-
-	  let next = last + 1;
-	  let prev = first - 1;
-
-	  let pageHtml = "";
-
-	  if (prev > 0) {
-	    pageHtml += "<li><a class='paging-_btn' href='#' id='prev'> 이전 </a></li>";
-	  }
-
-	 //페이징 번호 표시 
-	  for (var i = first; i <= last; i++) {
-	    if (currentPage == i) {
-	      pageHtml +=
-	        "<li class='paging_on'><a class='paging-_btn' href='#' id='" + i + "'>" + i + "</a></li>";
-	    } else {
-	      pageHtml += "<li><a class='paging-_btn' href='#' id='" + i + "'>" + i + "</a></li>";
-	    }
-	  }
-
-	  if (last < totalPage) {
-	    pageHtml += "<li><a class='paging-_btn' href='#' id='next'> 다음 </a></li>";
-	  }
-
-	  $("#pagingul").html(pageHtml);
-	  let displayCount = "";
-	  displayCount = "현재 1 - " + totalPage + " 페이지 / " + totalData + "건";
-	  $("#displayCount").text(displayCount);
-
-
-	  //페이징 번호 클릭 이벤트 
-	  $("#pagingul li a").click(function () {
-	    let $id = $(this).attr("id");
-	    selectedPage = $(this).text();
-
-	    if ($id == "next") selectedPage = next;
-	    if ($id == "prev") selectedPage = prev;
-	    //전역변수에 선택한 페이지 번호를 담는다...
-	    globalCurrentPage = selectedPage;
-	    //페이징 표시 재호출
-	    paging(totalData, dataPerPage, pageCount, selectedPage);
-	    console.log(selectedPage);
-	
-	    //글 목록 표시 재호출
-	    main_page_list(selectedPage, dataPerPage);
-	  });
-	}
-
-*/
 // 페이지 정렬 기능 --> 보여질 게시글 수 변경시 기능
 $('#select_page_count').on('change', function() {
 	main_page_list(1);
@@ -500,10 +330,8 @@ $('#input_search_data').on('keydown', function(e) {
 
 	
 function detailPage(Pagecode) {
-
 	location.href="main-detail?bookcode="+Pagecode;
 }
-
 
 function add_basket(code) {
 	let bookCode  = [];
@@ -526,7 +354,6 @@ function add_basket(code) {
 		}
 	}
 	
-	console.log(bookCode);
 	
 	$.ajax({
 		url : "./basket-main-info",
@@ -585,46 +412,6 @@ function selectAll(selectAll)  {
 	  });
 	}
 
-
 </script>
-<script>
-  (function() {
-    var w = window;
-    if (w.ChannelIO) {
-      return (window.console.error || window.console.log || function(){})('ChannelIO script included twice.');
-    }
-    var ch = function() {
-      ch.c(arguments);
-    };
-    ch.q = [];
-    ch.c = function(args) {
-      ch.q.push(args);
-    };
-    w.ChannelIO = ch;
-    function l() {
-      if (w.ChannelIOInitialized) {
-        return;
-      }
-      w.ChannelIOInitialized = true;
-      var s = document.createElement('script');
-      s.type = 'text/javascript';
-      s.async = true;
-      s.src = 'https://cdn.channel.io/plugin/ch-plugin-web.js';
-      s.charset = 'UTF-8';
-      var x = document.getElementsByTagName('script')[0];
-      x.parentNode.insertBefore(s, x);
-    }
-    if (document.readyState === 'complete') {
-      l();
-    } else if (window.attachEvent) {
-      window.attachEvent('onload', l);
-    } else {
-      window.addEventListener('DOMContentLoaded', l, false);
-      window.addEventListener('load', l, false);
-    }
-  })();
-  ChannelIO('boot', {
-    "pluginKey": "0c188261-acbc-4429-ad63-d6ea32ca05c0", //please fill with your plugin key
-  });
-</script>
+<script src="${path}/resources/js/channel.js"></script>
 </html>

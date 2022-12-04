@@ -20,8 +20,17 @@ public class BookDTO {
 	private String bookCondition;
 	private String bookConditionInfo;
 	private String bookImgPath;
+	private int hitCount;
 	private String createDate;
 	
+	public int getHitCount() {
+		return hitCount;
+	}
+
+	public void setHitCount(int hitCount) {
+		this.hitCount = hitCount;
+	}
+
 	public String getBookCode() {
 		return bookCode;
 	}
@@ -136,11 +145,11 @@ public class BookDTO {
 	
 	@Override
 	public String toString() {
-		return "BookDetailDTO [bookCode=" + bookCode + ", bookTitle=" + bookTitle + ", bookAuthor=" + bookAuthor
+		return "BookDTO [bookCode=" + bookCode + ", bookTitle=" + bookTitle + ", bookAuthor=" + bookAuthor
 				+ ", bookInfo=" + bookInfo + ", bookPrice=" + bookPrice + ", bookDiscount=" + bookDiscount + ", isbn="
 				+ isbn + ", bookCategory=" + bookCategory + ", stock=" + stock + ", publisher=" + publisher
 				+ ", bookCondition=" + bookCondition + ", bookConditionInfo=" + bookConditionInfo + ", bookImgPath="
-				+ bookImgPath + ", createDate=" + createDate + "]";
+				+ bookImgPath + ", hitCount=" + hitCount + ", createDate=" + createDate + "]";
 	}
 	
 	
