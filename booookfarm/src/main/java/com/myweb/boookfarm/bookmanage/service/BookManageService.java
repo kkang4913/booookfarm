@@ -15,6 +15,7 @@ import com.myweb.boookfarm.locker.model.BookLockerDAO;
 import com.myweb.boookfarm.locker.model.BookLockerDTO;
 import com.myweb.boookfarm.member.model.MemberDAO;
 import com.myweb.boookfarm.member.model.MemberDTO;
+import com.myweb.boookfarm.payment.model.OrderDTO;
 import com.myweb.boookfarm.payment.model.PaymentDAO;
 
 @Service
@@ -110,6 +111,21 @@ public class BookManageService {
 	public boolean addMileage(Map mileageData) {
 		boolean add_result = paymentDao.addMileage(mileageData); 
 		return add_result;
+	}
+
+	public boolean addOrderData(OrderDTO orderData) {
+		boolean add_result = paymentDao.addOrderData(orderData);
+		return add_result;
+	}
+
+	public List<BookDetailDTO> bookStockData(HashMap<String, Object> bookCodes) {
+		List<BookDetailDTO> bookStockDatas = dao.bookStockData(bookCodes);
+		return bookStockDatas;
+	}
+
+	public boolean updateQuantity(List<Map<String, Object>> bookcode_stock_arr) {
+		boolean update_result = dao.updateQuantity(bookcode_stock_arr);
+		return update_result;
 	}
 
 }

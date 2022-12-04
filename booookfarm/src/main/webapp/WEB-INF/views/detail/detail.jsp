@@ -74,9 +74,6 @@
 				<div class="botton-col left">
 					<button class="basket-btn" type="button"><span>장바구니</span></button>
 				</div>
-				<div class="botton-col right">
-					<button class="purchase-btn" type="button"><span>바로구매</span></button>
-				</div>
 			</div>
 		</div>
 	</div>
@@ -295,23 +292,23 @@ function get_detail_amount(){
 //디테일 페이지에서 장바구니 버튼클릭시 데이터 전달 코드
 /*FormData는 ajax로 이미지 파일을 업로드할 때 사용 */
 function add_cart() {
-	const form = {
-		bookCode:'${book_info.bookCode}',
-		bookTitle:'${book_info.bookTitle}',
-		bookAuthor: '${book_info.bookAuthor}',
-		bookInfo: '${book_info.bookInfo}',
-		bookPrice: ${book_info.bookPrice},
-		bookDiscount: ${book_info.bookDiscount},
-		isbn: '${book_info.isbn}',
-		bookCategory: '${book_info.bookCategory}',
-		stock: ${book_info.stock},
-		publisher: '${book_info.publisher}',
-		bookCondition: '${book_info.bookCondition}',
-		bookConditionInfo: '${book_info.bookConditionInfo}',
-		bookImgPath: '${book_info.bookImgPath}',
-		createDate: '${book_info.createDate}' //지정한 날짜 형식이 맞지 않아 에러발생
-	}
-	console.log(form);
+	if(${book_info.stock} != 0){
+		const form = {
+			bookCode:'${book_info.bookCode}',
+			bookTitle:'${book_info.bookTitle}',
+			bookAuthor: '${book_info.bookAuthor}',
+			bookInfo: '${book_info.bookInfo}',
+			bookPrice: ${book_info.bookPrice},
+			bookDiscount: ${book_info.bookDiscount},
+			isbn: '${book_info.isbn}',
+			bookCategory: '${book_info.bookCategory}',
+			stock: ${book_info.stock},
+			publisher: '${book_info.publisher}',
+			bookCondition: '${book_info.bookCondition}',
+			bookConditionInfo: '${book_info.bookConditionInfo}',
+			bookImgPath: '${book_info.bookImgPath}',
+			createDate: '${book_info.createDate}' //지정한 날짜 형식이 맞지 않아 에러발생
+		}
 	$.ajax({
 		url: "./basket-info",
 		type:"POST",
@@ -326,14 +323,14 @@ function add_cart() {
 			}
 		}
 	});
+	}else{
+		alert("재고가 모두 소진된 상품입니다.");
+		return;
+}
 }
 //장바구니 버튼 이벤트
 $('.basket-btn').on('click', function(e) {
 	add_cart();
-});
-//바로구매 버튼 이벤트
-$('.purchase-btn').on('click', function(){
-	location.href="/boookfarm/payment"
 });
 
 $(document).ready(function(){

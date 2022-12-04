@@ -15,7 +15,7 @@ public class MemberDTO {
 	String socialType;
 	String memPos;
 	Date joinDate;
-
+	
 	public String getMemId() {
 		return memId;
 	}

@@ -20,6 +20,7 @@
 @import "screens/detail-page/basket.css";
 @import "screens/detail-page/payment.css";
 @import "screens/detail-page/locker.css";
+@import "screens/detail-page/complete.css";
 
 /* font */
 @font-face {

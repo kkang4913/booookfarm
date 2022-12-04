@@ -21,4 +21,10 @@ public class PaymentDAO {
 		return add_result >= 1 ? true : false;
 	}
 
+	public boolean addOrderData(OrderDTO orderData) {
+		String mapperId = String.format(mapper, "insertOrderData");
+		int add_result = session.insert(mapperId, orderData);
+		return add_result >= 1 ? true : false;
+	}
+
 }

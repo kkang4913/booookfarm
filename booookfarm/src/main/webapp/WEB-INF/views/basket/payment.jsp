@@ -16,17 +16,7 @@
 </head>
 <body>
 <%@include file="/WEB-INF/views/module/header.jsp" %>
-<!-- 왼쪽 사이드 퀵메뉴(최근 본 목록) css: quick -->
-<!--  
-<div class="quickmenu">
-  <div class="quickmenu-title">
-  	<div>최근 본 상품</div>
-  		<div class="quickmenu-contianer">
-  			<div></div>
-  		</div>
-  </div>
-</div>
--->
+<section id="start_page">
 <main class="st-ma">
 	<div class="main-container">
 	<div class="basket-container">
@@ -242,13 +232,6 @@
 					<div class="payment-input-container">
 						<div class="order-info-title">결제수단</div>
 						<div class="input-area">
-							<button class="payment-toggle1 p_on" type="button">무통장입금</button>
-							<button class="payment-toggle2 p_off" type="button">신용카드</button>
-						</div>
-					</div>
-					<div class="payment-input-container pay_on">
-						<div class="order-info-title"></div>
-						<div class="input-area">
 							<div class="depositor">입금자명</div>
 							<input class="depositor-name info-border" type="text" placeholder="입금자명을 입력해주세요.">
 						</div>
@@ -256,16 +239,8 @@
 					<div class="payment-input-container pay_on">
 						<div class="order-info-title"></div>
 						<div class="input-area">
-							<div class="deposit-bank">입금은행</div>
-							<select class="deposit-bank-name">
-								<option class="deposit-bank-element"></option>
-								<option class="deposit-bank-element">기업은행</option>
-								<option class="deposit-bank-element">국민은행</option>
-								<option class="deposit-bank-element">하나은행</option>
-								<option class="deposit-bank-element">농협은행</option>
-								<option class="deposit-bank-element">우리은행</option>
-								<option class="deposit-bank-element">신한은행</option>
-							</select>
+							<div class="depositor">환불계좌</div>
+							<input class="depositor-name info-border" type="text" placeholder="계좌번호를 입력해주세요.">
 						</div>
 					</div>
 				</div>
@@ -273,10 +248,62 @@
 		</form>
 	</div>
 	</div>
-	<button onclick="cancelPay()">환불하기</button>
 </main>
 <%@include file="/WEB-INF/views/module/footer.jsp" %>
 <script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
+</section>
+<section id="second_page" class="page_hidden">
+	<div class="main-container">
+	<div class="basket-container">
+		<div class="basket-layout">
+			<div class="basket-title com_title">
+				<div class="basket-name com_alert">주문이 정상적으로 완료되었습니다.</div>
+			</div>
+			<div class="basket-icon">
+				<div class="bas-icon non-pointer">
+					<img src="${path}/resources/img/icon/basketicon-grey.svg">
+				</div>
+				<div class="bas-name non-pointer">장바구니</div>
+				<div class="bas-doticon">
+					<img src="${path}/resources/img/icon/18-px-grey-5-dot.png">
+				</div>
+				<div class="bas-icon non-pointer">
+					<img src="${path}/resources/img/icon/48-px-payment-normal.svg">
+				</div>
+				<div class="bas-name non-pointer">주문서작성/결제</div>
+				<div class="bas-doticon">
+					<img src="${path}/resources/img/icon/18-px-grey-5-dot.png">
+				</div>
+				<div class="bas-icon non-pointer">
+					<img src="${path}/resources/img/icon/48-px-complete-active.svg">
+				</div>
+				<div class="bas-name non-pointer">주문완료</div>
+			</div>
+			<div class="c_address_info">
+				<div class="c_title">
+					배송지정보
+				</div>
+				<div class="c_info">
+					<div class="sty_input">
+						<input class="c_postal" type="text"  value="${userData.postCode}" disabled="disabled">
+					</div>
+					<div class="sty_input">
+						<input class="c_address" type="text" value="${userData.addr}" disabled="disabled">
+					</div>
+					<div class="sty_input">
+						<input class="c_detail_address"type="text" value="${userData.detailAddr}" disabled="disabled">
+					</div>
+				</div>
+			</div>
+			<div class="c_btn_menu">
+				<button id="shop_btn" class="shop_btn" type="button">쇼핑계속하기</button>
+				<button id="cancel_btn" class="cancel_btn" type="button" onclick="cancelPay()">주문취소</button>
+			</div>
+		</div>
+	</div>
+	</div>	
+<%@include file="/WEB-INF/views/module/footer.jsp" %>
+</section>
 </body>
 <script
   src="https://code.jquery.com/jquery-3.3.1.min.js"
@@ -413,6 +440,7 @@ function daumPostcode() {
     }).open();
 }
 //결제기능
+var test1 = '';
 $("#order_button").click(function () {
 	let _sum = 0;
 	let h_price = 0;
@@ -421,11 +449,16 @@ $("#order_button").click(function () {
 	let _bookCode = '';
 	let _selStock = '';
 	let _bookTitle = '';
+	test1 ='merchant_'+new Date().getTime();
+	console.log(test1);
 	for(let i = 0; i < _bookData.dataList.length; i++){
 		_bookCode += _bookData.dataList[i].bookCode +",";
 		_selStock += _bookData.dataList[i].sel_stock +",";
 		_bookTitle += _bookData.dataList[i].bookTitle +",";
 	}
+	let _bookCodes = _bookCode.substr(0, _bookCode.length - 1);
+	let _stocks = _selStock.substr(0, _selStock.length - 1);
+	let _bookTitles = _bookTitle.substr(0, _bookTitle.length - 1);
 	$("input[name='order_price']").each(function(){
 		 let arr = $(this).attr("id").split("_");
 		 let idx = arr[2];
@@ -457,17 +490,18 @@ $("#order_button").click(function () {
 			msg += '카드 승인번호 : ' + rsp.apply_num;
 			const form ={
 							orderNum: 'merchant_'+new Date().getTime(),
-							bookCode: _bookCode,
-							bookTitle: _bookTitle,
-							quantity: _selStock,
+							bookCode: _bookCodes,
+							bookTitle: _bookTitles,
+							quantity: _stocks,
 							useMileage: $('#user_mileage').val(),
 							mileage: Math.floor((${userData.mileage}+(h_price * 0.01)-$('#user_mileage').val())/10)*10,
 							price: h_price,
 							memId:'${userData.memId}',
-							postcode: $("input[name='postalCode']").val(),
+							postCode: $("input[name='postalCode']").val(),
 							addr: $("input[name='address']").val(),
 							detailAddr: $("input[name='detailAddress']").val(),
 							phone: ${userData.phone},
+							imp_uid: rsp.imp_uid
 						}
 			$.ajax({
 				url:'./order-info',
@@ -476,16 +510,41 @@ $("#order_button").click(function () {
 				contentType: "application/json; charset=UTF-8",
 				data: JSON.stringify(form),
 				success: function(result){
-										
 				}
 			});
+		alert(msg);
+		$('#start_page').addClass("page_hidden");	
+		$('#second_page').removeClass("page_hidden");	
 		} else { // 실패시
 			var msg = '결제에 실패하였습니다.';
 			msg += '에러내용 : ' + rsp.error_msg;
 		}
-		alert(msg);
 	});
 });
+//환불 기능
+function cancelPay() {
+	if(confirm("주문 취소는 구매 12시간 이내에만 가능합니다. 취소하시겠습니까?") == false) {
+		return;
+	}
+    jQuery.ajax({
+      "url": "./cancle", // 예: http://www.myservice.com/payments/cancel
+      "type": "POST",
+      "contentType": "application/json",
+      "data": JSON.stringify({
+        "merchant_uid": test1, // 예: ORD20180131-0000011
+     //   "cancel_request_amount": 100, // 환불금액
+     //   "reason": "테스트 결제 환불" // 환불사유
+     //   "refund_holder": "이도엽", // [가상계좌 환불시 필수입력] 환불 수령계좌 예금주
+     //   "refund_bank": "" // [가상계좌 환불시 필수입력] 환불 수령계좌 은행코드(예: KG이니시스의 경우 신한은행은 88번)
+     //   "refund_account": "" // [가상계좌 환불시 필수입력] 환불 수령계좌 번호
+      }),
+      "dataType": "json",
+      success: function(){
+      }
+    });
+    	  alert("주문이 정상적으로 취소되었습니다.");
+  }
+
 //결제비용보다 클때 가격보다 크게 쓸수없다//내가 가진값보다 크게쓸수없다
 $('#user_mileage').on('keyup', function(key){
 	let _sum = 0;
@@ -533,25 +592,7 @@ $('#all_point').on('click', function(){
 		alert("총 결제금액을 넘길 수 없습니다.");
 	}
 });
-//환불 기능
-/*
-function cancelPay() {
-    jQuery.ajax({
-      "url": "{환불요청을 받을 서비스 URL}", // 예: http://www.myservice.com/payments/cancel
-      "type": "POST",
-      "contentType": "application/json",
-      "data": JSON.stringify({
-        "merchant_uid": "{결제건의 주문번호}", // 예: ORD20180131-0000011
-        "cancel_request_amount": 2000, // 환불금액
-        "reason": "테스트 결제 환불" // 환불사유
-        "refund_holder": "홍길동", // [가상계좌 환불시 필수입력] 환불 수령계좌 예금주
-        "refund_bank": "88" // [가상계좌 환불시 필수입력] 환불 수령계좌 은행코드(예: KG이니시스의 경우 신한은행은 88번)
-        "refund_account": "56211105948400" // [가상계좌 환불시 필수입력] 환불 수령계좌 번호
-      }),
-      "dataType": "json"
-    });
-  }
-*/
+
 <!--결제 박스 -->
 function order_box(){
      let orderBox = parseInt($("#test2").css("top"));
@@ -617,7 +658,10 @@ function payment_method2(){
 	});
 }
 
-<!--최근 본 상품 -->
+$('#shop_btn').on('click', function(){
+	location.href="/boookfarm/";
+});
+
 $(document).ready(function(){
 	  order_info();
 	  order_box();

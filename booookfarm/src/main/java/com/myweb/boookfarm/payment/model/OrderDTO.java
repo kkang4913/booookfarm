@@ -5,7 +5,7 @@ import oracle.sql.DATE;
 public class OrderDTO {
 	private String orderCode;
 	private String bookCode;
-	private String booktitle;
+	private String bookTitle;
 	private String quantity;
 	private int useMileage;//사용
 	private int saveMileage;//적립
@@ -16,8 +16,7 @@ public class OrderDTO {
 	private String detailAddress;
 	private String phone;
 	private int deliveryFee;
-	private DATE regunddableDate;
-	private DATE cancleDate;
+	private DATE refundableDate;
 	private DATE orderDate;
 	
 	public String getOrderCode() {
@@ -36,12 +35,12 @@ public class OrderDTO {
 		this.bookCode = bookCode;
 	}
 	
-	public String getBooktitle() {
-		return booktitle;
+	public String getBookTitle() {
+		return bookTitle;
 	}
 	
-	public void setBooktitle(String booktitle) {
-		this.booktitle = booktitle;
+	public void setBookTitle(String bookTitle) {
+		this.bookTitle = bookTitle;
 	}
 	
 	public String getQuantity() {
@@ -124,20 +123,12 @@ public class OrderDTO {
 		this.deliveryFee = deliveryFee;
 	}
 	
-	public DATE getRegunddableDate() {
-		return regunddableDate;
+	public DATE getRefundableDate() {
+		return refundableDate;
 	}
 	
-	public void setRegunddableDate(DATE regunddableDate) {
-		this.regunddableDate = regunddableDate;
-	}
-	
-	public DATE getCancleDate() {
-		return cancleDate;
-	}
-	
-	public void setCancleDate(DATE cancleDate) {
-		this.cancleDate = cancleDate;
+	public void setRefundableDate(DATE refundableDate) {
+		this.refundableDate = refundableDate;
 	}
 	
 	public DATE getOrderDate() {
@@ -150,11 +141,11 @@ public class OrderDTO {
 	
 	@Override
 	public String toString() {
-		return "OrderDTO [orderCode=" + orderCode + ", bookCode=" + bookCode + ", booktitle=" + booktitle
+		return "OrderDTO [orderCode=" + orderCode + ", bookCode=" + bookCode + ", bookTitle=" + bookTitle
 				+ ", quantity=" + quantity + ", useMileage=" + useMileage + ", saveMileage=" + saveMileage
 				+ ", orderPrice=" + orderPrice + ", memId=" + memId + ", postalCode=" + postalCode + ", address="
 				+ address + ", detailAddress=" + detailAddress + ", phone=" + phone + ", deliveryFee=" + deliveryFee
-				+ ", regunddableDate=" + regunddableDate + ", cancleDate=" + cancleDate + ", orderDate=" + orderDate
+				+ ", refundableDate=" + refundableDate + ", orderDate=" + orderDate
 				+ "]";
 	}
 	

@@ -357,7 +357,12 @@ function get_order_box(){
 
 $(document).ready(function(){
   $('#basket_list').on('click', '.click_chk', function() {
-	 order_box_info();  
+	let arr = $(this).attr("id").split("_");
+	let idx = arr[2];
+	const d_stock = $('#max_stock_'+idx).val(); 
+	if(d_stock != 0){
+		order_box_info();
+	}
   });
   
   $('#cbx_checkAll').click(function(){
@@ -370,15 +375,24 @@ $(document).ready(function(){
   });
 
   $("#basket_list").on('click', "input[name='bookCheck[]']",function(){
-    console.log(123);
-	var _total = $("input[name='bookCheck[]']").length;
-	var _checked = $("input[name='bookCheck[]']:checked").length;
-	if(_total != _checked) {
-		$("#cbx_checkAll").prop("checked", false);
+	let arr = $(this).attr("id").split("_");
+	let idx = arr[2];
+	const d_stock = $('#max_stock_'+idx).val();
+	if(d_stock != 0){
+		var _total = $("input[name='bookCheck[]']").length;
+		var _checked = $("input[name='bookCheck[]']:checked").length;
+		if(_total != _checked) {
+			$("#cbx_checkAll").prop("checked", false);
+		}else{
+			$("#cbx_checkAll").prop("checked", true);
+		}
 	}else{
-		$("#cbx_checkAll").prop("checked", true);
+		alert("재고가 모두 소진된 상품 입니다.");
+		$("input[name='bookCheck[]']").prop("checked", false);
+		return;
 	}
   });
+  
   get_order_box();
   get_basket_list();
 });

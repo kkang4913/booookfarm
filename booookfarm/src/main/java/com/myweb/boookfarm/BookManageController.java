@@ -1,5 +1,10 @@
 package com.myweb.boookfarm;
 
+import java.io.BufferedReader;
+import java.io.InputStreamReader;
+import java.io.OutputStream;
+import java.net.HttpURLConnection;
+import java.net.URL;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -9,12 +14,15 @@ import java.util.Locale;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import org.json.JSONObject;
 import org.json.simple.JSONArray;
-
+import org.json.simple.parser.JSONParser;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.MediaType;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -26,6 +34,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.SessionAttribute;
+import org.springframework.web.client.RestTemplate;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -34,6 +43,7 @@ import com.myweb.boookfarm.bookmanage.service.BookManageService;
 import com.myweb.boookfarm.detail.model.BookDetailDTO;
 import com.myweb.boookfarm.locker.model.BookLockerDTO;
 import com.myweb.boookfarm.member.model.MemberDTO;
+import com.myweb.boookfarm.payment.model.OrderDTO;
 
 @Controller
 public class BookManageController {
@@ -350,24 +360,59 @@ public class BookManageController {
 	
 	@RequestMapping(value = "/order-info", method = RequestMethod.POST)
 	@ResponseBody
-	public String orderData(@RequestBody Map<String, Object> parm) {
-		//결제 성공해서 데이터 받아오면 멤버 테이블에 마일리지 보내서 저장
-		//결제 정보 테이블에 데이터 보내서 저장
-		System.out.println(parm);
-		System.out.println(parm.get("memId"));
-		System.out.println(parm.get("orderNum"));
-		System.out.println(parm.get("mileage"));
-		System.out.println(parm.get("bookCode"));
-		System.out.println(parm.get("price"));
-		System.out.println(parm.get("useMileage")); // 사용 마일리지 값이 0이아니면 불러온 마일리지 값에 더해서 저장 0이아니면 적립더해준값에 추가로 사용값 빼주기
-		System.out.println(parm.get("addr"));
-		System.out.println(parm.get("postcode"));
-		System.out.println(parm.get("detailAddr"));
+	public String orderData(@RequestBody Map<String, String> parm) {
+		//결제시 로그인 계정에 마일리지 적립
 		Map mileageData = new HashMap();
-		mileageData.put("mileage",parm.get("mileage"));
-		mileageData.put("memberId",parm.get("memId"));
+			mileageData.put("mileage",parm.get("mileage"));
+			mileageData.put("memberId",parm.get("memId"));
 		boolean result = service.addMileage(mileageData);
+		//주문정보 테이블에 결제 정보 저장
+		OrderDTO orderData = new OrderDTO();
+			orderData.setOrderCode(parm.get("orderNum"));
+			orderData.setBookCode(parm.get("bookCode"));
+			orderData.setBookTitle(parm.get("bookTitle"));
+			orderData.setQuantity(parm.get("quantity"));
+			orderData.setUseMileage(Integer.valueOf(parm.get("useMileage")));
+			orderData.setSaveMileage(Integer.valueOf(parm.get("mileage")));
+			orderData.setOrderPrice(Integer.valueOf(parm.get("price")));
+			orderData.setMemId(parm.get("memId"));
+			orderData.setPostalCode(parm.get("postCode"));
+			orderData.setAddress(parm.get("addr"));
+			orderData.setDetailAddress(parm.get("detailAddr"));
+			orderData.setPhone(parm.get("phone"));
+			orderData.setDeliveryFee(3000);
+		boolean add_result = service.addOrderData(orderData);
+		//주문한 상품 수량만큼 재고 차감 후 다시 업데이트
+		List<String> bookCodeArr =Arrays.asList(parm.get("bookCode").split(","));
+		List<String> stockArr = Arrays.asList(parm.get("quantity").split(","));
+		List<Map<String, Object>> bookcode_stock_arr = new ArrayList<Map<String,Object>>();
+		for(int i = 0 ; i < bookCodeArr.size() ; i++) {
+			Map<String, Object> stock_obj = new HashMap<String, Object>();
+			stock_obj.put("bookcode", bookCodeArr.get(i));
+			stock_obj.put("stock", stockArr.get(i));
+			bookcode_stock_arr.add(stock_obj);
+		}
+		HashMap<String, Object> bookCode = new HashMap<String, Object>();
+		bookCode.put("bookCodes", bookCodeArr);
+		List<BookDetailDTO> bookStockDatas = service.bookStockData(bookCode);
+		int bookStock = 0;
+		for(BookDetailDTO bookDatas : bookStockDatas) {
+			//디비에서 가져온값 - 프론트에서 온값
+			for(Map<String, Object> bookcode_stock : bookcode_stock_arr) {
+				if (bookDatas.getBookCode().equals(bookcode_stock.get("bookcode"))) {
+					bookStock = bookDatas.getStock() - Integer.valueOf((String)bookcode_stock.get("stock"));
+					bookcode_stock.replace("stock", bookStock);
+				}
+			}
+		}
+		boolean update_result = service.updateQuantity(bookcode_stock_arr);
 		
-		return "";
+		return "basket/payment";
+	}
+	
+	//결제완료 페이지 부분
+	@RequestMapping(value = "/cancle", method = RequestMethod.POST)
+	public String cancle(HttpServletRequest request, Model model, HttpSession httpSession ) {
+		return "";	
 	}
 }

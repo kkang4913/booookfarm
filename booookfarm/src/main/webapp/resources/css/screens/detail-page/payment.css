@@ -1,5 +1,9 @@
 @charset "UTF-8";
 
+.page_hidden{
+	display:none;
+}
+
 .order-title{
 	font-size: 1.8rem;
 	font-weight: bold;

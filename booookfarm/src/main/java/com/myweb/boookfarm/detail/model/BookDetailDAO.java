@@ -36,4 +36,16 @@ public class BookDetailDAO {
 		return orderBookData;
 	}
 
+	public List<BookDetailDTO> bookStockData(HashMap<String, Object> bookCodes) {
+		String mapperId = String.format(mapper, "selectBookStocksData");
+		List<BookDetailDTO> bookStockDatas = session.selectList(mapperId, bookCodes);
+		return bookStockDatas;
+	}
+
+	public boolean updateQuantity(List<Map<String, Object>> bookcode_stock_arr) {
+		String mapperId = String.format(mapper, "updateQuantity");
+		int update_result = session.update(mapperId, bookcode_stock_arr);
+		return update_result >= 1 ? true : false;
+	}
+
 }

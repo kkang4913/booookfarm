@@ -183,10 +183,52 @@
 		#{item}
 		</foreach>
 	</select>
+	<select id="selectBookStocksData"  parameterType="map" resultType="bookDetailDTO">
+		SELECT BOOK_CODE AS bookCode
+			 , BOOK_TITLE AS bookTitle
+			 , BOOK_AUTHOR AS bookAuthor
+			 , BOOK_INFO AS bookInfo
+			 , BOOK_PRICE AS bookPrice
+			 , BOOK_DISCOUNT AS bookDiscount
+			 , ISBN AS isbn
+			 , BOOK_CATEGORY AS bookCategory
+			 , STOCK AS stock
+			 , PUBLISHER AS publisher
+			 , BOOK_CONDITION AS bookCondition
+			 , BOOK_CONDITION_INFO AS bookConditionInfo
+			 , BOOK_IMG_PATH AS bookImgPath
+			 , CREATE_DATE AS createDate
+		FROM BOOK
+		WHERE BOOK_CODE IN
+		<foreach collection="bookCodes" item="item" index="index" open="(" separator="," close=")">
+		#{item}
+		</foreach>
+	</select>
 	<update id="updateMileage" parameterType="map" >
 		UPDATE MEMBERS
 		SET MILEAGE = #{mileage}
 		WHERE MEMBER_ID = #{memberId}
 	</update>
-	
+	<insert id="insertOrderData" parameterType="orderDTO">
+		INSERT INTO ORDER_INFO(ORDER_CODE
+			,BOOK_CODE, BOOK_TITLE, ORDER_QUANTITY
+			,USE_MILEAGE, SAVE_MILEAGE, ORDER_PRICE
+			,MEMBER_ID, POSTAL_CODE, ADDRESS
+			,DETAIL_ADDRESS, PHONE, DELIVERY_FEE
+			,REFUNDABLE_DATE, ORDER_DATE) 
+		VALUES(#{orderCode},#{bookCode},#{bookTitle}
+			  ,#{quantity},#{useMileage},#{saveMileage}
+			  ,#{orderPrice},#{memId},#{postalCode}
+			  ,#{address},#{detailAddress},#{phone}
+			  ,#{deliveryFee},SYSDATE+1,SYSDATE)
+	</insert>
+	<update id="updateQuantity" parameterType="java.util.List">
+	 <foreach collection="list" item="item" separator=";" open="DECLARE BEGIN" close="; END;">
+		UPDATE BOOK
+		SET STOCK = #{item.stock}
+		<where>
+			BOOK_CODE = #{item.bookcode}
+		</where>
+	</foreach>	
+	</update>
 </mapper>  
